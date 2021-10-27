@@ -1,7 +1,7 @@
 .classpath
 .project
 .svn/
-bin/
+target/
 sq1p1u.dat
 sq1p2u.dat
 sq1sctc.dat

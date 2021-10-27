@@ -3,28 +3,105 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.treimers</groupId>
-	<artifactId>Square-1</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>square1</artifactId>
+	<version>0.0.1</version>
+	<name>Square1</name>
+	<organization>
+		<name>Thorsten Reimers</name>
+	</organization>
+	<properties>
+		<!-- source and target settings -->
+		<maven.compiler.source>15</maven.compiler.source>
+		<maven.compiler.target>15</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<org.openjfx.version>15.0.1</org.openjfx.version>
+	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>jmf</artifactId>
-			<version>2.1.1e</version>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx</artifactId>
+			<version>${org.openjfx.version}</version>
+			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>j3dcore</artifactId>
-			<version>2.1.1e</version>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${org.openjfx.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>j3dutils</artifactId>
-			<version>2.1.1e</version>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>${org.openjfx.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>vecmath</artifactId>
-			<version>2.1.1e</version>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${org.openjfx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-web</artifactId>
+			<version>${org.openjfx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>${org.openjfx.version}</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<extensions>
+			<!-- os maven plugin, generates the property os.detected.name with value 
+				"windows", "osx" or "linux" -->
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.6.1</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>io.github.fvarrui</groupId>
+				<artifactId>javapackager</artifactId>
+				<version>1.6.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>package</goal>
+						</goals>
+						<configuration>
+							<mainClass>net.treimers.square1.Square1</mainClass>
+							<bundleJre>true</bundleJre>
+							<generateInstaller>true</generateInstaller>
+							<administratorRequired>false</administratorRequired>
+							<platform>auto</platform>
+							<assetsDir>src/main/deploy/package</assetsDir>
+							<createZipball>true</createZipball>
+							<organizationName>${project.organization.name}</organizationName>
+							<outputDirectory>${project.build.directory}/deploy/${os.detected.name}</outputDirectory>
+							<customizedJre>false</customizedJre>
+							<macConfig>
+								<backgroundImage>src/main/deploy/package/mac/Square1-background.png</backgroundImage>
+								<volumeIcon>src/main/deploy/package/mac/Square1-volume.icns</volumeIcon>
+								<textSize>12</textSize>
+								<iconX>120</iconX>
+								<iconY>115</iconY>
+								<appsLinkIconX>400</appsLinkIconX>
+								<appsLinkIconY>115</appsLinkIconY>
+								<windowWidth>517</windowWidth>
+								<windowHeight>253</windowHeight>
+							</macConfig>
+							<winConfig>
+								<companyName>Thorsten Reimers</companyName>
+								<createDesktopIconTask>true</createDesktopIconTask>
+								<fileDescription>vcard</fileDescription>
+							</winConfig>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
