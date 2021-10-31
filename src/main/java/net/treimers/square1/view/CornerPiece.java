@@ -3,6 +3,7 @@ package net.treimers.square1.view;
 import javafx.scene.shape.TriangleMesh;
 
 public class CornerPiece extends AbstractPiece {
+	/*
 	private static final int A = 0;
 	private static final int B = 1;
 	private static final int C = 2;
@@ -119,4 +120,5 @@ public class CornerPiece extends AbstractPiece {
 		}
 		setMesh(m);
 	}
+	*/
 }

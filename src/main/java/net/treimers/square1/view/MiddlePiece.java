@@ -3,6 +3,7 @@ package net.treimers.square1.view;
 import javafx.scene.shape.TriangleMesh;
 
 public class MiddlePiece extends AbstractPiece {
+	/*
 	// the point of the edge piece with their indices
 	private static final int A = 0;
 	private static final int B = 1;
@@ -44,7 +45,8 @@ public class MiddlePiece extends AbstractPiece {
 			SIZE,
 			EDGE_SIZE / 2.0f,
 			SIZE, };
-
+*/
+	
 	/**
 	 * 
 	 * @param colors array with two colors for top and front.
@@ -52,6 +54,7 @@ public class MiddlePiece extends AbstractPiece {
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
 	 */
+	/*
 	public MiddlePiece(int[] colors, boolean flip, int rotate) {
 		TriangleMesh m = new TriangleMesh();
 		m.getPoints().addAll(POINTS);
@@ -78,4 +81,5 @@ public class MiddlePiece extends AbstractPiece {
 		}
 		setMesh(m);
 	}
+	*/
 }

@@ -7,19 +7,21 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import net.treimers.square1.view.Constants;
+import net.treimers.square1.view.EdgePiece;
 import net.treimers.square1.view.ImageLoader;
 import net.treimers.square1.view.SmartGroup;
 
 public class Square1App extends Application implements Constants {
 	private static int WIDTH = 1400;
 	private static int HEIGHT = 800;
+	private double mouseOldX;
+	private double mouseOldY;
+	private double mousePosX;
+	private double mousePosY;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -28,46 +30,60 @@ public class Square1App extends Application implements Constants {
 		// load and set the stage icon
 		Image image = ImageLoader.getLogoImage();
 		primaryStage.getIcons().add(image);
-		// Camera
-		Camera camera = new PerspectiveCamera();
 		// Scene
 		SmartGroup sceneRoot = new SmartGroup();
 		Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT);
 		scene.setFill(Color.SILVER);
+//		sceneRoot.translateXProperty().set(WIDTH / 2);
+//		sceneRoot.translateYProperty().set(HEIGHT / 2);
+		// Camera
+		Camera camera = new PerspectiveCamera(true);
+		camera.setNearClip(0.1);
+		camera.setFarClip(10000.0);
+		camera.setTranslateZ(-10);
 		scene.setCamera(camera);
-		sceneRoot.translateXProperty().set(WIDTH / 2);
-		sceneRoot.translateYProperty().set(HEIGHT / 2);
-		// Move
-		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			switch (event.getCode()) {
-			case W:
-				sceneRoot.translateZProperty().set(sceneRoot.getTranslateZ() + 100);
-				break;
-			case S:
-				sceneRoot.translateZProperty().set(sceneRoot.getTranslateZ() - 100);
-				break;
-			case Q:
-				sceneRoot.rotateByX(10);
-				break;
-			case A:
-				sceneRoot.rotateByX(-10);
-				break;
-			case E:
-				sceneRoot.rotateByY(10);
-				break;
-			case D:
-				sceneRoot.rotateByY(-10);
-				break;
-			default:
-				break;
-			}
+		// edges
+		EdgePiece _1 = new EdgePiece(1.0f, 0, 1, Constants.GRAY, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
+				Constants.WHITE);
+		EdgePiece _2 = new EdgePiece(1.0f, 1, 1, Constants.GRAY, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
+				Constants.WHITE);
+		EdgePiece _3 = new EdgePiece(1.0f, 2, 1, Constants.GRAY, Constants.GRAY, Constants.BLUE, Constants.GRAY,
+				Constants.WHITE);
+		EdgePiece _4 = new EdgePiece(1.0f, 3, 1, Constants.GRAY, Constants.GRAY, Constants.RED, Constants.GRAY,
+				Constants.WHITE);
+		EdgePiece _5 = new EdgePiece(1.0f, 0, -1, Constants.GREEN, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
+				Constants.GRAY);
+		EdgePiece _6 = new EdgePiece(1.0f, 1, -1, Constants.GREEN, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
+				Constants.GRAY);
+		EdgePiece _7 = new EdgePiece(1.0f, 2, -1, Constants.GREEN, Constants.GRAY, Constants.BLUE, Constants.GRAY,
+				Constants.GRAY);
+		EdgePiece _8 = new EdgePiece(1.0f, 3, -1, Constants.GREEN, Constants.GRAY, Constants.RED, Constants.GRAY,
+				Constants.GRAY);
+		// mesh group
+		Group meshGroup = new Group();
+		Rotate rotateX = new Rotate(0, 0, 0, 0, Rotate.X_AXIS);
+		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
+		meshGroup.getTransforms().addAll(rotateX, rotateY);
+		meshGroup.getChildren().addAll(_1, _2, _3, _4, _5, _6, _7, _8);
+		sceneRoot.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		scene.setOnMousePressed(me -> {
+			mouseOldX = me.getSceneX();
+			mouseOldY = me.getSceneY();
 		});
-		sceneRoot.getChildren().addAll(_1, _2, _3, _4, _5, _6, _7, _8, A, B, C, D, E, F, G, H, buildAxes(), new AmbientLight(Color.WHITE));
-		primaryStage.setTitle("JavaFX 3D - Icosahedron");
+		scene.setOnMouseDragged(me -> {
+			mousePosX = me.getSceneX();
+			mousePosY = me.getSceneY();
+			rotateX.setAngle(rotateX.getAngle() - (mousePosY - mouseOldY));
+			rotateY.setAngle(rotateY.getAngle() + (mousePosX - mouseOldX));
+			mouseOldX = mousePosX;
+			mouseOldY = mousePosY;
+		});
+
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
+	/*
 	// https://stackoverflow.com/questions/37075261/how-to-set-axis-triad-at-fixed-position-on-screen-in-javafx
 	private Group buildAxes() {
 		double len = 240.0;
@@ -103,6 +119,7 @@ public class Square1App extends Application implements Constants {
 		axisGroup.getChildren().addAll(xAxis, xMark, yAxis, yMark, zAxis, zMark);
 		return axisGroup;
 	}
+	*/
 
 	public static void run(String[] args) {
 		launch(args);
