@@ -15,7 +15,7 @@ import net.treimers.square1.view.EdgePiece;
 import net.treimers.square1.view.ImageLoader;
 import net.treimers.square1.view.SmartGroup;
 
-public class Square1App extends Application implements Constants {
+public class Square1App extends Application {
 	private static int WIDTH = 1400;
 	private static int HEIGHT = 800;
 	private double mouseOldX;
