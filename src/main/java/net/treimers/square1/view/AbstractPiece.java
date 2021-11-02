@@ -7,6 +7,7 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 
 /*
 
@@ -49,7 +50,7 @@ public class AbstractPiece extends MeshView {
 		(Constants.GRAY + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
 	};
-	private Transform t = new Rotate();
+	private Transform transform = new Rotate();
 	private TriangleMesh triangleMesh;
     
 	public AbstractPiece() {
@@ -76,14 +77,28 @@ public class AbstractPiece extends MeshView {
 
 	public void rotateByX(int ang) {
 		Rotate r = new Rotate(ang, Rotate.X_AXIS);
-		t = t.createConcatenation(r);
+		transform = transform.createConcatenation(r);
 		this.getTransforms().clear();
-		this.getTransforms().addAll(t);
+		this.getTransforms().addAll(transform);
 	}
 
 	public void rotateByY(int ang) {
 		Rotate r = new Rotate(ang, Rotate.Y_AXIS);
-		t = t.createConcatenation(r);
+		transform = transform.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(transform);
+	}
+
+	public void translateByX(float x) {
+		Translate t = new Translate(x, 0.0f);
+		transform = transform.createConcatenation(t);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(t);
+	}
+
+	public void translateByY(float y) {
+		Translate t = new Translate(0.0f, y);
+		transform = transform.createConcatenation(t);
 		this.getTransforms().clear();
 		this.getTransforms().addAll(t);
 	}

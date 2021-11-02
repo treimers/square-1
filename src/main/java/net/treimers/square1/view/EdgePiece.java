@@ -39,8 +39,8 @@ public class EdgePiece extends AbstractPiece {
 	 */
 	public EdgePiece(float size, int rotate, int position, int... colors) {
 		float s = (float) (size * Math.sin(Constants.ANGLE_15));
-		float edgeSize = (float) (2 * size * Math.sin(Constants.ANGLE_15));
-		float cornerSize = (float) (size - edgeSize / 2.0f);
+		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
+		float cornerWidth = (float) (size - edgeWidth / 2.0f);
 		float[] points = {
 			// Point A
 			0.0f,
@@ -56,15 +56,15 @@ public class EdgePiece extends AbstractPiece {
 			size,
 			// Point D
 			0.0f,
-			cornerSize,
+			cornerWidth,
 			0.0f,
 			// Point E
 			-s,
-			cornerSize,
+			cornerWidth,
 			size,
 			// Point F
 			s,
-			cornerSize,
+			cornerWidth,
 			size,
 		};
 		addAllPoints(points);
@@ -128,6 +128,6 @@ public class EdgePiece extends AbstractPiece {
 		};
 		addAllFaces(faces);
 		rotateByY(90 * rotate);
-		setTranslateY(position * edgeSize);
+		setTranslateY(position * edgeWidth);
 	}
 }

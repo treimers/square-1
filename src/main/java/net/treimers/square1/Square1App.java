@@ -1,6 +1,9 @@
 package net.treimers.square1;
 
+import com.sun.org.apache.bcel.internal.Const;
+
 import javafx.application.Application;
+import javafx.geometry.Point3D;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
@@ -12,8 +15,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import net.treimers.square1.view.Constants;
+import net.treimers.square1.view.CornerPiece;
 import net.treimers.square1.view.EdgePiece;
 import net.treimers.square1.view.ImageLoader;
+import net.treimers.square1.view.MiddlePiece;
 import net.treimers.square1.view.SmartGroup;
 
 public class Square1App extends Application {
@@ -33,10 +38,8 @@ public class Square1App extends Application {
 		primaryStage.getIcons().add(image);
 		// Scene
 		SmartGroup sceneRoot = new SmartGroup();
-		 Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
+		Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.SILVER);
-//		sceneRoot.translateXProperty().set(WIDTH / 2);
-//		sceneRoot.translateYProperty().set(HEIGHT / 2);
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);
@@ -44,28 +47,51 @@ public class Square1App extends Application {
 		camera.setTranslateZ(-10);
 		scene.setCamera(camera);
 		// edges
-		EdgePiece _1 = new EdgePiece(1.0f, 0, 1, Constants.GRAY, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
+		EdgePiece edge1 = new EdgePiece(1.0f, 0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece _2 = new EdgePiece(1.0f, 1, 1, Constants.GRAY, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
+		EdgePiece edge2 = new EdgePiece(1.0f, 1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece _3 = new EdgePiece(1.0f, 2, 1, Constants.GRAY, Constants.GRAY, Constants.BLUE, Constants.GRAY,
+		EdgePiece edge3 = new EdgePiece(1.0f, 2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece _4 = new EdgePiece(1.0f, 3, 1, Constants.GRAY, Constants.GRAY, Constants.RED, Constants.GRAY,
+		EdgePiece edge4 = new EdgePiece(1.0f, 3, 1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece _5 = new EdgePiece(1.0f, 0, -1, Constants.GREEN, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.GRAY);
-		EdgePiece _6 = new EdgePiece(1.0f, 1, -1, Constants.GREEN, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.GRAY);
-		EdgePiece _7 = new EdgePiece(1.0f, 2, -1, Constants.GREEN, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.GRAY);
-		EdgePiece _8 = new EdgePiece(1.0f, 3, -1, Constants.GREEN, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.GRAY);
+		EdgePiece edge5 = new EdgePiece(1.0f, 0, -1, Constants.GREEN, Constants.BLACK, Constants.YELLOW,
+				Constants.BLACK, Constants.BLACK);
+		EdgePiece edge6 = new EdgePiece(1.0f, 1, -1, Constants.GREEN, Constants.BLACK, Constants.ORANGE,
+				Constants.BLACK, Constants.BLACK);
+		EdgePiece edge7 = new EdgePiece(1.0f, 2, -1, Constants.GREEN, Constants.BLACK, Constants.BLUE, Constants.BLACK,
+				Constants.BLACK);
+		EdgePiece edge8 = new EdgePiece(1.0f, 3, -1, Constants.GREEN, Constants.BLACK, Constants.RED, Constants.BLACK,
+				Constants.BLACK);
+		// corners
+		CornerPiece corner1 = new CornerPiece(1.0f, 0, 1, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
+				Constants.BLACK, Constants.BLACK, Constants.WHITE);
+		CornerPiece corner2 = new CornerPiece(1.0f, 1, 1, Constants.BLACK, Constants.ORANGE, Constants.BLUE,
+				Constants.BLACK, Constants.BLACK, Constants.WHITE);
+		CornerPiece corner3 = new CornerPiece(1.0f, 2, 1, Constants.BLACK, Constants.BLUE, Constants.RED,
+				Constants.BLACK, Constants.BLACK, Constants.WHITE);
+		CornerPiece corner4 = new CornerPiece(1.0f, 3, 1, Constants.BLACK, Constants.RED, Constants.YELLOW,
+				Constants.BLACK, Constants.BLACK, Constants.WHITE);
+		CornerPiece corner5 = new CornerPiece(1.0f, 0, -1, Constants.GREEN, Constants.YELLOW, Constants.ORANGE,
+				Constants.BLACK, Constants.BLACK, Constants.BLACK);
+		CornerPiece corner6 = new CornerPiece(1.0f, 1, -1, Constants.GREEN, Constants.ORANGE, Constants.BLUE,
+				Constants.BLACK, Constants.BLACK, Constants.BLACK);
+		CornerPiece corner7 = new CornerPiece(1.0f, 2, -1, Constants.GREEN, Constants.BLUE, Constants.RED,
+				Constants.BLACK, Constants.BLACK, Constants.BLACK);
+		CornerPiece corner8 = new CornerPiece(1.0f, 3, -1, Constants.GREEN, Constants.RED, Constants.YELLOW,
+				Constants.BLACK, Constants.BLACK, Constants.BLACK);
+		// middle
+		MiddlePiece middlePiece1 = new MiddlePiece(1.0f, 0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
+				Constants.BLACK, Constants.RED, Constants.BLACK);
+		MiddlePiece middlePiece2 = new MiddlePiece(1.0f, 1, Constants.BLACK, Constants.BLUE, Constants.RED,
+				Constants.BLACK, Constants.ORANGE, Constants.BLACK);
 		// mesh group
 		Group meshGroup = new Group();
 		Rotate rotateX = new Rotate(0, 0, 0, 0, Rotate.X_AXIS);
 		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
 		meshGroup.getTransforms().addAll(rotateX, rotateY);
-		meshGroup.getChildren().addAll(_1, _2, _3, _4, _5, _6, _7, _8);
+		meshGroup.getChildren().addAll(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, corner1, corner2,
+				corner3, corner4, corner5, corner6, corner7, corner8, middlePiece1, middlePiece2);
 		sceneRoot.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		scene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -83,44 +109,6 @@ public class Square1App extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-
-	/*
-	// https://stackoverflow.com/questions/37075261/how-to-set-axis-triad-at-fixed-position-on-screen-in-javafx
-	private Group buildAxes() {
-		double len = 240.0;
-		// x axis
-		PhongMaterial redMaterial = new PhongMaterial();
-		redMaterial.setDiffuseColor(Color.DARKRED);
-		redMaterial.setSpecularColor(Color.RED);
-		Box xAxis = new Box(len, 1, 1);
-		xAxis.setMaterial(redMaterial);
-		Sphere xMark = new Sphere(3);
-		xMark.setMaterial(redMaterial);
-		xMark.setTranslateX(len / 2.0);
-		// y axis
-		PhongMaterial greenMaterial = new PhongMaterial();
-		greenMaterial.setDiffuseColor(Color.DARKGREEN);
-		greenMaterial.setSpecularColor(Color.GREEN);
-		Box yAxis = new Box(1, len, 1);
-		yAxis.setMaterial(greenMaterial);
-		Sphere yMark = new Sphere(3);
-		yMark.setMaterial(greenMaterial);
-		yMark.setTranslateY(len / 2.0);
-		// z axis
-		PhongMaterial blueMaterial = new PhongMaterial();
-		blueMaterial.setDiffuseColor(Color.DARKBLUE);
-		blueMaterial.setSpecularColor(Color.BLUE);
-		Box zAxis = new Box(1, 1, len);
-		zAxis.setMaterial(blueMaterial);
-		Sphere zMark = new Sphere(3);
-		zMark.setMaterial(blueMaterial);
-		zMark.setTranslateZ(len / 2.0);
-		// all
-		Group axisGroup = new Group();
-		axisGroup.getChildren().addAll(xAxis, xMark, yAxis, yMark, zAxis, zMark);
-		return axisGroup;
-	}
-	*/
 
 	public static void run(String[] args) {
 		launch(args);

@@ -6,10 +6,7 @@ package net.treimers.square1.view;
  *
  */
 
-
-
 public class CornerPiece extends AbstractPiece {
-	/*
 	private static final int A = 0;
 	private static final int B = 1;
 	private static final int C = 2;
@@ -18,113 +15,134 @@ public class CornerPiece extends AbstractPiece {
 	private static final int F = 5;
 	private static final int G = 6;
 	private static final int H = 7;
-	private static final float S = (float) (SIZE / Math.cos(ANGLE_15));
-	private static final float[] POINTS = {
+
+	public CornerPiece(float size, int rotate, int position, int... colors) {
+		float s = (float) (size / Math.cos(Constants.ANGLE_15));
+		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
+		float cornerWidth = (float) (size - edgeWidth / 2.0f);
+		float[] points = {
 			// Point A
 			0.0f,
 			0.0f,
 			0.0f,
 			// Point B
-			(float) (-S * Math.sin(ANGLE_30)),
+			(float) (-s * Math.sin(Constants.ANGLE_30)),
 			0.0f,
-			(float) (S * Math.cos(ANGLE_30)),
+			(float) (s * Math.cos(Constants.ANGLE_30)),
 			// Point C
 			0.0f,
 			0.0f,
-			(float) (S * (Math.cos(ANGLE_30) + Math.sin(ANGLE_30))),
+			(float) (s * (Math.cos(Constants.ANGLE_30) + Math.sin(Constants.ANGLE_30))),
 			// Point D
-			(float) (S * Math.sin(ANGLE_30)),
+			(float) (s * Math.sin(Constants.ANGLE_30)),
 			0.0f,
-			(float) (S * Math.cos(ANGLE_30)),
+			(float) (s * Math.cos(Constants.ANGLE_30)),
 			// Point E
 			0.0f,
-			CORNER_SIZE,
+			cornerWidth,
 			0.0f,
 			// Point F
-			(float) (-S * Math.sin(ANGLE_30)),
-			CORNER_SIZE,
-			(float) (S * Math.cos(ANGLE_30)),
+			(float) (-s * Math.sin(Constants.ANGLE_30)),
+			cornerWidth,
+			(float) (s * Math.cos(Constants.ANGLE_30)),
 			// Point G
 			0.0f,
-			CORNER_SIZE,
-			(float) (S * (Math.cos(ANGLE_30) + Math.sin(ANGLE_30))),
+			cornerWidth,
+			(float) (s * (Math.cos(Constants.ANGLE_30) + Math.sin(Constants.ANGLE_30))),
 			// Point H
-			(float) (S * Math.sin(ANGLE_30)),
-			CORNER_SIZE,
-			(float) (S * Math.cos(ANGLE_30)) };
-
-	public CornerPiece(int[] colors, boolean flip, int rotate) {
-		int topColor = colors[0];
-		int leftColor = colors[1];
-		int rightColor = colors[2];
+			(float) (s * Math.sin(Constants.ANGLE_30)),
+			cornerWidth,
+			(float) (s * Math.cos(Constants.ANGLE_30))
+		};
+		addAllPoints(points);
 		int[] faces = {
-				// Bottom face 1
-				//				A, BLACK, B, BLACK, C, BLACK, 
-				// Bottom face 2
-				//				C, BLACK, D, BLACK, A, BLACK,
-				// Left front face 1
-				C,
-				leftColor,
-				B,
-				leftColor,
-				F,
-				leftColor,
-				// Left front face 2
-				F,
-				leftColor,
-				G,
-				leftColor,
-				C,
-				leftColor,
-				// Right front face 1
-				C,
-				rightColor,
-				G,
-				rightColor,
-				H,
-				rightColor,
-				// Right front face 2
-				H,
-				rightColor,
-				D,
-				rightColor,
-				C,
-				rightColor,
-				// Left back face 1
-				// E, BLACK, F, BLACK, B, BLACK,
-				// Left back face 2
-				// B, BLACK, A, BLACK, E, BLACK, 
-				// Right back face 1
-				// E, BLACK, A, BLACK, D, BLACK, 
-				// Right back face 2
-				// D, BLACK, H, BLACK, E, BLACK,
-				// Top face 1
-				G,
-				topColor,
-				F,
-				topColor,
-				E,
-				topColor,
-				// Top face 2
-				E,
-				topColor,
-				H,
-				topColor,
-				G,
-				topColor };
-		TriangleMesh m = new TriangleMesh();
-		m.getPoints().addAll(POINTS);
-		m.getTexCoords().addAll(COLOR_ARRAY);
-		m.getFaces().addAll(faces);
-		if (flip) {
-			rotateByX(180);
-			rotateByY(90 * rotate + 45);
-			setTranslateY(-EDGE_SIZE / 2.0f);
-		} else {
-			rotateByY(90 * rotate + 45);
-			setTranslateY(EDGE_SIZE / 2.0f);
-		}
-		setMesh(m);
+			// Bottom face 1
+			A,
+			colors[0],
+			B,
+			colors[0],
+			C,
+			colors[0],
+			// Bottom face 2
+			C,
+			colors[0],
+			D,
+			colors[0],
+			A,
+			colors[0],
+			// Left front face 1
+			C,
+			colors[1],
+			B,
+			colors[1],
+			F,
+			colors[1],
+			// Left front face 2
+			F,
+			colors[1],
+			G,
+			colors[1],
+			C,
+			colors[1],
+			// Right front face 1
+			C,
+			colors[2],
+			G,
+			colors[2],
+			H,
+			colors[2],
+			// Right front face 2
+			H,
+			colors[2],
+			D,
+			colors[2],
+			C,
+			colors[2],
+			// Left back face 1
+			E,
+			colors[3],
+			F,
+			colors[3],
+			B,
+			colors[3],
+			// Left back face 2
+			B,
+			colors[3],
+			A,
+			colors[3],
+			E,
+			colors[3],
+			// Right back face 1
+			E,
+			colors[4],
+			A,
+			colors[4],
+			D,
+			colors[4],
+			// Right back face 2
+			D,
+			colors[4],
+			H,
+			colors[4],
+			E,
+			colors[4],
+			// Top face 1
+			G,
+			colors[5],
+			F,
+			colors[5],
+			E,
+			colors[5],
+			// Top face 2
+			E,
+			colors[5],
+			H,
+			colors[5],
+			G,
+			colors[5],
+		};
+		addAllFaces(faces);
+		rotateByY(90 * rotate + 45);
+		setTranslateY(position * edgeWidth);
 	}
-	*/
 }
