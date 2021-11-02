@@ -1,9 +1,6 @@
 package net.treimers.square1;
 
-import com.sun.org.apache.bcel.internal.Const;
-
 import javafx.application.Application;
-import javafx.geometry.Point3D;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
