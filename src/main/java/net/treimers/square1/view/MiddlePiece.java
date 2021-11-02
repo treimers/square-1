@@ -19,39 +19,39 @@ public class MiddlePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 */
 	public MiddlePiece(float size, int rotate, int... colors) {
-		float edgeSize = (float) (2 * size * Math.sin(Constants.ANGLE_15));
+		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
 		float[] points = {
 			// Point A
 			size,
-			edgeSize / 2.0f,
+			edgeWidth / 2.0f,
 			-size,
 			// Point B
 			size,
-			edgeSize / 2.0f,
+			edgeWidth / 2.0f,
 			size,
 			// Point C
 			(float) (size * Math.sin(Constants.ANGLE_15)),
-			edgeSize / 2.0f,
+			edgeWidth / 2.0f,
 			size,
 			// Point D
 			(float) (-size * Math.sin(Constants.ANGLE_15)),
-			edgeSize / 2.0f,
+			edgeWidth / 2.0f,
 			-size,
 			// Point E
 			size,
-			-edgeSize / 2.0f,
+			-edgeWidth / 2.0f,
 			-size,
 			// Point F
 			size,
-			-edgeSize / 2.0f,
+			-edgeWidth / 2.0f,
 			size,
 			// Point G
 			(float) (size * Math.sin(Constants.ANGLE_15)),
-			-edgeSize / 2.0f,
+			-edgeWidth / 2.0f,
 			size,
 			// Point H
 			(float) (-size * Math.sin(Constants.ANGLE_15)),
-			-edgeSize / 2.0f,
+			-edgeWidth / 2.0f,
 			-size,
 		};
 		addAllPoints(points);
@@ -138,7 +138,5 @@ public class MiddlePiece extends AbstractPiece {
 		};
 		addAllFaces(faces);
 		rotateByY(rotate * 180);
-		setTranslateX((rotate == 0) ? 0.01f : -0.01f);
-		setTranslateY(edgeSize / 2.0f);
 	}
 }

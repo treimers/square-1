@@ -22,12 +22,12 @@ package net.treimers.square1.view;
  */
 public class EdgePiece extends AbstractPiece {
 	// the point of the edge piece with their indices
-	private static final int POINT_A = 0;
-	private static final int POINT_B = 1;
-	private static final int POINT_C = 2;
-	private static final int POINT_D = 3;
-	private static final int POINT_E = 4;
-	private static final int POINT_F = 5;
+	private static final int A = 0;
+	private static final int B = 1;
+	private static final int C = 2;
+	private static final int D = 3;
+	private static final int E = 4;
+	private static final int F = 5;
 
 	/**
 	 * Creates a new instance.
@@ -35,7 +35,7 @@ public class EdgePiece extends AbstractPiece {
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
 	 * @param position set piece position (1 for top layer, -1 for bottom layer).
-	 * @param colors array with colors for the 5 sides (top, left, front, right, bottom).
+	 * @param colors array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
 	public EdgePiece(float size, int rotate, int position, int... colors) {
 		float s = (float) (size * Math.sin(Constants.ANGLE_15));
@@ -44,90 +44,86 @@ public class EdgePiece extends AbstractPiece {
 		float[] points = {
 			// Point A
 			0.0f,
-			0.0f,
+			position * edgeWidth / 2.0f,
 			0.0f,
 			// Point B
+			size,
+			position * edgeWidth / 2.0f,
 			-s,
-			0.0f,
-			size,
 			// Point C
-			s,
-			0.0f,
 			size,
+			position * edgeWidth / 2.0f,
+			s,
 			// Point D
 			0.0f,
-			cornerWidth,
+			position * (cornerWidth + edgeWidth / 2.0f),
 			0.0f,
 			// Point E
+			size,
+			position * (cornerWidth + edgeWidth / 2.0f),
 			-s,
-			cornerWidth,
-			size,
 			// Point F
-			s,
-			cornerWidth,
 			size,
+			position * (cornerWidth + edgeWidth / 2.0f),
+			s,
 		};
 		addAllPoints(points);
 		int[] faces = {
-			// Top face
-			POINT_A,
-			colors[0],
-			POINT_B,
-			colors[0],
-			POINT_C,
-			colors[0],
-			// Left face 1
-			POINT_B,
-			colors[1],
-			POINT_A,
-			colors[1],
-			POINT_D,
-			colors[1],
-			// Left face 2
-			POINT_D,
-			colors[1],
-			POINT_E,
-			colors[1],
-			POINT_B,
-			colors[1],
-			// Front face 1
-			POINT_E,
-			colors[2],
-			POINT_F,
-			colors[2],
-			POINT_C,
-			colors[2],
-			// Front face 2
-			POINT_C,
-			colors[2],
-			POINT_B,
-			colors[2],
-			POINT_E,
-			colors[2],
-			// Right face 1
-			POINT_D,
-			colors[3],
-			POINT_A,
-			colors[3],
-			POINT_C,
-			colors[3],
-			// Right face 2
-			POINT_C,
-			colors[3],
-			POINT_F,
-			colors[3],
-			POINT_D,
-			colors[3],
 			// Bottom face
-			POINT_D,
+			A,
+			colors[0],
+			C,
+			colors[0],
+			B,
+			colors[0],
+			// Left face
+			A,
+			colors[1],
+			B,
+			colors[1],
+			E,
+			colors[1],
+			E,
+			colors[1],
+			D,
+			colors[1],
+			A,
+			colors[1],
+			// Front face
+			E,
+			colors[2],
+			B,
+			colors[2],
+			C,
+			colors[2],
+			C,
+			colors[2],
+			F,
+			colors[2],
+			E,
+			colors[2],
+			// Right face
+			D,
+			colors[3],
+			F,
+			colors[3],
+			C,
+			colors[3],
+			C,
+			colors[3],
+			A,
+			colors[3],
+			D,
+			colors[3],
+			// Top face
+			D,
 			colors[4],
-			POINT_F,
+			E,
 			colors[4],
-			POINT_E,
+			F,
 			colors[4],
 		};
 		addAllFaces(faces);
 		rotateByY(90 * rotate);
-		setTranslateY(position * edgeWidth);
 	}
 }

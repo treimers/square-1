@@ -17,132 +17,125 @@ public class CornerPiece extends AbstractPiece {
 	private static final int H = 7;
 
 	public CornerPiece(float size, int rotate, int position, int... colors) {
-		float s = (float) (size / Math.cos(Constants.ANGLE_15));
+		float s = (float) (size * Math.sin(Constants.ANGLE_15));
 		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
 		float cornerWidth = (float) (size - edgeWidth / 2.0f);
 		float[] points = {
 			// Point A
 			0.0f,
-			0.0f,
+			position * edgeWidth / 2.0f,
 			0.0f,
 			// Point B
-			(float) (-s * Math.sin(Constants.ANGLE_30)),
-			0.0f,
-			(float) (s * Math.cos(Constants.ANGLE_30)),
+			size,
+			position * edgeWidth / 2.0f,
+			s,
 			// Point C
-			0.0f,
-			0.0f,
-			(float) (s * (Math.cos(Constants.ANGLE_30) + Math.sin(Constants.ANGLE_30))),
+			size,
+			position * edgeWidth / 2.0f,
+			size,
 			// Point D
-			(float) (s * Math.sin(Constants.ANGLE_30)),
-			0.0f,
-			(float) (s * Math.cos(Constants.ANGLE_30)),
+			s,
+			position * edgeWidth / 2.0f,
+			size,
 			// Point E
 			0.0f,
-			cornerWidth,
+			position * (cornerWidth + edgeWidth / 2.0f),
 			0.0f,
 			// Point F
-			(float) (-s * Math.sin(Constants.ANGLE_30)),
-			cornerWidth,
-			(float) (s * Math.cos(Constants.ANGLE_30)),
+			size,
+			position * (cornerWidth + edgeWidth / 2.0f),
+			s,
 			// Point G
-			0.0f,
-			cornerWidth,
-			(float) (s * (Math.cos(Constants.ANGLE_30) + Math.sin(Constants.ANGLE_30))),
+			size,
+			position * (cornerWidth + edgeWidth / 2.0f),
+			size,
 			// Point H
-			(float) (s * Math.sin(Constants.ANGLE_30)),
-			cornerWidth,
-			(float) (s * Math.cos(Constants.ANGLE_30))
+			s,
+			position * (cornerWidth + edgeWidth / 2.0f),
+			size,
 		};
 		addAllPoints(points);
 		int[] faces = {
-			// Bottom face 1
+			// Bottom face
 			A,
-			colors[0],
-			B,
-			colors[0],
-			C,
-			colors[0],
-			// Bottom face 2
-			C,
 			colors[0],
 			D,
 			colors[0],
+			C,
+			colors[0],
+			C,
+			colors[0],
+			B,
+			colors[0],
 			A,
 			colors[0],
-			// Left front face 1
-			C,
+			// Left rear face
+			A,
 			colors[1],
 			B,
 			colors[1],
 			F,
 			colors[1],
-			// Left front face 2
 			F,
 			colors[1],
-			G,
-			colors[1],
-			C,
-			colors[1],
-			// Right front face 1
-			C,
-			colors[2],
-			G,
-			colors[2],
-			H,
-			colors[2],
-			// Right front face 2
-			H,
-			colors[2],
-			D,
-			colors[2],
-			C,
-			colors[2],
-			// Left back face 1
 			E,
-			colors[3],
-			F,
-			colors[3],
-			B,
-			colors[3],
-			// Left back face 2
-			B,
-			colors[3],
+			colors[1],
 			A,
+			colors[1],
+			// Left front face
+			B,
+			colors[2],
+			C,
+			colors[2],
+			G,
+			colors[2],
+			G,
+			colors[2],
+			F,
+			colors[2],
+			B,
+			colors[2],
+			// Right front face
+			G,
 			colors[3],
-			E,
+			C,
 			colors[3],
-			// Right back face 1
+			D,
+			colors[3],
+			D,
+			colors[3],
+			H,
+			colors[3],
+			G,
+			colors[3],
+			// Right rear face
 			E,
+			colors[4],
+			H,
+			colors[4],
+			D,
+			colors[4],
+			D,
 			colors[4],
 			A,
 			colors[4],
-			D,
-			colors[4],
-			// Right back face 2
-			D,
-			colors[4],
-			H,
-			colors[4],
 			E,
 			colors[4],
-			// Top face 1
-			G,
+			// Top face
+			E,
 			colors[5],
 			F,
 			colors[5],
-			E,
+			G,
 			colors[5],
-			// Top face 2
-			E,
+			G,
 			colors[5],
 			H,
 			colors[5],
-			G,
+			E,
 			colors[5],
 		};
 		addAllFaces(faces);
-		rotateByY(90 * rotate + 45);
-		setTranslateY(position * edgeWidth);
+		rotateByY(90 * rotate);
 	}
 }
