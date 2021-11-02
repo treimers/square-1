@@ -2,6 +2,7 @@ package net.treimers.square1.view;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.CullFace;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
@@ -52,6 +53,7 @@ public class AbstractPiece extends MeshView {
 	private TriangleMesh triangleMesh;
     
 	public AbstractPiece() {
+		setCullFace(CullFace.NONE);
 		// triangle mesh
 		triangleMesh = new TriangleMesh();
 		setMesh(triangleMesh);

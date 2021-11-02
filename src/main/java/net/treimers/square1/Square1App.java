@@ -6,6 +6,7 @@ import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -32,7 +33,7 @@ public class Square1App extends Application {
 		primaryStage.getIcons().add(image);
 		// Scene
 		SmartGroup sceneRoot = new SmartGroup();
-		Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT);
+		 Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.SILVER);
 //		sceneRoot.translateXProperty().set(WIDTH / 2);
 //		sceneRoot.translateYProperty().set(HEIGHT / 2);
