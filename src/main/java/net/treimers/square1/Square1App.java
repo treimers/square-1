@@ -92,8 +92,9 @@ public class Square1App extends Application {
 		Rotate rotateX = new Rotate(0, 0, 0, 0, Rotate.X_AXIS);
 		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
 		meshGroup.getTransforms().addAll(rotateX, rotateY);
+		Group axes = buildAxes();
 		meshGroup.getChildren().addAll(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, corner1, corner2,
-				corner3, corner4, corner6, corner7, corner8, corner5, middlePiece1, middlePiece2, buildAxes());
+				corner3, corner4, corner6, corner7, corner8, corner5, middlePiece1, middlePiece2, axes);
 		sceneRoot.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		scene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -164,6 +165,9 @@ public class Square1App extends Application {
 				break;
 			case N:
 				toggle(middlePiece2, children);
+				break;
+			case X:
+				toggle(axes, children);
 				break;
 			default:
 				break;
