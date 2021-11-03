@@ -199,11 +199,28 @@ public class Square1App extends Application {
 				children.removeAll(allNodes);
 				children.addAll(allNodes);
 				break;
-			case Y:
-				rotateZ.setAngle(rotateZ.getAngle() - 10);
+			case I:
+				rotateX.setAngle(rotateX.getAngle() + 10.0f);
 				break;
-			case Z:
-				rotateZ.setAngle(rotateZ.getAngle() + 10);
+			case J:
+				rotateX.setAngle(rotateX.getAngle() - 10.0f);
+				break;
+			case O:
+				rotateY.setAngle(rotateY.getAngle() + 10.0f);
+				break;
+			case K:
+				rotateY.setAngle(rotateY.getAngle() - 10.0f);
+				break;
+			case P:
+				rotateZ.setAngle(rotateZ.getAngle() + 10.0f);
+				break;
+			case L:
+				rotateZ.setAngle(rotateZ.getAngle() - 10.0f);
+				break;
+			case R:
+				rotateX.setAngle(0.0f);
+				rotateY.setAngle(0.0f);
+				rotateZ.setAngle(0.0f);
 				break;
 			default:
 				break;
