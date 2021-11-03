@@ -50,43 +50,43 @@ public class Square1App extends Application {
 		camera.setTranslateZ(-10);
 		scene.setCamera(camera);
 		// edges
-		EdgePiece edge1 = new EdgePiece(1.0f, 0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW, Constants.BLACK,
+		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1.0f, 1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE, Constants.BLACK,
+		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece edge3 = new EdgePiece(1.0f, 2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
+		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(1.0f, 3, 1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
+		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
 				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(1.0f, 0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
+		EdgePiece edge5 = new EdgePiece(0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
 				Constants.BLACK, Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(1.0f, 1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
+		EdgePiece edge6 = new EdgePiece(1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
 				Constants.BLACK, Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(1.0f, 2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
+		EdgePiece edge7 = new EdgePiece(2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
 				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(1.0f, 3, -1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
+		EdgePiece edge8 = new EdgePiece(3, -1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
 				Constants.GREEN);
 		// corners
-		CornerPiece corner1 = new CornerPiece(1.0f, 0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
+		CornerPiece corner1 = new CornerPiece(0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
 				Constants.ORANGE, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner2 = new CornerPiece(1.0f, 1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
+		CornerPiece corner2 = new CornerPiece(1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
 				Constants.BLUE, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner3 = new CornerPiece(1.0f, 2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
+		CornerPiece corner3 = new CornerPiece(2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
 				Constants.RED, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner4 = new CornerPiece(1.0f, 3, 1, Constants.BLACK, Constants.BLACK, Constants.RED,
+		CornerPiece corner4 = new CornerPiece(3, 1, Constants.BLACK, Constants.BLACK, Constants.RED,
 				Constants.YELLOW, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner5 = new CornerPiece(1.0f, 0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
+		CornerPiece corner5 = new CornerPiece(0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
 				Constants.ORANGE, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner6 = new CornerPiece(1.0f, 1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
+		CornerPiece corner6 = new CornerPiece(1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
 				Constants.BLUE, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner7 = new CornerPiece(1.0f, 2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
+		CornerPiece corner7 = new CornerPiece(2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
 				Constants.RED, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner8 = new CornerPiece(1.0f, 3, -1, Constants.BLACK, Constants.BLACK, Constants.RED,
+		CornerPiece corner8 = new CornerPiece(3, -1, Constants.BLACK, Constants.BLACK, Constants.RED,
 				Constants.YELLOW, Constants.BLACK, Constants.GREEN);
 		// middle
-		MiddlePiece middle1 = new MiddlePiece(1.0f, 0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
+		MiddlePiece middle1 = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
 				Constants.BLACK, Constants.RED, Constants.BLACK);
-		MiddlePiece middle2 = new MiddlePiece(1.0f, 1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.BLACK,
+		MiddlePiece middle2 = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.BLACK,
 				Constants.ORANGE, Constants.BLACK);
 		// all nodes
 		Node[] allNodes = new Node[] {

@@ -31,41 +31,41 @@ public class EdgePiece extends AbstractPiece {
 
 	/**
 	 * Creates a new instance.
-	 * @param size the base size of the square-1.
+	 * @param Constants.SIZE the base Constants.SIZE of the square-1.
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
 	 * @param position set piece position (1 for top layer, -1 for bottom layer).
 	 * @param colors array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
-	public EdgePiece(float size, int rotate, int position, int... colors) {
-		float s = (float) (size * Math.sin(Constants.ANGLE_15));
-		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
-		float cornerWidth = (float) (size - edgeWidth / 2.0f);
+	public EdgePiece(int rotate, int position, int... colors) {
+		float s = (float) (Constants.SIZE * Math.sin(Constants.ANGLE_15));
+		float edgeWidth = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
+		float cornerWidth = (float) (Constants.SIZE - edgeWidth / 2.0f);
 		float[] points = {
 			// Point A
 			0.0f,
 			0.0f,
-			-position * edgeWidth / 2.0f,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point B
-			size,
-			s,
-			-position * edgeWidth / 2.0f,
+			Constants.SIZE,
+			s - Constants.DELTA,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point C
-			size,
-			-s,
-			-position * edgeWidth / 2.0f,
+			Constants.SIZE,
+			-s + Constants.DELTA,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point D
+			0.0f + Constants.DELTA,
 			0.0f,
-			0.0f,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 			// Point E
-			size,
-			s,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			Constants.SIZE,
+			s - Constants.DELTA,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 			// Point F
-			size,
-			-s,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			Constants.SIZE,
+			-s + Constants.DELTA,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 		};
 		addAllPoints(points);
 		int[] faces = {

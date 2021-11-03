@@ -34,4 +34,9 @@ public interface Constants {
 	public static final double ANGLE_90 = 90.0 / 180.0 * Math.PI;
 	/** Angle 180 degrees. */
 	public static final double ANGLE_180 = 180.0 / 180.0 * Math.PI;
+	// Some lengths
+	/** The size of the cube (half length of a side). */
+	public static final float SIZE = 1.0f;
+	/** Small delta used to create gaps between pieces. */
+	public static final float DELTA = 0.02f;
 }

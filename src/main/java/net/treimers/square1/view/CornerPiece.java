@@ -16,43 +16,43 @@ public class CornerPiece extends AbstractPiece {
 	private static final int G = 6;
 	private static final int H = 7;
 
-	public CornerPiece(float size, int rotate, int position, int... colors) {
-		float s = (float) (size * Math.sin(Constants.ANGLE_15));
-		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
-		float cornerWidth = (float) (size - edgeWidth / 2.0f);
+	public CornerPiece(int rotate, int position, int... colors) {
+		float s = (float) (Constants.SIZE * Math.sin(Constants.ANGLE_15));
+		float edgeWidth = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
+		float cornerWidth = (float) (Constants.SIZE - edgeWidth / 2.0f);
 		float[] points = {
 			// Point A
-			0.0f,
-			0.0f,
-			-position * edgeWidth / 2.0f,
+			0.0f + Constants.DELTA,
+			0.0f - Constants.DELTA,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point B
-			size,
-			-s,
-			-position * edgeWidth / 2.0f,
+			Constants.SIZE,
+			-s - Constants.DELTA,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point C
-			size,
-			-size,
-			-position * edgeWidth / 2.0f,
+			Constants.SIZE,
+			-Constants.SIZE,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point D
-			s,
-			-size,
-			-position * edgeWidth / 2.0f,
+			s + Constants.DELTA,
+			-Constants.SIZE,
+			-position * (edgeWidth / 2.0f + Constants.DELTA),
 			// Point E
-			0.0f,
-			0.0f,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			0.0f + Constants.DELTA,
+			0.0f - Constants.DELTA,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 			// Point F
-			size,
-			-s,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			Constants.SIZE,
+			-s - Constants.DELTA,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 			// Point G
-			size,
-			-size,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			Constants.SIZE,
+			-Constants.SIZE,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 			// Point H
-			s,
-			-size,
-			-position * (cornerWidth + edgeWidth / 2.0f),
+			s + Constants.DELTA,
+			-Constants.SIZE,
+			-position * (cornerWidth + edgeWidth / 2.0f - Constants.DELTA),
 		};
 		addAllPoints(points);
 		int[] faces = {

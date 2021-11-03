@@ -18,41 +18,41 @@ public class MiddlePiece extends AbstractPiece {
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
 	 */
-	public MiddlePiece(float size, int rotate, int... colors) {
-		float edgeWidth = (float) (2 * size * Math.sin(Constants.ANGLE_15));
+	public MiddlePiece(int rotate, int... colors) {
+		float edgeWidth = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
 		float[] points = {
 			// Point A
-			size,
-			size,
-			edgeWidth / 2.0f,
+			Constants.SIZE,
+			Constants.SIZE,
+			edgeWidth / 2.0f - Constants.DELTA,
 			// Point B
-			size,
-			-size,
-			edgeWidth / 2.0f,
+			Constants.SIZE,
+			-Constants.SIZE,
+			edgeWidth / 2.0f - Constants.DELTA,
 			// Point C
-			(float) (size * Math.sin(Constants.ANGLE_15)),
-			-size,
-			edgeWidth / 2.0f,
+			(float) (Constants.SIZE * Math.sin(Constants.ANGLE_15)) + Constants.DELTA,
+			-Constants.SIZE,
+			edgeWidth / 2.0f - Constants.DELTA,
 			// Point D
-			(float) (-size * Math.sin(Constants.ANGLE_15)),
-			size,
-			edgeWidth / 2.0f,
+			(float) (-Constants.SIZE * Math.sin(Constants.ANGLE_15)) + Constants.DELTA,
+			Constants.SIZE,
+			edgeWidth / 2.0f - Constants.DELTA,
 			// Point E
-			size,
-			size,
-			-edgeWidth / 2.0f,
+			Constants.SIZE,
+			Constants.SIZE,
+			-edgeWidth / 2.0f + Constants.DELTA,
 			// Point F
-			size,
-			-size,
-			-edgeWidth / 2.0f,
+			Constants.SIZE,
+			-Constants.SIZE,
+			-edgeWidth / 2.0f + Constants.DELTA,
 			// Point G
-			(float) (size * Math.sin(Constants.ANGLE_15)),
-			-size,
-			-edgeWidth / 2.0f,
+			(float) (Constants.SIZE * Math.sin(Constants.ANGLE_15)) + Constants.DELTA,
+			-Constants.SIZE,
+			-edgeWidth / 2.0f + Constants.DELTA,
 			// Point H
-			(float) (-size * Math.sin(Constants.ANGLE_15)),
-			size,
-			-edgeWidth / 2.0f,
+			(float) (-Constants.SIZE * Math.sin(Constants.ANGLE_15)) + Constants.DELTA,
+			Constants.SIZE,
+			-edgeWidth / 2.0f + Constants.DELTA,
 		};
 		addAllPoints(points);
 		int[] faces = {
