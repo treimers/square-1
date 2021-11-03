@@ -1,13 +1,16 @@
 package net.treimers.square1;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -104,9 +107,77 @@ public class Square1App extends Application {
 			mouseOldX = mousePosX;
 			mouseOldY = mousePosY;
 		});
-
+		// key events
+		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			ObservableList<Node> children = meshGroup.getChildren();
+			switch (event.getCode()) {
+			case A:
+				toggle(corner1, children);
+				break;
+			case B:
+				toggle(corner2, children);
+				break;
+			case C:
+				toggle(corner3, children);
+				break;
+			case D:
+				toggle(corner4, children);
+				break;
+			case E:
+				toggle(corner5, children);
+				break;
+			case F:
+				toggle(corner6, children);
+				break;
+			case G:
+				toggle(corner7, children);
+				break;
+			case H:
+				toggle(corner8, children);
+				break;
+			case DIGIT1:
+				toggle(edge1, children);
+				break;
+			case DIGIT2:
+				toggle(edge2, children);
+				break;
+			case DIGIT3:
+				toggle(edge3, children);
+				break;
+			case DIGIT4:
+				toggle(edge4, children);
+				break;
+			case DIGIT5:
+				toggle(edge5, children);
+				break;
+			case DIGIT6:
+				toggle(edge6, children);
+				break;
+			case DIGIT7:
+				toggle(edge7, children);
+				break;
+			case DIGIT8:
+				toggle(edge8, children);
+				break;
+			case M:
+				toggle(middlePiece1, children);
+				break;
+			case N:
+				toggle(middlePiece2, children);
+				break;
+			default:
+				break;
+			}
+		});
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	private void toggle(Node node, ObservableList<Node> children) {
+		if (children.contains(node))
+			children.remove(node);
+		else
+			children.add(node);
 	}
 
 	private Group buildAxes() {
