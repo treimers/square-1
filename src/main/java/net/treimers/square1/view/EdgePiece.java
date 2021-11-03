@@ -44,28 +44,28 @@ public class EdgePiece extends AbstractPiece {
 		float[] points = {
 			// Point A
 			0.0f,
-			position * edgeWidth / 2.0f,
 			0.0f,
+			-position * edgeWidth / 2.0f,
 			// Point B
 			size,
-			position * edgeWidth / 2.0f,
-			-s,
+			s,
+			-position * edgeWidth / 2.0f,
 			// Point C
 			size,
-			position * edgeWidth / 2.0f,
-			s,
+			-s,
+			-position * edgeWidth / 2.0f,
 			// Point D
 			0.0f,
-			position * (cornerWidth + edgeWidth / 2.0f),
 			0.0f,
+			-position * (cornerWidth + edgeWidth / 2.0f),
 			// Point E
 			size,
-			position * (cornerWidth + edgeWidth / 2.0f),
-			-s,
+			s,
+			-position * (cornerWidth + edgeWidth / 2.0f),
 			// Point F
 			size,
-			position * (cornerWidth + edgeWidth / 2.0f),
-			s,
+			-s,
+			-position * (cornerWidth + edgeWidth / 2.0f),
 		};
 		addAllPoints(points);
 		int[] faces = {
@@ -124,6 +124,6 @@ public class EdgePiece extends AbstractPiece {
 			colors[4],
 		};
 		addAllFaces(faces);
-		rotateByY(90 * rotate);
+		rotateByZ(-90 * rotate);
 	}
 }

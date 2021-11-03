@@ -89,6 +89,13 @@ public class AbstractPiece extends MeshView {
 		this.getTransforms().addAll(transform);
 	}
 
+	public void rotateByZ(int ang) {
+		Rotate r = new Rotate(ang, Rotate.Z_AXIS);
+		transform = transform.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(transform);
+	}
+
 	public void translateByX(float x) {
 		Translate t = new Translate(x, 0.0f);
 		transform = transform.createConcatenation(t);

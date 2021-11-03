@@ -23,36 +23,36 @@ public class MiddlePiece extends AbstractPiece {
 		float[] points = {
 			// Point A
 			size,
+			size,
 			edgeWidth / 2.0f,
-			-size,
 			// Point B
 			size,
+			-size,
 			edgeWidth / 2.0f,
-			size,
 			// Point C
 			(float) (size * Math.sin(Constants.ANGLE_15)),
+			-size,
 			edgeWidth / 2.0f,
-			size,
 			// Point D
 			(float) (-size * Math.sin(Constants.ANGLE_15)),
+			size,
 			edgeWidth / 2.0f,
-			-size,
 			// Point E
 			size,
+			size,
 			-edgeWidth / 2.0f,
-			-size,
 			// Point F
 			size,
+			-size,
 			-edgeWidth / 2.0f,
-			size,
 			// Point G
 			(float) (size * Math.sin(Constants.ANGLE_15)),
+			-size,
 			-edgeWidth / 2.0f,
-			size,
 			// Point H
 			(float) (-size * Math.sin(Constants.ANGLE_15)),
+			size,
 			-edgeWidth / 2.0f,
-			-size,
 		};
 		addAllPoints(points);
 		int[] faces = {
@@ -137,6 +137,6 @@ public class MiddlePiece extends AbstractPiece {
 			colors[5],
 		};
 		addAllFaces(faces);
-		rotateByY(rotate * 180);
+		rotateByZ(rotate * 180);
 	}
 }
