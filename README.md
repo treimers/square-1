@@ -27,7 +27,7 @@ There are 8 corner pieces used in a Square-1 cube. They have three colored sides
 
 | Orientation | Name             | Image                           |
 | ----------- | --------------   | ------------------------------- |
-| Top         | Corner Piece 1-4 | <img src="images/corner1.png" alt="Corner 1" width="115" height="154"> <img src="images/corner2.png" alt="Corner 2" width="115" height="154"> <img src="images/corner2.png" alt="Corner 3" width="115" height="154"> <img src="images/corner2.png" alt="Corner 4" width="115" height="154">|
+| Top         | Corner Piece 1-4 | <img src="images/corner1.png" alt="Corner 1" width="115" height="154"> <img src="images/corner2.png" alt="Corner 2" width="115" height="154"> <img src="images/corner3.png" alt="Corner 3" width="115" height="154"> <img src="images/corner4.png" alt="Corner 4" width="115" height="154">|
 | Bottom      | Corner Piece 5-8 | <img src="images/corner5.png" alt="Corner 5" width="115" height="154"> <img src="images/corner6.png" alt="Corner 6" width="115" height="154"> <img src="images/corner7.png" alt="Corner 7" width="115" height="154"> <img src="images/corner8.png" alt="Corner 8" width="115" height="154">|
 
 ## Edge piece
