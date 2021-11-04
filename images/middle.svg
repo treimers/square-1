@@ -9,7 +9,7 @@
    id="svg5"
    inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
    sodipodi:docname="middle.svg"
-   inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
+   inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/images/middle.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -27,7 +27,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.5398569"
-     inkscape:cx="363.98534"
+     inkscape:cx="363.98535"
      inkscape:cy="457.52865"
      inkscape:window-width="1383"
      inkscape:window-height="834"
@@ -44,16 +44,16 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="101.14232"
-       y="63.510292"
+       x="99.181923"
+       y="54.688511"
        id="text2646"
        inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan3673"
-         x="101.14232"
-         y="63.510292">D</tspan></text>
+         x="99.181923"
+         y="54.688511">D</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -109,8 +109,8 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="55.175865"
-       y="97.575485"
+       x="58.116459"
+       y="94.144791"
        id="text2646-57"
        inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
        inkscape:export-xdpi="96"
@@ -118,26 +118,26 @@
          sodipodi:role="line"
          id="tspan2644-6"
          style="stroke-width:0.264583"
-         x="55.175865"
-         y="97.575485">A</tspan></text>
+         x="58.116459"
+         y="94.144791">A</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="117.19256"
-       y="145.9697"
+       x="116.70246"
+       y="136.65782"
        id="text2646-5"
        inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan3499"
-         x="117.19256"
-         y="145.9697">B</tspan></text>
+         x="116.70246"
+         y="136.65782">B</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="142.40886"
-       y="120.55919"
+       x="140.44846"
+       y="111.24731"
        id="text2646-5-0"
        inkscape:transform-center-x="31.366337"
        inkscape:transform-center-y="13.232673"
@@ -146,8 +146,8 @@
        inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan3626"
-         x="142.40886"
-         y="120.55919">C</tspan></text>
+         x="140.44846"
+         y="111.24731">C</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 141.14852,83.806935 122.52476,107.33168 67.143564,66.163365 105.37129,21.074255 Z"
@@ -157,38 +157,26 @@
        inkscape:export-ydpi="96" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 141.41004,111.27598 122.78628,134.80072 67.405084,93.632405 105.63281,48.543295 Z"
+       d="M 139.44964,100.4938 120.82588,124.01854 65.444688,82.850227 103.67241,37.761117 Z"
        id="path318-5"
        inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 67.143564,66.163365 0.261519,27.46904"
-       id="path455"
-       inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       d="M 67.143563,66.163364 65.444687,82.850227"
+       id="path388" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 105.37129,21.074255 0.26152,27.46904"
-       id="path457"
-       inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       d="m 122.52476,107.33168 -1.69888,16.68686"
+       id="path390" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 122.52476,107.33168 0.26152,27.46904"
-       id="path459"
-       inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       d="M 141.14852,83.806934 139.44964,100.4938"
+       id="path392" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 141.14852,83.806935 0.26152,27.469045"
-       id="path461"
-       inkscape:export-filename="/Users/treimers/Documents/workspace/square1fx/src/main/resources/net/treimers/square1/view/middle.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       d="m 105.37129,21.074255 -1.69888,16.686861"
+       id="path394" />
   </g>
 </svg>

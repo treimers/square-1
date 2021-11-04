@@ -1,7 +1,7 @@
 package net.treimers.square1.view;
 
 /**
- * Several constants for colors, angles, ...
+ * Provides several constants for colors, angles and length.
  */
 public interface Constants {
 	// Colors used
@@ -39,4 +39,9 @@ public interface Constants {
 	public static final float SIZE = 1.0f;
 	/** Small delta used to create gaps between pieces. */
 	public static final float DELTA = 0.02f;
+	
+	public static final float S = (float) (Constants.SIZE * Math.sin(Constants.ANGLE_15));
+	public static final float EDGE_WIDTH = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
+	public static final float CORNER_WIDTH = (float) (Constants.SIZE - EDGE_WIDTH / 2.0f);
+
 }

@@ -1,5 +1,7 @@
 package net.treimers.square1;
 
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.AmbientLight;
@@ -17,6 +19,7 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import net.treimers.square1.view.Constants;
 import net.treimers.square1.view.CornerPiece;
 import net.treimers.square1.view.EdgePiece;
@@ -24,6 +27,24 @@ import net.treimers.square1.view.ImageLoader;
 import net.treimers.square1.view.MiddlePiece;
 import net.treimers.square1.view.SmartGroup;
 
+/*
+
+https://stackoverflow.com/questions/26831871/coloring-individual-triangles-in-a-triangle-mesh-on-javafx
+
+more sources
+
+https://stackoverflow.com/questions/19459012/how-to-create-custom-3d-model-in-javafx-8
+https://stackoverflow.com/questions/61231437/how-to-create-such-shape-using-javafx-trianglemesh
+https://www.dummies.com/programming/java/javafx-add-a-mesh-object-to-a-3d-world/
+https://www.genuinecoder.com/javafx-3d/
+
+*/
+
+/**
+ * Instances of this class are used as Square-1 JavaFX application.
+ * 
+ * <p>I found this very good description when starting at <a href="https://stackoverflow.com/questions/26831871/coloring-individual-triangles-in-a-triangle-mesh-on-javafx">Stackoverflow</a>
+ */
 public class Square1App extends Application {
 	private static int WIDTH = 1400;
 	private static int HEIGHT = 800;
@@ -31,7 +52,7 @@ public class Square1App extends Application {
 	private double mouseOldY;
 	private double mousePosX;
 	private double mousePosY;
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// set the stage title
@@ -50,43 +71,43 @@ public class Square1App extends Application {
 		camera.setTranslateZ(-10);
 		scene.setCamera(camera);
 		// edges
-		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW, Constants.BLACK,
+		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE, Constants.BLACK,
+		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
+		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
+		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
-				Constants.BLACK, Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
-				Constants.BLACK, Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE, Constants.BLACK,
+		EdgePiece edge5 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+				Constants.GRAY, Constants.GREEN);
+		EdgePiece edge6 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+				Constants.GRAY, Constants.GREEN);
+		EdgePiece edge7 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
 				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(3, -1, Constants.BLACK, Constants.BLACK, Constants.RED, Constants.BLACK,
+		EdgePiece edge8 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
 				Constants.GREEN);
 		// corners
-		CornerPiece corner1 = new CornerPiece(0, 1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
-				Constants.ORANGE, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner2 = new CornerPiece(1, 1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
-				Constants.BLUE, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner3 = new CornerPiece(2, 1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
-				Constants.RED, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner4 = new CornerPiece(3, 1, Constants.BLACK, Constants.BLACK, Constants.RED,
-				Constants.YELLOW, Constants.BLACK, Constants.WHITE);
-		CornerPiece corner5 = new CornerPiece(0, -1, Constants.BLACK, Constants.BLACK, Constants.YELLOW,
-				Constants.ORANGE, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner6 = new CornerPiece(1, -1, Constants.BLACK, Constants.BLACK, Constants.ORANGE,
-				Constants.BLUE, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner7 = new CornerPiece(2, -1, Constants.BLACK, Constants.BLACK, Constants.BLUE,
-				Constants.RED, Constants.BLACK, Constants.GREEN);
-		CornerPiece corner8 = new CornerPiece(3, -1, Constants.BLACK, Constants.BLACK, Constants.RED,
-				Constants.YELLOW, Constants.BLACK, Constants.GREEN);
+		CornerPiece corner1 = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+				Constants.ORANGE, Constants.GRAY, Constants.WHITE);
+		CornerPiece corner2 = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+				Constants.BLUE, Constants.GRAY, Constants.WHITE);
+		CornerPiece corner3 = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
+				Constants.RED, Constants.GRAY, Constants.WHITE);
+		CornerPiece corner4 = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.RED,
+				Constants.YELLOW, Constants.GRAY, Constants.WHITE);
+		CornerPiece corner5 = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
+		CornerPiece corner6 = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+				Constants.BLUE, Constants.GRAY, Constants.GREEN);
+		CornerPiece corner7 = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
+				Constants.RED, Constants.GRAY, Constants.GREEN);
+		CornerPiece corner8 = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.RED,
+				Constants.YELLOW, Constants.GRAY, Constants.GREEN);
 		// middle
 		MiddlePiece middle1 = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
-				Constants.BLACK, Constants.RED, Constants.BLACK);
-		MiddlePiece middle2 = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.BLACK,
+				Constants.GRAY, Constants.RED, Constants.BLACK);
+		MiddlePiece middle2 = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
 				Constants.ORANGE, Constants.BLACK);
 		// all nodes
 		Node[] allNodes = new Node[] {
@@ -222,12 +243,24 @@ public class Square1App extends Application {
 				rotateY.setAngle(0.0f);
 				rotateZ.setAngle(0.0f);
 				break;
+			case V:
+				animate(meshGroup);
 			default:
 				break;
 			}
 		});
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	// https://www.youtube.com/watch?v=oaL8n1bmD78
+	private void animate(Group group) {
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2.000), group);
+		rotateTransition.setCycleCount(1);
+		rotateTransition.setAxis(Rotate.Y_AXIS);
+		rotateTransition.setByAngle(360);
+		rotateTransition.setInterpolator(Interpolator.LINEAR);
+		rotateTransition.play();
 	}
 
 	private void toggle(Node node, ObservableList<Node> children) {

@@ -3,6 +3,9 @@ package net.treimers.square1.view;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * This library class provides image loading capabilities. 
+ */
 public class ImageLoader {
 	private static final Image LOGO_IMAGE = new Image(ImageLoader.class.getResourceAsStream("Square1.png"));
 

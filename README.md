@@ -1,8 +1,8 @@
-# Square-1
+Key R: reset all rotations (x, y and z) to 0# Square-1
 
 Small project for visualization of Square-1 puzzle in JavaFX.
 
-![Square-1](images/Square1.png)
+![Square-1](images/Square1.png) ![Square-1 Assemble](images/Square1Assemble.png)
 
 See this [Wikipedia article](https://en.wikipedia.org/wiki/Square-1_%28puzzle%29) for a description of Square-1 cube.
 
@@ -74,3 +74,4 @@ Keyboard keys can be used to toggle visibility of the pieces and do rotations:
 + Key P: rotate in positive direction along z-axis (not possible with mouse)
 + Key L: rotate in negative direction along z-axis (not possible with mouse)
 + Key R: reset all rotations (x, y and z) to 0
++ Key V: run an animated rotation (360 degrees) once
