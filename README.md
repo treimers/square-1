@@ -1,4 +1,4 @@
-Key R: reset all rotations (x, y and z) to 0# Square-1
+# Square-1
 
 Small project for visualization of Square-1 puzzle in JavaFX.
 
