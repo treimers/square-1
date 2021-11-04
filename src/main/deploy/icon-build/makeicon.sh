@@ -54,4 +54,4 @@ cp -v ${name}.ico ../package/windows
 cp -v ${name}.bmp ../package/windows/${name}-setup.bmp
 
 cp -v ${name}_256x256.png ../../resources/net/treimers/square1/view/${name}.png
-cp -v ${name}_256x256.png ../../../../images/${name}.png
+cp -v ${name}.png ../../../../images/${name}.png
