@@ -1,5 +1,6 @@
 package net.treimers.square1;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
@@ -52,6 +53,7 @@ public class Square1App extends Application {
 	private double mouseOldY;
 	private double mousePosX;
 	private double mousePosY;
+	private RotateTransition rotateTransition;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -152,6 +154,12 @@ public class Square1App extends Application {
 			mouseOldX = mousePosX;
 			mouseOldY = mousePosY;
 		});
+		// animation
+		rotateTransition = new RotateTransition(Duration.seconds(2.000), meshGroup);
+		rotateTransition.setCycleCount(1);
+		rotateTransition.setAxis(Rotate.Y_AXIS);
+		rotateTransition.setByAngle(360);
+		rotateTransition.setInterpolator(Interpolator.LINEAR);
 		// key events
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			ObservableList<Node> children = meshGroup.getChildren();
@@ -244,7 +252,7 @@ public class Square1App extends Application {
 				rotateZ.setAngle(0.0f);
 				break;
 			case V:
-				animate(meshGroup);
+				animate();
 			default:
 				break;
 			}
@@ -254,13 +262,9 @@ public class Square1App extends Application {
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
-	private void animate(Group group) {
-		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2.000), group);
-		rotateTransition.setCycleCount(1);
-		rotateTransition.setAxis(Rotate.Y_AXIS);
-		rotateTransition.setByAngle(360);
-		rotateTransition.setInterpolator(Interpolator.LINEAR);
-		rotateTransition.play();
+	private void animate() {
+		if (rotateTransition.getStatus() != Status.RUNNING)
+			rotateTransition.play();
 	}
 
 	private void toggle(Node node, ObservableList<Node> children) {
