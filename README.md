@@ -18,38 +18,43 @@ The Square-1 is built from different pieces
 
 ## Corner piece
 
-A corner piece has six sides: top, left rear, left front, right rear, right front, bottom.  There are 8 corner pieces used in a Square-1 cube. They have three colored sides.
+A corner piece has six sides: top, left rear, left front, right front, right rear, bottom.  There are 8 corner pieces used in a Square-1 cube. They have three colored sides.
 
 
-| Type   | Orientation | Name | Image | Name | Image | Name | Image | Name | Image |
-|--------|-------------|------|-------|------|-------|------|-------|------|-------|
-| Corner | Top         | A    | <img src="images/corner1.png" alt="Corner 1" width="100" height="136">   | B    | <img src="images/corner2.png" alt="Corner 2" width="100" height="136"> | C    | <img src="images/corner3.png" alt="Corner 3" width="100" height="136"> | D    | <img src="images/corner4.png" alt="Corner 4" width="100" height="136"> |
-| Corner | Bottom      | E    | <img src="images/corner5.png" alt="Corner 5" width="100" height="136"> | F    | <img src="images/corner6.png" alt="Corner 6" width="100" height="136"> | G    | <img src="images/corner7.png" alt="Corner 7" width="100" height="136"> | H    |  <img src="images/corner8.png" alt="Corner 8" width="100" height="136"> |
+| Type   | Orientation | Name | Image |
+|--------|-------------|------|-------|
+| Corner Piece | Top         | A    | <img src="images/corner1.png" alt="Corner 1" width="100" height="136"> |
+| Corner Piece | Top         | B    | <img src="images/corner2.png" alt="Corner 2" width="100" height="136"> |
+| Corner Piece | Top         | C    | <img src="images/corner3.png" alt="Corner 3" width="100" height="136"> |
+| Corner Piece | Top         | D    | <img src="images/corner4.png" alt="Corner 4" width="100" height="136"> |
+| Corner Piece | Bottom      | E    | <img src="images/corner5.png" alt="Corner 5" width="100" height="136"> |
+| Corner Piece | Bottom      | F    | <img src="images/corner6.png" alt="Corner 6" width="100" height="136"> |
+| Corner Piece | Bottom      | G    | <img src="images/corner7.png" alt="Corner 7" width="100" height="136"> |
+| Corner Piece | Bottom      | H    | <img src="images/corner8.png" alt="Corner 8" width="100" height="136"> |
 
 ## Edge piece
 
-An edge piece has five sides: top, left, front, right, bottom. In order to model an edge piece in JavaFX 3D the six points A to F are used:
+An edge piece has five sides: top, left, front, right, bottom. There are 8 edge pieces used in a Square-1 cube. They have two colored sides.
 
-![Edge Piece](images/edge.png)
-
-There are 8 edge pieces used in a Square-1 cube. They have two colored sides.
-
-| Orientation | Name           | Image                           |
-| ----------- | ------------   | ------------------------------- |
-| Top         | Edge Piece 1-4 | <img src="images/edge1.png" alt="Edge 1" width="77" height="119"> <img src="images/edge2.png" alt="Edge 2" width="77" height="119"> <img src="images/edge3.png" alt="Edge 3" width="77" height="119"> <img src="images/edge4.png" alt="Edge 4" width="77" height="119">|
-| Bottom      | Edge Piece 5-8 | <img src="images/edge5.png" alt="Edge 5" width="77" height="119"> <img src="images/edge6.png" alt="Edge 6" width="77" height="119"> <img src="images/edge7.png" alt="Edge 7" width="77" height="119"> <img src="images/edge8.png" alt="Edge 8" width="77" height="119">|
+| Type   | Orientation | Name | Image |
+|--------|-------------|------|-------|
+| Edge Piece   | Top         | 1    | <img src="images/edge1.png" alt="Edge 1" width="77" height="119"> |
+| Edge Piece   | Top         | 2    | <img src="images/edge2.png" alt="Edge 2" width="77" height="119"> |
+| Edge Piece   | Top         | 3    | <img src="images/edge3.png" alt="Edge 3" width="77" height="119"> |
+| Edge Piece   | Top         | 4    | <img src="images/edge4.png" alt="Edge 4" width="77" height="119"> |
+| Edge Piece   | Bottom      | 5    | <img src="images/edge5.png" alt="Edge 5" width="77" height="119"> |
+| Edge Piece   | Bottom      | 6    | <img src="images/edge6.png" alt="Edge 6" width="77" height="119"> |
+| Edge Piece   | Bottom      | 7    | <img src="images/edge7.png" alt="Edge 7" width="77" height="119"> |
+| Edge Piece   | Bottom      | 8    | <img src="images/edge8.png" alt="Edge 8" width="77" height="119"> |
 
 ## Middle piece
 
-A middle piece has six sides: top, left, front, right, rear, bottom. In order to model a middle piece in JavaFX 3D the eight points A to H are used:
+A middle piece has six sides: top, left, front, right, rear, bottom. There are 2 middle pieces used in a Square-1 cube. They have three colored sides.
 
-![Middle Piece](images/middle.png)
-
-There are 2 middle pieces used in a Square-1 cube. They have three colored sides.
-
-| Name             | Image                           |
-| ---------------- | ------------------------------- |
-| Middle Piece 1-2 | <img src="images/middle1.png" alt="Middle 1" width="180" height="145"> <img src="images/middle2.png" alt="Middle 2" width="180" height="145"> |
+| Type   | Name | Image |
+|--------|------|-------|
+| Middle Piece     | M |<img src="images/middle1.png" alt="Middle 1" width="180" height="145"> |
+| Middle Piece     | N | <img src="images/middle2.png" alt="Middle 2" width="180" height="145"> |
 
 # Usage
 
