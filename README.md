@@ -29,8 +29,8 @@ There are 8 corner pieces used in a Square-1 cube. They have three colored sides
 
 | Orientation | Name             | Image                           |
 | ----------- | --------------   | ------------------------------- |
-| Top         | Corner Piece 1-4 | <img src="images/corner1.png" alt="Corner 1" width="77" height="104"> <img src="images/corner2.png" alt="Corner 2" width="77" height="104"> <img src="images/corner3.png" alt="Corner 3" width="77" height="104"> <img src="images/corner4.png" alt="Corner 4" width="77" height="104">|
-| Bottom      | Corner Piece 5-8 | <img src="images/corner5.png" alt="Corner 5" width="77" height="104"> <img src="images/corner6.png" alt="Corner 6" width="77" height="104"> <img src="images/corner7.png" alt="Corner 7" width="77" height="104"> <img src="images/corner8.png" alt="Corner 8" width="77" height="104">|
+| Top         | Corner Piece 1-4 | <img src="images/corner1.png" alt="Corner 1" width="100" height="136"> <img src="images/corner2.png" alt="Corner 2" width="100" height="136"> <img src="images/corner3.png" alt="Corner 3" width="100" height="136"> <img src="images/corner4.png" alt="Corner 4" width="100" height="136">|
+| Bottom      | Corner Piece 5-8 | <img src="images/corner5.png" alt="Corner 5" width="100" height="136"> <img src="images/corner6.png" alt="Corner 6" width="100" height="136"> <img src="images/corner7.png" alt="Corner 7" width="100" height="136"> <img src="images/corner8.png" alt="Corner 8" width="100" height="136">|
 
 ## Edge piece
 
@@ -42,8 +42,8 @@ There are 8 edge pieces used in a Square-1 cube. They have two colored sides.
 
 | Orientation | Name           | Image                           |
 | ----------- | ------------   | ------------------------------- |
-| Top         | Edge Piece 1-4 | <img src="images/edge1.png" alt="Edge 1" width="61" height="85"> <img src="images/edge2.png" alt="Edge 2" width="61" height="85"> <img src="images/edge3.png" alt="Edge 3" width="61" height="85"> <img src="images/edge4.png" alt="Edge 4" width="61" height="85">|
-| Bottom      | Edge Piece 5-8 | <img src="images/edge5.png" alt="Edge 5" width="61" height="85"> <img src="images/edge6.png" alt="Edge 6" width="61" height="85"> <img src="images/edge7.png" alt="Edge 7" width="61" height="85"> <img src="images/edge8.png" alt="Edge 8" width="61" height="85">|
+| Top         | Edge Piece 1-4 | <img src="images/edge1.png" alt="Edge 1" width="77" height="119"> <img src="images/edge2.png" alt="Edge 2" width="77" height="119"> <img src="images/edge3.png" alt="Edge 3" width="77" height="119"> <img src="images/edge4.png" alt="Edge 4" width="77" height="119">|
+| Bottom      | Edge Piece 5-8 | <img src="images/edge5.png" alt="Edge 5" width="77" height="119"> <img src="images/edge6.png" alt="Edge 6" width="77" height="119"> <img src="images/edge7.png" alt="Edge 7" width="77" height="119"> <img src="images/edge8.png" alt="Edge 8" width="77" height="119">|
 
 ## Middle piece
 
@@ -55,7 +55,7 @@ There are 2 middle pieces used in a Square-1 cube. They have three colored sides
 
 | Name             | Image                           |
 | ---------------- | ------------------------------- |
-| Middle Piece 1-2 | <img src="images/middle1.png" alt="Middle 1" width="143" height="149"> <img src="images/middle2.png" alt="Middle 2" width="143" height="149"> |
+| Middle Piece 1-2 | <img src="images/middle1.png" alt="Middle 1" width="180" height="145"> <img src="images/middle2.png" alt="Middle 2" width="180" height="145"> |
 
 # Usage
 
