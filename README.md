@@ -18,19 +18,13 @@ The Square-1 is built from different pieces
 
 ## Corner piece
 
-A corner piece has six sides: top, left rear, left front, right rear, right front, bottom. In order to model a corner piece in JavaFX 3D the eight points A to H are used:
-
-![Corner Piece](images/corner.png)
-
-There are 8 corner pieces used in a Square-1 cube. They have three colored sides.
+A corner piece has six sides: top, left rear, left front, right rear, right front, bottom.  There are 8 corner pieces used in a Square-1 cube. They have three colored sides.
 
 
-
-
-| Orientation | Name             | Image                           |
-| ----------- | --------------   | ------------------------------- |
-| Top         | Corner Piece 1-4 | <img src="images/corner1.png" alt="Corner 1" width="100" height="136"> <img src="images/corner2.png" alt="Corner 2" width="100" height="136"> <img src="images/corner3.png" alt="Corner 3" width="100" height="136"> <img src="images/corner4.png" alt="Corner 4" width="100" height="136">|
-| Bottom      | Corner Piece 5-8 | <img src="images/corner5.png" alt="Corner 5" width="100" height="136"> <img src="images/corner6.png" alt="Corner 6" width="100" height="136"> <img src="images/corner7.png" alt="Corner 7" width="100" height="136"> <img src="images/corner8.png" alt="Corner 8" width="100" height="136">|
+| Type   | Orientation | Name | Image | Name | Image | Name | Image | Name | Image |
+|--------|-------------|------|-------|------|-------|------|-------|------|-------|
+| Corner | Top         | A    | <img src="images/corner1.png" alt="Corner 1" width="100" height="136">   | B    | <img src="images/corner2.png" alt="Corner 2" width="100" height="136"> | C    | <img src="images/corner3.png" alt="Corner 3" width="100" height="136"> | D    | <img src="images/corner4.png" alt="Corner 4" width="100" height="136"> |
+| Corner | Bottom      | E    | <img src="images/corner5.png" alt="Corner 5" width="100" height="136"> | F    | <img src="images/corner6.png" alt="Corner 6" width="100" height="136"> | G    | <img src="images/corner7.png" alt="Corner 7" width="100" height="136"> | H    |  <img src="images/corner8.png" alt="Corner 8" width="100" height="136"> |
 
 ## Edge piece
 
