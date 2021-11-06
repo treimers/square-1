@@ -2,7 +2,7 @@
 
 Small project for visualization of Square-1 puzzle in JavaFX.
 
-<img src="images/Square1.png" alt="Square 1" width="220" height="240">
+<img src="images/Square1.png" alt="Square 1" width="300" height="323">
 
 See this [Wikipedia article](https://en.wikipedia.org/wiki/Square-1_%28puzzle%29) for a description of Square-1 cube.
 
@@ -14,7 +14,7 @@ The Square-1 is built from different pieces
 + 8 Edge pieces
 + 2 Middle pieces
 
-<img src="images/Square1Assemble.png" alt="Square 1 Assemble" width="220" height="240">
+<img src="images/Square1Assemble.png" alt="Square 1 Assemble" width="300" height="323">
 
 ## Corner piece
 
