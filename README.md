@@ -62,17 +62,17 @@ Currently the application supports viewing only. You can use the mouse to rotate
 
 Keyboard keys can be used to toggle visibility of the pieces and do rotations:
 
-+ Keys A - H: toggle visibility of a corner (named from A=1 to H=8)
-+ Keys 1 - 8: toggle visibility of an edge (numbered from 1 to 8)
-+ Keys M - N: toggle visibility of a middle piece (M = middle piece 1, N = middle piece 2)
-+ Key 0: hide all nodes (edges, corners and middle pieces)
-+ Key 9: show all nodes (edges, corners and middle pieces)
-+ Keys X: toggle visibility of x-axis, y-axis and z-axis
-+ Key I: rotate in positive direction along x-axis
-+ Key J: rotate in positive direction along x-axis
-+ Key O: rotate in positive direction along y-axis
-+ Key K: rotate in negative direction along y-axis
-+ Key P: rotate in positive direction along z-axis (not possible with mouse)
-+ Key L: rotate in negative direction along z-axis (not possible with mouse)
-+ Key R: reset all rotations (x, y and z) to 0
-+ Key V: run an animated rotation (360 degrees) once
++ **Keys A - H**: toggle visibility of a corner (named from A to H)
++ **Keys 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
++ **Keys M - N**: toggle visibility of a middle piece (named M and N)
++ **Key 0**: hide all nodes (edges, corners and middle pieces)
++ **Key 9**: show all nodes (edges, corners and middle pieces)
++ **Keys X**: toggle visibility of x-axis, y-axis and z-axis
++ **Key I**: rotate in positive direction along x-axis
++ **Key J**: rotate in negative direction along x-axis
++ **Key O**: rotate in positive direction along y-axis
++ **Key K**: rotate in negative direction along y-axis
++ **Key P**: rotate in positive direction along z-axis (not possible with mouse)
++ **Key L**: rotate in negative direction along z-axis (not possible with mouse)
++ **Key R**: reset all rotations (x, y and z) to 0
++ **Key V**: run an animated rotation (360 degrees) once

@@ -135,7 +135,6 @@ public class Square1App extends Application {
 		// mesh group
 		Group meshGroup = new Group();
 		Group axes = buildAxes();
-		meshGroup.getChildren().addAll(axes);
 		meshGroup.getChildren().addAll(allNodes);
 		sceneRoot.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		scene.setOnMousePressed(me -> {
