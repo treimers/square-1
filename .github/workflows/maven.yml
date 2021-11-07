@@ -49,8 +49,8 @@ jobs:
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
       with:
-        name: Square1_0.0.1.dmg
-        path: ./target/deploy/linux/Square1_0.0.1.dmg
+        name: Square1_0.0.1.rpm
+        path: ./target/deploy/linux/Square1_0.0.1.rpm
 
   build-windows:
 
@@ -71,4 +71,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Square1_0.0.1.exe
-        path: ./target/deploy/windows/Square1_0.0.1.exe
+        path: .\target\deploy\windows\Square1_0.0.1.exe
