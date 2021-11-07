@@ -121,6 +121,6 @@ public class EdgePiece extends AbstractPiece {
 			colors[4],
 		};
 		addAllFaces(faces);
-		rotateByZ(-90 * rotate);
+		rotateByZ(90 * rotate);
 	}
 }

@@ -159,6 +159,6 @@ public class CornerPiece extends AbstractPiece {
 			colors[5],
 		};
 		addAllFaces(faces);
-		rotateByZ(-90 * rotate);
+		rotateByZ(90 * rotate);
 	}
 }

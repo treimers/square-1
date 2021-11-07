@@ -63,8 +63,8 @@ public class Square1App extends Application {
 		Image image = ImageLoader.getLogoImage();
 		primaryStage.getIcons().add(image);
 		// Scene
-		SmartGroup sceneRoot = new SmartGroup();
-		Scene scene = new Scene(sceneRoot, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
+		SmartGroup smartGroup = new SmartGroup();
+		Scene scene = new Scene(smartGroup, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.SILVER);
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
@@ -75,41 +75,41 @@ public class Square1App extends Application {
 		// edges
 		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
+		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
 				Constants.WHITE);
 		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
+		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
 				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+		EdgePiece edge5 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
 				Constants.GRAY, Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+		EdgePiece edge6 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
+				Constants.GREEN);
+		EdgePiece edge7 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
+				Constants.GREEN);
+		EdgePiece edge8 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
 				Constants.GRAY, Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.GREEN);
 		// corners
-		CornerPiece corner1 = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+		CornerPiece cornerA = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
 				Constants.ORANGE, Constants.GRAY, Constants.WHITE);
-		CornerPiece corner2 = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
-				Constants.BLUE, Constants.GRAY, Constants.WHITE);
-		CornerPiece corner3 = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
-				Constants.RED, Constants.GRAY, Constants.WHITE);
-		CornerPiece corner4 = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.RED,
+		CornerPiece cornerB = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED,
 				Constants.YELLOW, Constants.GRAY, Constants.WHITE);
-		CornerPiece corner5 = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
-		CornerPiece corner6 = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+		CornerPiece cornerC = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
+				Constants.RED, Constants.GRAY, Constants.WHITE);
+		CornerPiece cornerD = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
+				Constants.BLUE, Constants.GRAY, Constants.WHITE);
+		CornerPiece cornerE = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
 				Constants.BLUE, Constants.GRAY, Constants.GREEN);
-		CornerPiece corner7 = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
+		CornerPiece cornerF = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
 				Constants.RED, Constants.GRAY, Constants.GREEN);
-		CornerPiece corner8 = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.RED,
+		CornerPiece cornerG = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED,
 				Constants.YELLOW, Constants.GRAY, Constants.GREEN);
+		CornerPiece cornerH = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
+				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
 		// middle
-		MiddlePiece middle1 = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
+		MiddlePiece middleM = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
 				Constants.GRAY, Constants.RED, Constants.BLACK);
-		MiddlePiece middle2 = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
+		MiddlePiece middleN = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
 				Constants.ORANGE, Constants.BLACK);
 		// all nodes
 		Node[] allNodes = new Node[] {
@@ -117,26 +117,26 @@ public class Square1App extends Application {
 			edge2,
 			edge3,
 			edge4,
-			edge5,
-			edge6,
-			edge7,
 			edge8,
-			corner1,
-			corner2,
-			corner3,
-			corner4,
-			corner5,
-			corner6,
-			corner7,
-			corner8,
-			middle1,
-			middle2,
+			edge7,
+			edge6,
+			edge5,
+			cornerA,
+			cornerB,
+			cornerC,
+			cornerD,
+			cornerH,
+			cornerG,
+			cornerF,
+			cornerE,
+			middleM,
+			middleN,
 		};
 		// mesh group
 		Group meshGroup = new Group();
 		Group axes = buildAxes();
 		meshGroup.getChildren().addAll(allNodes);
-		sceneRoot.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		scene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
 			mouseOldY = me.getSceneY();
@@ -164,58 +164,58 @@ public class Square1App extends Application {
 			ObservableList<Node> children = meshGroup.getChildren();
 			switch (event.getCode()) {
 			case A:
-				toggle(corner1, children);
+				toggle(cornerA, children);
 				break;
 			case B:
-				toggle(corner2, children);
+				toggle(cornerD, children);
 				break;
 			case C:
-				toggle(corner3, children);
+				toggle(cornerC, children);
 				break;
 			case D:
-				toggle(corner4, children);
+				toggle(cornerB, children);
 				break;
 			case E:
-				toggle(corner5, children);
+				toggle(cornerH, children);
 				break;
 			case F:
-				toggle(corner6, children);
+				toggle(cornerE, children);
 				break;
 			case G:
-				toggle(corner7, children);
+				toggle(cornerF, children);
 				break;
 			case H:
-				toggle(corner8, children);
+				toggle(cornerG, children);
 				break;
 			case DIGIT1:
 				toggle(edge1, children);
 				break;
 			case DIGIT2:
-				toggle(edge2, children);
+				toggle(edge4, children);
 				break;
 			case DIGIT3:
 				toggle(edge3, children);
 				break;
 			case DIGIT4:
-				toggle(edge4, children);
+				toggle(edge2, children);
 				break;
 			case DIGIT5:
-				toggle(edge5, children);
-				break;
-			case DIGIT6:
-				toggle(edge6, children);
-				break;
-			case DIGIT7:
-				toggle(edge7, children);
-				break;
-			case DIGIT8:
 				toggle(edge8, children);
 				break;
+			case DIGIT6:
+				toggle(edge5, children);
+				break;
+			case DIGIT7:
+				toggle(edge6, children);
+				break;
+			case DIGIT8:
+				toggle(edge7, children);
+				break;
 			case M:
-				toggle(middle1, children);
+				toggle(middleM, children);
 				break;
 			case N:
-				toggle(middle2, children);
+				toggle(middleN, children);
 				break;
 			case X:
 				toggle(axes, children);
@@ -263,7 +263,7 @@ public class Square1App extends Application {
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
 	private void animate() {
 		if (rotateTransition.getStatus() != Status.RUNNING)
-			rotateTransition.play();
+			rotateTransition.playFromStart();
 	}
 
 	private void toggle(Node node, ObservableList<Node> children) {
