@@ -30,6 +30,7 @@ jobs:
       with:
         name: Square1_0.0.1.dmg
         path: ./target/deploy/osx/Square1_0.0.1.dmg
+        publish_dir: ./public
 
   build-ubuntu:
 
@@ -52,6 +53,13 @@ jobs:
         name: Square1_0.0.1.rpm
         path: ./target/deploy/linux/Square1_0.0.1.rpm
 
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.ref == 'refs/heads/main' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+  
   build-windows:
 
     runs-on: [windows-latest]
