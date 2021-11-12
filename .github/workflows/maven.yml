@@ -27,7 +27,9 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: master
           prerelease: false
-          files: target/deploy/osx/Square1_0.0.1.dmg target/deploy/osx/Square1-0.0.1-mac.zip
+          files: |
+            target/deploy/osx/Square1_0.0.1.dmg
+            target/deploy/osx/Square1-0.0.1-mac.zip
 
   build-ubuntu:
 
@@ -49,7 +51,9 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: master
           prerelease: false
-          files: target/deploy/linux/Square1_0.0.1.deb target/deploy/linux/Square1_0.0.1.rpm target/deploy/linux/Square1-0.0.1-linux.zip
+          files: |
+            target/deploy/linux/Square1_0.0.1.deb target/deploy/linux/Square1_0.0.1.rpm
+            target/deploy/linux/Square1-0.0.1-linux.zip
 
   build-windows:
 
@@ -71,4 +75,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: master
           prerelease: false
-          files: target\deploy\windows\Square1_0.0.1.exe target\deploy\windows\Square1-0.0.1-windows.zip
+          files: |
+            target\deploy\windows\Square1_0.0.1.exe
+            target\deploy\windows\Square1-0.0.1-windows.zip
