@@ -8,7 +8,7 @@ See this [Wikipedia article](https://en.wikipedia.org/wiki/Square-1_%28puzzle%29
 
 # Pieces
 
-The Square-1 is built from different pieces
+The Square-1 is built from different pieces:
 
 + 8 Corner pieces
 + 8 Edge pieces
@@ -18,7 +18,7 @@ The Square-1 is built from different pieces
 
 ## Corner piece
 
-A corner piece has six sides: top, left rear, left front, right front, right rear, bottom.  There are 8 corner pieces used in a Square-1 cube. They have three colored sides.
+There are 8 corner pieces used in a Square-1 cube. A corner piece has six sides: top, left rear, left front, right front, right rear, bottom.  Three of them are colored.
 
 
 | Type   | Orientation | Name | Colors | Image |
@@ -34,7 +34,7 @@ A corner piece has six sides: top, left rear, left front, right front, right rea
 
 ## Edge piece
 
-An edge piece has five sides: top, left, front, right, bottom. There are 8 edge pieces used in a Square-1 cube. They have two colored sides.
+There are 8 edge pieces used in a Square-1 cube. An edge piece has five sides: top, left, front, right, bottom. Two of them are colored.
 
 | Type   | Orientation | Name | Colors | Image |
 |--------|-------------|------|--------|-------|
@@ -49,7 +49,7 @@ An edge piece has five sides: top, left, front, right, bottom. There are 8 edge 
 
 ## Middle piece
 
-A middle piece has six sides: top, left, front, right, rear, bottom. There are 2 middle pieces used in a Square-1 cube. They have three colored sides.
+There are 2 middle pieces used in a Square-1 cube. A middle piece has six sides: top, left, front, right, rear, bottom. Three of them are colored.
 
 | Type   | Name | Colors | Image |
 |--------|------|--------|-------|
@@ -65,14 +65,14 @@ Keyboard keys can be used to toggle visibility of the pieces and do rotations:
 + **Keys A - H**: toggle visibility of a corner (named from A to H)
 + **Keys 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
 + **Keys M - N**: toggle visibility of a middle piece (named M and N)
-+ **Key 0**: hide all nodes (edges, corners and middle pieces)
-+ **Key 9**: show all nodes (edges, corners and middle pieces)
++ **Key 0**: hide all pieces (edges, corners and middle pieces)
++ **Key 9**: show all pieces (edges, corners and middle pieces)
 + **Keys X**: toggle visibility of x-axis, y-axis and z-axis
 + **Key I**: rotate in positive direction along x-axis
 + **Key J**: rotate in negative direction along x-axis
 + **Key O**: rotate in positive direction along y-axis
 + **Key K**: rotate in negative direction along y-axis
-+ **Key P**: rotate in positive direction along z-axis (not possible with mouse)
-+ **Key L**: rotate in negative direction along z-axis (not possible with mouse)
++ **Key P**: rotate in positive direction along z-axis
++ **Key L**: rotate in negative direction along z-axis
 + **Key R**: reset all rotations (x, y and z) to 0
 + **Key V**: run an animated rotation (360 degrees) once

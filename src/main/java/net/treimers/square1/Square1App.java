@@ -167,49 +167,49 @@ public class Square1App extends Application {
 				toggle(cornerA, children);
 				break;
 			case B:
-				toggle(cornerD, children);
+				toggle(cornerB, children);
 				break;
 			case C:
 				toggle(cornerC, children);
 				break;
 			case D:
-				toggle(cornerB, children);
+				toggle(cornerD, children);
 				break;
 			case E:
-				toggle(cornerH, children);
-				break;
-			case F:
 				toggle(cornerE, children);
 				break;
-			case G:
+			case F:
 				toggle(cornerF, children);
 				break;
-			case H:
+			case G:
 				toggle(cornerG, children);
+				break;
+			case H:
+				toggle(cornerH, children);
 				break;
 			case DIGIT1:
 				toggle(edge1, children);
 				break;
 			case DIGIT2:
-				toggle(edge4, children);
+				toggle(edge2, children);
 				break;
 			case DIGIT3:
 				toggle(edge3, children);
 				break;
 			case DIGIT4:
-				toggle(edge2, children);
+				toggle(edge4, children);
 				break;
 			case DIGIT5:
-				toggle(edge8, children);
-				break;
-			case DIGIT6:
 				toggle(edge5, children);
 				break;
-			case DIGIT7:
+			case DIGIT6:
 				toggle(edge6, children);
 				break;
-			case DIGIT8:
+			case DIGIT7:
 				toggle(edge7, children);
+				break;
+			case DIGIT8:
+				toggle(edge8, children);
 				break;
 			case M:
 				toggle(middleM, children);
