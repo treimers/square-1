@@ -27,7 +27,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: master
           prerelease: false
-          files: target/deploy/osx/Square1_0.0.1.dmg
+          files: target/deploy/osx/Square1_0.0.1.dmg target/deploy/osx/Square1-0.0.1-mac.zip
 
   build-ubuntu:
 
@@ -44,14 +44,12 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/deploy/linux/Square1_0.0.1.rpm
-        asset_name: Square1_0.0.1.rpm
-        tag: ${{ github.ref }}
-        overwrite: true
-        body: "Master Release (Linux)"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: master
+          prerelease: false
+          files: target/deploy/linux/Square1_0.0.1.deb target/deploy/linux/Square1_0.0.1.rpm target/deploy/linux/Square1-0.0.1-linux.zip
 
   build-windows:
 
@@ -68,11 +66,9 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target\deploy\windows\Square1_0.0.1.exe
-        asset_name: Square1_0.0.1.exe
-        tag: ${{ github.ref }}
-        overwrite: true
-        body: "Master Release (Windows X64"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: master
+          prerelease: false
+          files: target\deploy\windows\Square1_0.0.1.exe target\deploy\windows\Square1-0.0.1-windows.zip
