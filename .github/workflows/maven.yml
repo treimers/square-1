@@ -25,7 +25,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Create Distribution   
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1
       with:
           files: './target/deploy/osx/Square1_0.0.1.dmg'
           release-tag: SNAPSHOT
@@ -46,7 +46,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Create Distribution   
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1
       with:
           files: '/target/deploy/linux/Square1_0.0.1.rpm'
           release-tag: SNAPSHOT
@@ -67,7 +67,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Create Distribution   
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1
       with:
           files: '.\target\deploy\windows\Square1_0.0.1.exe'
           release-tag: SNAPSHOT
