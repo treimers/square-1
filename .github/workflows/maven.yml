@@ -24,12 +24,15 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Create Distribution   
+    - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-          files: './target/deploy/osx/Square1_0.0.1.dmg'
-          release-tag: SNAPSHOT
-          repo-token: ${{ secrets.GITHUB_TOKEN }}  
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/deploy/osx/Square1_0.0.1.dmg
+        asset_name: Square1_0.0.1.dmg
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "This is my release text"
 
   build-ubuntu:
 
@@ -45,12 +48,15 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Create Distribution   
+    - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-          files: '/target/deploy/linux/Square1_0.0.1.rpm'
-          release-tag: SNAPSHOT
-          repo-token: ${{ secrets.GITHUB_TOKEN }}  
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/deploy/linux/Square1_0.0.1.rpm
+        asset_name: Square1_0.0.1.rpm
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "This is my release text"
 
   build-windows:
 
@@ -66,9 +72,12 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Create Distribution   
+    - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-          files: '.\target\deploy\windows\Square1_0.0.1.exe'
-          release-tag: SNAPSHOT
-          repo-token: ${{ secrets.GITHUB_TOKEN }}  
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target\deploy\windows\Square1_0.0.1.exe
+        asset_name: Square1_0.0.1.exe
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "This is my release text"
