@@ -52,7 +52,8 @@ jobs:
           automatic_release_tag: master
           prerelease: false
           files: |
-            target/deploy/linux/Square1_0.0.1.deb target/deploy/linux/Square1_0.0.1.rpm
+            target/deploy/linux/Square1_0.0.1.deb
+            target/deploy/linux/Square1_0.0.1.rpm
             target/deploy/linux/Square1-0.0.1-linux.zip
 
   build-windows:
@@ -76,5 +77,5 @@ jobs:
           automatic_release_tag: master
           prerelease: false
           files: |
-            target\deploy\windows\Square1_0.0.1.exe
-            target\deploy\windows\Square1-0.0.1-windows.zip
+            target/deploy/windows/Square1_0.0.1.exe
+            target/deploy/windows/Square1-0.0.1-windows.zip
