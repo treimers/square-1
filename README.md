@@ -56,6 +56,14 @@ There are 2 middle pieces used in a Square-1 cube. A middle piece has six sides:
 | Middle Piece     | M | Red, Orange, Yellow | <img src="images/middle1.png" alt="Middle 1" width="180" height="145"> |
 | Middle Piece     | N | Orange, Blue, Red | <img src="images/middle2.png" alt="Middle 2" width="180" height="145"> |
 
+# Releases
+
+Releases can be found here for download
+
+* [Linux](https://github.com/treimers/square-1/releases/tag/Linux)
+* [Mac OS X](https://github.com/treimers/square-1/releases/tag/MacOSX)
+* [Windows](https://github.com/treimers/square-1/releases/tag/WindowsX64)
+
 # Usage
 
 Currently the application supports viewing only. You can use the mouse to rotate the Square-1 cube and see all sides.
