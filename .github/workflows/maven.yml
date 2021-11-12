@@ -25,7 +25,7 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: Mac OS X
+          automatic_release_tag: MacOSX
           prerelease: false
           files: |
             target/deploy/osx/Square1_0.0.1.dmg
@@ -74,7 +74,7 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: Windows X64
+          automatic_release_tag: WindowsX64
           prerelease: false
           files: |
             target/deploy/windows/Square1_0.0.1.exe
