@@ -24,12 +24,12 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
+    - name: Create Distribution   
+    - uses: AButler/upload-release-assets@v2.0
       with:
-        name: Square1_0.0.1.dmg
-        path: ./target/deploy/osx/Square1_0.0.1.dmg
+          files: './target/deploy/osx/Square1_0.0.1.dmg'
+          release-tag: SNAPSHOT
+          repo-token: ${{ secrets.GITHUB_TOKEN }}  
 
   build-ubuntu:
 
@@ -45,19 +45,13 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
+    - name: Create Distribution   
+    - uses: AButler/upload-release-assets@v2.0
       with:
-        name: Square1_0.0.1.rpm
-        path: ./target/deploy/linux/Square1_0.0.1.rpm
+          files: '/target/deploy/linux/Square1_0.0.1.rpm'
+          release-tag: SNAPSHOT
+          repo-token: ${{ secrets.GITHUB_TOKEN }}  
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.ref == 'refs/heads/main' }}
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-  
   build-windows:
 
     runs-on: [windows-latest]
@@ -72,9 +66,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
+    - name: Create Distribution   
+    - uses: AButler/upload-release-assets@v2.0
       with:
-        name: Square1_0.0.1.exe
-        path: .\target\deploy\windows\Square1_0.0.1.exe
+          files: '.\target\deploy\windows\Square1_0.0.1.exe'
+          release-tag: SNAPSHOT
+          repo-token: ${{ secrets.GITHUB_TOKEN }}  
