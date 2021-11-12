@@ -27,7 +27,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: master
           prerelease: false
-          files: Square1_0.0.1.dmg
+          files: target/deploy/osx/Square1_0.0.1.dmg
 
   build-ubuntu:
 
