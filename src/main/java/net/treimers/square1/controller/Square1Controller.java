@@ -318,13 +318,20 @@ public class Square1Controller implements Initializable {
     }
     
     @FXML
+	void doToggleAxis(ActionEvent event) {
+		toggle(axes, meshGroup.getChildren());
+	}
+
+    @FXML
 	void doRotate(ActionEvent event) {
     	animate();
 	}
 
     @FXML
-	void doToggleAxis(ActionEvent event) {
-		toggle(axes, meshGroup.getChildren());
+	void doReset(ActionEvent event) {
+		rotateX.setAngle(0.0f);
+		rotateY.setAngle(0.0f);
+		rotateZ.setAngle(0.0f);
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
