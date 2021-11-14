@@ -97,6 +97,12 @@
 								<companyName>Thorsten Reimers</companyName>
 								<createDesktopIconTask>true</createDesktopIconTask>
 								<fileDescription>vcard</fileDescription>
+								<setupLanguages>
+									<english>compiler:Default.isl</english>
+									<spanish>compiler:Languages\Spanish.isl</spanish>
+									<german>compiler:Languages\German.isl</german>
+									<french>compiler:Languages\French.isl</french>
+								</setupLanguages>
 							</winConfig>
 						</configuration>
 					</execution>

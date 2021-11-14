@@ -1,4 +1,11 @@
-#http://stackoverflow.com/questions/12306223/how-to-manually-create-icns-files-using-iconutil
+# Image conversion scripts
+# see http://stackoverflow.com/questions/12306223/how-to-manually-create-icns-files-using-iconutil
+#
+# This script uses Sips and runs on Mac OS X only.
+# See this aricle how to simulate sips on Linux:
+#
+# https://gist.github.com/Aerilius/4557816
+#
 
 if [ $# -ne 1 ]
 then
