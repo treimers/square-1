@@ -1,60 +1,20 @@
 package net.treimers.square1;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.scene.AmbientLight;
-import javafx.scene.Camera;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.PerspectiveCamera;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import net.treimers.square1.view.Constants;
-import net.treimers.square1.view.CornerPiece;
-import net.treimers.square1.view.EdgePiece;
+import net.treimers.square1.controller.Square1Controller;
 import net.treimers.square1.view.ImageLoader;
-import net.treimers.square1.view.MiddlePiece;
-import net.treimers.square1.view.SmartGroup;
-
-/*
-
-https://stackoverflow.com/questions/26831871/coloring-individual-triangles-in-a-triangle-mesh-on-javafx
-
-more sources
-
-https://stackoverflow.com/questions/19459012/how-to-create-custom-3d-model-in-javafx-8
-https://stackoverflow.com/questions/61231437/how-to-create-such-shape-using-javafx-trianglemesh
-https://www.dummies.com/programming/java/javafx-add-a-mesh-object-to-a-3d-world/
-https://www.genuinecoder.com/javafx-3d/
-
-*/
 
 /**
  * Instances of this class are used as Square-1 JavaFX application.
  * 
  * <p>I found this very good description when starting at <a href="https://stackoverflow.com/questions/26831871/coloring-individual-triangles-in-a-triangle-mesh-on-javafx">Stackoverflow</a>
  */
-public class Square1App extends Application {
-	private static int WIDTH = 1400;
-	private static int HEIGHT = 800;
-	private double mouseOldX;
-	private double mouseOldY;
-	private double mousePosX;
-	private double mousePosY;
-	private RotateTransition rotateTransition;
-	
+public class Square1App extends Application {	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// set the stage title
@@ -62,247 +22,21 @@ public class Square1App extends Application {
 		// load and set the stage icon
 		Image image = ImageLoader.getLogoImage();
 		primaryStage.getIcons().add(image);
-		// Scene
-		SmartGroup smartGroup = new SmartGroup();
-		Scene scene = new Scene(smartGroup, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
-		scene.setFill(Color.SILVER);
-		// Camera
-		Camera camera = new PerspectiveCamera(true);
-		camera.setNearClip(0.1);
-		camera.setFarClip(10000.0);
-		camera.setTranslateZ(-10);
-		scene.setCamera(camera);
-		// edges
-		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
-				Constants.GRAY, Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.GRAY, Constants.GREEN);
-		// corners
-		CornerPiece cornerA = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerB = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED,
-				Constants.YELLOW, Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerC = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
-				Constants.RED, Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerD = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
-				Constants.BLUE, Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerE = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE,
-				Constants.BLUE, Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerF = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE,
-				Constants.RED, Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerG = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED,
-				Constants.YELLOW, Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerH = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
-		// middle
-		MiddlePiece middleM = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE,
-				Constants.GRAY, Constants.RED, Constants.BLACK);
-		MiddlePiece middleN = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
-				Constants.ORANGE, Constants.BLACK);
-		// all nodes
-		Node[] allNodes = new Node[] {
-			edge1,
-			edge2,
-			edge3,
-			edge4,
-			edge8,
-			edge7,
-			edge6,
-			edge5,
-			cornerA,
-			cornerB,
-			cornerC,
-			cornerD,
-			cornerH,
-			cornerG,
-			cornerF,
-			cornerE,
-			middleM,
-			middleN,
-		};
-		// mesh group
-		Group meshGroup = new Group();
-		Group axes = buildAxes();
-		meshGroup.getChildren().addAll(allNodes);
-		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
-		scene.setOnMousePressed(me -> {
-			mouseOldX = me.getSceneX();
-			mouseOldY = me.getSceneY();
-		});
-		Rotate rotateX = new Rotate(0, 0, 0, 0, Rotate.X_AXIS);
-		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-		Rotate rotateZ = new Rotate(0, 0, 0, 0, Rotate.Z_AXIS);
-		meshGroup.getTransforms().addAll(rotateX, rotateY, rotateZ);
-		scene.setOnMouseDragged(me -> {
-			mousePosX = me.getSceneX();
-			mousePosY = me.getSceneY();
-			rotateX.setAngle(rotateX.getAngle() - (mousePosY - mouseOldY));
-			rotateY.setAngle(rotateY.getAngle() + (mousePosX - mouseOldX));
-			mouseOldX = mousePosX;
-			mouseOldY = mousePosY;
-		});
-		// animation
-		rotateTransition = new RotateTransition(Duration.seconds(2.000), meshGroup);
-		rotateTransition.setCycleCount(1);
-		rotateTransition.setAxis(Rotate.Y_AXIS);
-		rotateTransition.setByAngle(360);
-		rotateTransition.setInterpolator(Interpolator.LINEAR);
-		// key events
-		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			ObservableList<Node> children = meshGroup.getChildren();
-			switch (event.getCode()) {
-			case A:
-				toggle(cornerA, children);
-				break;
-			case B:
-				toggle(cornerB, children);
-				break;
-			case C:
-				toggle(cornerC, children);
-				break;
-			case D:
-				toggle(cornerD, children);
-				break;
-			case E:
-				toggle(cornerE, children);
-				break;
-			case F:
-				toggle(cornerF, children);
-				break;
-			case G:
-				toggle(cornerG, children);
-				break;
-			case H:
-				toggle(cornerH, children);
-				break;
-			case DIGIT1:
-				toggle(edge1, children);
-				break;
-			case DIGIT2:
-				toggle(edge2, children);
-				break;
-			case DIGIT3:
-				toggle(edge3, children);
-				break;
-			case DIGIT4:
-				toggle(edge4, children);
-				break;
-			case DIGIT5:
-				toggle(edge5, children);
-				break;
-			case DIGIT6:
-				toggle(edge6, children);
-				break;
-			case DIGIT7:
-				toggle(edge7, children);
-				break;
-			case DIGIT8:
-				toggle(edge8, children);
-				break;
-			case M:
-				toggle(middleM, children);
-				break;
-			case N:
-				toggle(middleN, children);
-				break;
-			case X:
-				toggle(axes, children);
-				break;
-			case DIGIT0:
-				children.removeAll(allNodes);
-				break;
-			case DIGIT9:
-				children.removeAll(allNodes);
-				children.addAll(allNodes);
-				break;
-			case I:
-				rotateX.setAngle(rotateX.getAngle() + 10.0f);
-				break;
-			case J:
-				rotateX.setAngle(rotateX.getAngle() - 10.0f);
-				break;
-			case O:
-				rotateY.setAngle(rotateY.getAngle() + 10.0f);
-				break;
-			case K:
-				rotateY.setAngle(rotateY.getAngle() - 10.0f);
-				break;
-			case P:
-				rotateZ.setAngle(rotateZ.getAngle() + 10.0f);
-				break;
-			case L:
-				rotateZ.setAngle(rotateZ.getAngle() - 10.0f);
-				break;
-			case R:
-				rotateX.setAngle(0.0f);
-				rotateY.setAngle(0.0f);
-				rotateZ.setAngle(0.0f);
-				break;
-			case V:
-				animate();
-			default:
-				break;
-			}
-		});
+		//
+		FXMLLoader loader = new FXMLLoader(Square1App.class.getResource("square1.fxml"));
+		Square1Controller controller = new Square1Controller(primaryStage);
+		loader.setController(controller);
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
-	// https://www.youtube.com/watch?v=oaL8n1bmD78
-	private void animate() {
-		if (rotateTransition.getStatus() != Status.RUNNING)
-			rotateTransition.playFromStart();
-	}
-
-	private void toggle(Node node, ObservableList<Node> children) {
-		if (children.contains(node))
-			children.remove(node);
-		else
-			children.add(node);
-	}
-
-	private Group buildAxes() {
-		Group axisGroup = new Group();
-		final PhongMaterial redMaterial = new PhongMaterial();
-		redMaterial.setDiffuseColor(Color.DARKRED);
-		redMaterial.setSpecularColor(Color.RED);
-		final PhongMaterial greenMaterial = new PhongMaterial();
-		greenMaterial.setDiffuseColor(Color.DARKGREEN);
-		greenMaterial.setSpecularColor(Color.GREEN);
-		final PhongMaterial blueMaterial = new PhongMaterial();
-		blueMaterial.setDiffuseColor(Color.DARKBLUE);
-		blueMaterial.setSpecularColor(Color.BLUE);
-		final Box xAxis = new Box(4.0f, 0.02f, 0.02f);
-		xAxis.setMaterial(redMaterial);
-		final Box yAxis = new Box(0.02f, 4.0f, 0.02f);
-		yAxis.setMaterial(greenMaterial);
-		final Box zAxis = new Box(0.02f, 0.02f, 4.0f);
-		zAxis.setMaterial(blueMaterial);
-		Sphere xSphere = new Sphere(0.04f);
-		xSphere.setTranslateX(2.0f);
-		xSphere.setMaterial(redMaterial);
-		Sphere ySphere = new Sphere(0.04f);
-		ySphere.setTranslateY(2.0f);
-		ySphere.setMaterial(greenMaterial);
-		Sphere zSphere = new Sphere(0.04f);
-		zSphere.setTranslateZ(2.0f);
-		zSphere.setMaterial(blueMaterial);
-		axisGroup.getChildren().addAll(xAxis, yAxis, zAxis, xSphere, ySphere, zSphere);
-		return axisGroup;
-	}
-
+	/**
+	 * Runs the application. Will be called by launcher from main.
+	 * @param args the arguments from main method.
+	 */
 	public static void run(String[] args) {
 		launch(args);
 	}

@@ -37,11 +37,10 @@ public interface Constants {
 	// Some lengths
 	/** The size of the cube (half length of a side). */
 	public static final float SIZE = 1.0f;
+	/** Width of an edge piece. */
+	public static final float EDGE_WIDTH = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
+	/** Width of a corner piece. */
+	public static final float CORNER_WIDTH = (float) (Constants.SIZE - EDGE_WIDTH / 2.0f);
 	/** Small delta used to create gaps between pieces. */
 	public static final float DELTA = 0.02f;
-	
-	public static final float S = (float) (Constants.SIZE * Math.sin(Constants.ANGLE_15));
-	public static final float EDGE_WIDTH = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
-	public static final float CORNER_WIDTH = (float) (Constants.SIZE - EDGE_WIDTH / 2.0f);
-
 }

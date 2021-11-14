@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<MenuBar BorderPane.alignment="CENTER">
+			<menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#doExit" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
+              </items>
+            </Menu>
+				<Menu mnemonicParsing="false" text="View">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#doXClock" text="X Clockwise ↷">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="I" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doXAntiClock" text="X Anticlockwise ↶">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doYClock" text="Y Clockwise ↷">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="doYAntiClock" mnemonicParsing="false" onAction="#doYAntiClock" text="Y Anticlockwise ↶">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doZClock" text="Z Clockwise ↷">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="doZAntiClock" mnemonicParsing="false" onAction="#doZAntiClock" text="Z Anticlockwise ↶">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#doToggleAxis" text="Toggle Axis">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="X" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </RadioMenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doRotate" text="Rotate">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doRotate" text="Reset">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+					</items>
+				</Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#doAbout" text="About">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+               </items>
+            </Menu>
+			</menus>
+		</MenuBar>
+	</top>
+	<bottom>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<TextField fx:id="position">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</TextField>
+				<Label fx:id="solution" text="Solution" GridPane.rowIndex="1">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Label>
+			</children>
+		</GridPane>
+	</bottom>
+   <center>
+		<SubScene fx:id="subScene" depthBuffer="true" height="600.0" width="600.0" BorderPane.alignment="CENTER">
+			<antiAliasing>
+				<SceneAntialiasing fx:constant="BALANCED" />
+			</antiAliasing>
+			<root>
+				<Region />
+			</root>
+		</SubScene>
+   </center>
+</BorderPane>
