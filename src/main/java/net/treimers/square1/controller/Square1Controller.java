@@ -100,6 +100,8 @@ public class Square1Controller implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// remove later
 		Platform.runLater(() -> subScene.requestFocus());
+		// Position
+		position.setText("A1B2C3D45E6F7G8H");
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -332,6 +334,11 @@ public class Square1Controller implements Initializable {
 		rotateX.setAngle(0.0f);
 		rotateY.setAngle(0.0f);
 		rotateZ.setAngle(0.0f);
+	}
+
+	@FXML
+	void doSolve(ActionEvent event) {
+		System.out.println("Solve");
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
