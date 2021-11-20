@@ -1,12 +1,15 @@
 package net.treimers.square1.controller;
 
 import java.net.URL;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +23,8 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -29,6 +32,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.treimers.square1.view.AbstractPiece;
 import net.treimers.square1.view.Constants;
 import net.treimers.square1.view.CornerPiece;
 import net.treimers.square1.view.EdgePiece;
@@ -63,14 +67,47 @@ public class Square1Controller implements Initializable {
 	/** The sub scene height. */
 	private static final int HEIGHT = 600;
 	/** The label with the moves to solve a Square-1 position. */
-	@FXML
-	private Label solution;
+	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
-	@FXML
-	private SubScene subScene;
+	@FXML private SubScene subScene;
 	/** The position to solve. */
-	@FXML
-	private TextField position;
+	@FXML private TextField position;
+	/** The radio menu item for piece A visibility. */
+	@FXML private RadioMenuItem menuPieceA;
+	/** The radio menu item for piece B visibility. */
+	@FXML private RadioMenuItem menuPieceB;
+	/** The radio menu item for piece C visibility. */
+	@FXML private RadioMenuItem menuPieceC;
+	/** The radio menu item for piece D visibility. */
+	@FXML private RadioMenuItem menuPieceD;
+	/** The radio menu item for piece E visibility. */
+	@FXML private RadioMenuItem menuPieceE;
+	/** The radio menu item for piece F visibility. */
+	@FXML private RadioMenuItem menuPieceF;
+	/** The radio menu item for piece G visibility. */
+	@FXML private RadioMenuItem menuPieceG;
+	/** The radio menu item for piece H visibility. */
+	@FXML private RadioMenuItem menuPieceH;
+	/** The radio menu item for piece 1 visibility. */
+	@FXML private RadioMenuItem menuPiece1;
+	/** The radio menu item for piece 2 visibility. */
+	@FXML private RadioMenuItem menuPiece2;
+	/** The radio menu item for piece 3 visibility. */
+	@FXML private RadioMenuItem menuPiece3;
+	/** The radio menu item for piece 4 visibility. */
+	@FXML private RadioMenuItem menuPiece4;
+	/** The radio menu item for piece 5 visibility. */
+	@FXML private RadioMenuItem menuPiece5;
+	/** The radio menu item for piece 6 visibility. */
+	@FXML private RadioMenuItem menuPiece6;
+	/** The radio menu item for piece 7 visibility. */
+	@FXML private RadioMenuItem menuPiece7;
+	/** The radio menu item for piece 8 visibility. */
+	@FXML private RadioMenuItem menuPiece8;
+	/** The radio menu item for piece M visibility. */
+	@FXML private RadioMenuItem menuPieceM;
+	/** The radio menu item for piece N visibility. */
+	@FXML private RadioMenuItem menuPieceN;
 	private double mouseOldX;
 	private double mouseOldY;
 	private double mousePosX;
@@ -82,11 +119,13 @@ public class Square1Controller implements Initializable {
 	private Rotate rotateY;
 	private Rotate rotateZ;
 	/** The group with x-, y- and z-axis. */
-	private Group axes;
+	private Group axis;
 	/** The mesh group in the sub scene. */
 	private Group meshGroup;
-	/** The nodes in the mesh group. */
-	private ObservableList<Node> children;
+	/** The map with all pieces. */
+	private Map<Character, AbstractPiece> pieceMap;
+	/** The map with all radio menu items for piece visibility. */
+	private Map<Character, RadioMenuItem> menuMap;
 
 	/**
 	 * Constructs a new instance.
@@ -94,12 +133,11 @@ public class Square1Controller implements Initializable {
 	 */
 	public Square1Controller(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+		pieceMap = new HashMap<>();
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// remove later
-		Platform.runLater(() -> subScene.requestFocus());
 		// Position
 		position.setText("A1B2C3D45E6F7G8H");
 		// Sub Scene
@@ -153,7 +191,45 @@ public class Square1Controller implements Initializable {
 				Constants.RED, Constants.BLACK);
 		MiddlePiece middleN = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
 				Constants.ORANGE, Constants.BLACK);
-		// All nodes
+		// Piece Map
+		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
+				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
+				new AbstractMap.SimpleEntry<>('5', edge5), new AbstractMap.SimpleEntry<>('6', edge6),
+				new AbstractMap.SimpleEntry<>('7', edge7), new AbstractMap.SimpleEntry<>('8', edge8),
+				new AbstractMap.SimpleEntry<>('A', cornerA), new AbstractMap.SimpleEntry<>('B', cornerB),
+				new AbstractMap.SimpleEntry<>('C', cornerC), new AbstractMap.SimpleEntry<>('D', cornerD),
+				new AbstractMap.SimpleEntry<>('E', cornerE), new AbstractMap.SimpleEntry<>('F', cornerF),
+				new AbstractMap.SimpleEntry<>('G', cornerG), new AbstractMap.SimpleEntry<>('H', cornerH),
+				new AbstractMap.SimpleEntry<>('M', middleM), new AbstractMap.SimpleEntry<>('N', middleN));
+		// Menu Map
+		menuMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', menuPiece1),
+				new AbstractMap.SimpleEntry<>('2', menuPiece2),
+				new AbstractMap.SimpleEntry<>('3', menuPiece3),
+				new AbstractMap.SimpleEntry<>('4', menuPiece4),
+				new AbstractMap.SimpleEntry<>('5', menuPiece5),
+				new AbstractMap.SimpleEntry<>('6', menuPiece6),
+				new AbstractMap.SimpleEntry<>('7', menuPiece7),
+				new AbstractMap.SimpleEntry<>('8', menuPiece8),
+				new AbstractMap.SimpleEntry<>('A', menuPieceA),
+				new AbstractMap.SimpleEntry<>('B', menuPieceB),
+				new AbstractMap.SimpleEntry<>('C', menuPieceC),
+				new AbstractMap.SimpleEntry<>('D', menuPieceD),
+				new AbstractMap.SimpleEntry<>('E', menuPieceE),
+				new AbstractMap.SimpleEntry<>('F', menuPieceF),
+				new AbstractMap.SimpleEntry<>('G', menuPieceG),
+				new AbstractMap.SimpleEntry<>('H', menuPieceH),
+				new AbstractMap.SimpleEntry<>('M', menuPieceM),
+				new AbstractMap.SimpleEntry<>('N', menuPieceN)
+		);
+		// Register Radio Menu Items
+		Set<Character> set = pieceMap.keySet();
+		Character[] characters = set.toArray(new Character[set.size()]);
+		for (Character c : characters) {
+			AbstractPiece piece = pieceMap.get(c);
+			RadioMenuItem radioMenuItem = menuMap.get(c);
+			radioMenuItem.selectedProperty().bindBidirectional(piece.visibleProperty());
+		}
+		// All Nodes
 		Node[] allNodes = new Node[] {
 			edge1,
 			edge2,
@@ -174,9 +250,9 @@ public class Square1Controller implements Initializable {
 			middleM,
 			middleN,
 		};
-		// Mesh group
+		// Mesh Group
 		meshGroup = new Group();
-		axes = buildAxes();
+		axis = buildAxes();
 		meshGroup.getChildren().addAll(allNodes);
 		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		// Mouse Events
@@ -202,75 +278,6 @@ public class Square1Controller implements Initializable {
 		rotateTransition.setAxis(Rotate.Y_AXIS);
 		rotateTransition.setByAngle(360);
 		rotateTransition.setInterpolator(Interpolator.LINEAR);
-		// Key events
-		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			children = meshGroup.getChildren();
-			switch (event.getCode()) {
-			case A:
-				toggle(cornerA, children);
-				break;
-			case B:
-				toggle(cornerB, children);
-				break;
-			case C:
-				toggle(cornerC, children);
-				break;
-			case D:
-				toggle(cornerD, children);
-				break;
-			case E:
-				toggle(cornerE, children);
-				break;
-			case F:
-				toggle(cornerF, children);
-				break;
-			case G:
-				toggle(cornerG, children);
-				break;
-			case H:
-				toggle(cornerH, children);
-				break;
-			case DIGIT1:
-				toggle(edge1, children);
-				break;
-			case DIGIT2:
-				toggle(edge2, children);
-				break;
-			case DIGIT3:
-				toggle(edge3, children);
-				break;
-			case DIGIT4:
-				toggle(edge4, children);
-				break;
-			case DIGIT5:
-				toggle(edge5, children);
-				break;
-			case DIGIT6:
-				toggle(edge6, children);
-				break;
-			case DIGIT7:
-				toggle(edge7, children);
-				break;
-			case DIGIT8:
-				toggle(edge8, children);
-				break;
-			case M:
-				toggle(middleM, children);
-				break;
-			case N:
-				toggle(middleN, children);
-				break;
-			case DIGIT0:
-				children.removeAll(allNodes);
-				break;
-			case DIGIT9:
-				children.removeAll(allNodes);
-				children.addAll(allNodes);
-				break;
-			default:
-				break;
-			}
-		});
 	}
 
 	@FXML
@@ -290,50 +297,82 @@ public class Square1Controller implements Initializable {
 	}
 
 	@FXML
-    void doXClock(ActionEvent event) {
+	void doXClock(ActionEvent event) {
 		rotateX.setAngle(rotateX.getAngle() + 10.0f);
-    }
+	}
 
-    @FXML
-    void doXAntiClock(ActionEvent event) {
+	@FXML
+	void doXAntiClock(ActionEvent event) {
 		rotateX.setAngle(rotateX.getAngle() - 10.0f);
-    }
+	}
 
-    @FXML
-    void doYClock(ActionEvent event) {
+	@FXML
+	void doYClock(ActionEvent event) {
 		rotateY.setAngle(rotateY.getAngle() + 10.0f);
-    }
+	}
 
-    @FXML
-    void doYAntiClock(ActionEvent event) {
+	@FXML
+	void doYAntiClock(ActionEvent event) {
 		rotateY.setAngle(rotateY.getAngle() - 10.0f);
-    }
+	}
 
-    @FXML
-    void doZClock(ActionEvent event) {
+	@FXML
+	void doZClock(ActionEvent event) {
 		rotateZ.setAngle(rotateZ.getAngle() + 10.0f);
-    }
+	}
 
-    @FXML
-    void doZAntiClock(ActionEvent event) {
+	@FXML
+	void doZAntiClock(ActionEvent event) {
 		rotateZ.setAngle(rotateZ.getAngle() - 10.0f);
-    }
-    
-    @FXML
+	}
+
+	@FXML
 	void doToggleAxis(ActionEvent event) {
-		toggle(axes, meshGroup.getChildren());
+		ObservableList<Node> children = meshGroup.getChildren();
+		if (children.contains(axis))
+			children.remove(axis);
+		else
+			children.add(axis);
 	}
 
-    @FXML
+	@FXML
 	void doRotate(ActionEvent event) {
-    	animate();
+		animate();
 	}
 
-    @FXML
+	@FXML
 	void doReset(ActionEvent event) {
 		rotateX.setAngle(0.0f);
 		rotateY.setAngle(0.0f);
 		rotateZ.setAngle(0.0f);
+	}
+
+	@FXML
+	void doToggle(ActionEvent event) {
+		RadioMenuItem source = (RadioMenuItem) event.getSource();
+		String text = source.getText();
+		int index = text.indexOf(' ');
+		if (index < 0)
+			return;
+		char c = text.charAt(index + 1);
+		AbstractPiece piece = pieceMap.get(c);
+		piece.setVisible(source.isSelected());
+	}
+
+	@FXML
+	void doHideAll(ActionEvent event) {
+		Set<Character> set = pieceMap.keySet();
+		for (Character c : set) {
+			pieceMap.get(c).setVisible(false);
+		}
+	}
+
+	@FXML
+	void doShowAll(ActionEvent event) {
+		Set<Character> set = pieceMap.keySet();
+		for (Character c : set) {
+			pieceMap.get(c).setVisible(true);
+		}
 	}
 
 	@FXML
@@ -348,18 +387,6 @@ public class Square1Controller implements Initializable {
 	private void animate() {
 		if (rotateTransition.getStatus() != Status.RUNNING)
 			rotateTransition.playFromStart();
-	}
-
-	/**
-	 * Toggles a node.
-	 * @param node the node to toggle.
-	 * @param children the list of children forming the sub scene.
-	 */
-	private void toggle(Node node, ObservableList<Node> children) {
-		if (children.contains(node))
-			children.remove(node);
-		else
-			children.add(node);
 	}
 
 	/**

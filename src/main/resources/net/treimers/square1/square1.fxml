@@ -11,73 +11,191 @@
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
-            <Menu mnemonicParsing="false" text="File">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#doExit" text="Exit">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator>
-                  </MenuItem>
-              </items>
-            </Menu>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#doExit" text="Exit">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+					</items>
+				</Menu>
 				<Menu mnemonicParsing="false" text="View">
 					<items>
 						<MenuItem mnemonicParsing="false" onAction="#doXClock" text="X Clockwise ↷">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="I" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doXAntiClock" text="X Anticlockwise ↶">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doYClock" text="Y Clockwise ↷">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem fx:id="doYAntiClock" mnemonicParsing="false" onAction="#doYAntiClock" text="Y Anticlockwise ↶">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doZClock" text="Z Clockwise ↷">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem fx:id="doZAntiClock" mnemonicParsing="false" onAction="#doZAntiClock" text="Z Anticlockwise ↶">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="I" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doXAntiClock" text="X Anticlockwise ↶">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doYClock" text="Y Clockwise ↷">
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="O" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem fx:id="doYAntiClock" mnemonicParsing="false" onAction="#doYAntiClock" text="Y Anticlockwise ↶">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doZClock" text="Z Clockwise ↷">
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem fx:id="doZAntiClock" mnemonicParsing="false" onAction="#doZAntiClock" text="Z Anticlockwise ↶">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<RadioMenuItem mnemonicParsing="false" onAction="#doToggleAxis" text="Toggle Axis">
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="X" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</RadioMenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doRotate" text="Rotate">
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="R" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doReset" text="Reset">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Pieces">
+					<items>
+						<Menu mnemonicParsing="false" text="Corner Pieces">
+							<items>
+								<RadioMenuItem fx:id="menuPieceA" mnemonicParsing="false" onAction="#doToggle" text="Corner A">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceB" mnemonicParsing="false" onAction="#doToggle" text="Corner B">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="B" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceC" mnemonicParsing="false" onAction="#doToggle" text="Corner C">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="C" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceD" mnemonicParsing="false" onAction="#doToggle" text="Corner D">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="D" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceE" mnemonicParsing="false" onAction="#doToggle" text="Corner E">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceF" mnemonicParsing="false" onAction="#doToggle" text="Corner F">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceG" mnemonicParsing="false" onAction="#doToggle" text="Corner G">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="G" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceH" mnemonicParsing="false" onAction="#doToggle" text="Corner H">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="H" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Edge Pieces">
+							<items>
+								<RadioMenuItem fx:id="menuPiece1" mnemonicParsing="false" onAction="#doToggle" text="Edge 1">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT1" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece2" mnemonicParsing="false" onAction="#doToggle" text="Edge 2">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT2" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece3" mnemonicParsing="false" onAction="#doToggle" text="Edge 3">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT3" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece4" mnemonicParsing="false" onAction="#doToggle" text="Edge 4">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT4" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece5" mnemonicParsing="false" onAction="#doToggle" text="Edge 5">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT5" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece6" mnemonicParsing="false" onAction="#doToggle" text="Edge 6">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT6" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece7" mnemonicParsing="false" onAction="#doToggle" text="Edge 7">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT7" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPiece8" mnemonicParsing="false" onAction="#doToggle" text="Edge 8">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="DIGIT8" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Middle Pieces">
+							<items>
+								<RadioMenuItem fx:id="menuPieceM" mnemonicParsing="false" onAction="#doToggle" text="Middle M">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="M" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+								<RadioMenuItem fx:id="menuPieceN" mnemonicParsing="false" onAction="#doToggle" text="Middle N">
+									<accelerator>
+										<KeyCodeCombination alt="DOWN" code="N" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+									</accelerator>
+								</RadioMenuItem>
+							</items>
+						</Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <RadioMenuItem mnemonicParsing="false" onAction="#doToggleAxis" text="Toggle Axis">
+                  <MenuItem mnemonicParsing="false" onAction="#doHideAll" text="Hide All">
                      <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="X" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator>
-                  </RadioMenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doRotate" text="Rotate">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                        <KeyCodeCombination alt="DOWN" code="DIGIT0" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doReset" text="Reset">
+                  <MenuItem mnemonicParsing="false" onAction="#doShowAll" text="Show All">
                      <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        <KeyCodeCombination alt="DOWN" code="DIGIT9" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
 					</items>
 				</Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#doAbout" text="About">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items>
-            </Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#doAbout" text="About">
+							<accelerator>
+								<KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+					</items>
+				</Menu>
 			</menus>
 		</MenuBar>
 	</top>
@@ -85,7 +203,7 @@
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints hgrow="ALWAYS" />
-            <ColumnConstraints hgrow="SOMETIMES" />
+				<ColumnConstraints hgrow="SOMETIMES" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -102,11 +220,11 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</GridPane.margin>
 				</Label>
-            <Button mnemonicParsing="false" onAction="#doSolve" text="Solve" GridPane.columnIndex="1" />
+				<Button mnemonicParsing="false" onAction="#doSolve" text="Solve" GridPane.columnIndex="1" />
 			</children>
 		</GridPane>
 	</bottom>
-   <center>
+	<center>
 		<SubScene fx:id="subScene" depthBuffer="true" height="600.0" width="600.0" BorderPane.alignment="CENTER">
 			<antiAliasing>
 				<SceneAntialiasing fx:constant="BALANCED" />
@@ -115,5 +233,5 @@
 				<Region />
 			</root>
 		</SubScene>
-   </center>
+	</center>
 </BorderPane>
