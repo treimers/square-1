@@ -68,19 +68,19 @@ Releases can be found here for download
 
 Currently the application supports viewing only. You can use the mouse to rotate the Square-1 cube and see all sides.
 
-Keyboard keys can be used to toggle visibility of the pieces and do rotations:
+Keyboard keys can be used to toggle visibility of the pieces and control rotations:
 
-+ **Keys A - H**: toggle visibility of a corner (named from A to H)
-+ **Keys 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
-+ **Keys M - N**: toggle visibility of a middle piece (named M and N)
-+ **Key 0**: hide all pieces (edges, corners and middle pieces)
-+ **Key 9**: show all pieces (edges, corners and middle pieces)
-+ **Keys X**: toggle visibility of x-axis, y-axis and z-axis
-+ **Key I**: rotate in positive direction along x-axis
-+ **Key J**: rotate in negative direction along x-axis
-+ **Key O**: rotate in positive direction along y-axis
-+ **Key K**: rotate in negative direction along y-axis
-+ **Key P**: rotate in positive direction along z-axis
-+ **Key L**: rotate in negative direction along z-axis
-+ **Key R**: reset all rotations (x, y and z) to 0
-+ **Key V**: run an animated rotation (360 degrees) once
++ **Ctrl A - H**: toggle visibility of a corner (named from A to H)
++ **Ctrl 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
++ **Ctrl M - N**: toggle visibility of a middle piece (named M and N)
++ **Ctrl 0**: hide all pieces (edges, corners and middle pieces)
++ **Ctrl 9**: show all pieces (edges, corners and middle pieces)
++ **Ctrl X**: toggle visibility of x-axis, y-axis and z-axis
++ **Ctrl I**: rotate in positive direction along x-axis
++ **Ctrl Shift I**: rotate in negative direction along x-axis
++ **Ctrl O**: rotate in positive direction along y-axis
++ **Ctrl Shift O**: rotate in negative direction along y-axis
++ **Ctrl P**: rotate in positive direction along z-axis
++ **Ctrl Shift P**: rotate in negative direction along z-axis
++ **Ctrl R**: run an animated rotation (360 degrees) once
++ **Ctrl Shift R**: reset all rotations (x, y and z) to 0
