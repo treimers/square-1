@@ -22,14 +22,15 @@ public class Square1App extends Application {
 		// load and set the stage icon
 		Image image = ImageLoader.getLogoImage();
 		primaryStage.getIcons().add(image);
-		//
+		// load view
 		FXMLLoader loader = new FXMLLoader(Square1App.class.getResource("square1.fxml"));
-		Square1Controller controller = new Square1Controller(primaryStage);
-		loader.setController(controller);
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
+		Square1Controller controller = loader.getController();
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
+		// I got a NullPointerException, when calling this before primaryStage.setScene
+		controller.setPrimaryStage(primaryStage);
 		primaryStage.show();
 	}
 

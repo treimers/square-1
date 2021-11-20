@@ -1,8 +1,8 @@
 package net.treimers.square1.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -12,17 +12,22 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -30,8 +35,11 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import net.treimers.square1.Version;
 import net.treimers.square1.view.AbstractPiece;
 import net.treimers.square1.view.Constants;
 import net.treimers.square1.view.CornerPiece;
@@ -72,6 +80,8 @@ public class Square1Controller implements Initializable {
 	@FXML private SubScene subScene;
 	/** The position to solve. */
 	@FXML private TextField position;
+	/** The menu bar. */
+	@FXML private MenuBar menuBar;
 	/** The radio menu item for piece A visibility. */
 	@FXML private RadioMenuItem menuPieceA;
 	/** The radio menu item for piece B visibility. */
@@ -108,6 +118,7 @@ public class Square1Controller implements Initializable {
 	@FXML private RadioMenuItem menuPieceM;
 	/** The radio menu item for piece N visibility. */
 	@FXML private RadioMenuItem menuPieceN;
+	@FXML private Button solveButton;
 	private double mouseOldX;
 	private double mouseOldY;
 	private double mousePosX;
@@ -126,20 +137,19 @@ public class Square1Controller implements Initializable {
 	private Map<Character, AbstractPiece> pieceMap;
 	/** The map with all radio menu items for piece visibility. */
 	private Map<Character, RadioMenuItem> menuMap;
-
-	/**
-	 * Constructs a new instance.
-	 * @param primaryStage the primary stage.
-	 */
-	public Square1Controller(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-		pieceMap = new HashMap<>();
-	}
+	private Alert shortcutAlert;
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// Position
 		position.setText("A1B2C3D45E6F7G8H");
+		position.setFocusTraversable(false);
+		position.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				solveButton.requestFocus();
+			}
+		});
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -203,58 +213,29 @@ public class Square1Controller implements Initializable {
 				new AbstractMap.SimpleEntry<>('M', middleM), new AbstractMap.SimpleEntry<>('N', middleN));
 		// Menu Map
 		menuMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', menuPiece1),
-				new AbstractMap.SimpleEntry<>('2', menuPiece2),
-				new AbstractMap.SimpleEntry<>('3', menuPiece3),
-				new AbstractMap.SimpleEntry<>('4', menuPiece4),
-				new AbstractMap.SimpleEntry<>('5', menuPiece5),
-				new AbstractMap.SimpleEntry<>('6', menuPiece6),
-				new AbstractMap.SimpleEntry<>('7', menuPiece7),
-				new AbstractMap.SimpleEntry<>('8', menuPiece8),
-				new AbstractMap.SimpleEntry<>('A', menuPieceA),
-				new AbstractMap.SimpleEntry<>('B', menuPieceB),
-				new AbstractMap.SimpleEntry<>('C', menuPieceC),
-				new AbstractMap.SimpleEntry<>('D', menuPieceD),
-				new AbstractMap.SimpleEntry<>('E', menuPieceE),
-				new AbstractMap.SimpleEntry<>('F', menuPieceF),
-				new AbstractMap.SimpleEntry<>('G', menuPieceG),
-				new AbstractMap.SimpleEntry<>('H', menuPieceH),
-				new AbstractMap.SimpleEntry<>('M', menuPieceM),
-				new AbstractMap.SimpleEntry<>('N', menuPieceN)
-		);
-		// Register Radio Menu Items
+				new AbstractMap.SimpleEntry<>('2', menuPiece2), new AbstractMap.SimpleEntry<>('3', menuPiece3),
+				new AbstractMap.SimpleEntry<>('4', menuPiece4), new AbstractMap.SimpleEntry<>('5', menuPiece5),
+				new AbstractMap.SimpleEntry<>('6', menuPiece6), new AbstractMap.SimpleEntry<>('7', menuPiece7),
+				new AbstractMap.SimpleEntry<>('8', menuPiece8), new AbstractMap.SimpleEntry<>('A', menuPieceA),
+				new AbstractMap.SimpleEntry<>('B', menuPieceB), new AbstractMap.SimpleEntry<>('C', menuPieceC),
+				new AbstractMap.SimpleEntry<>('D', menuPieceD), new AbstractMap.SimpleEntry<>('E', menuPieceE),
+				new AbstractMap.SimpleEntry<>('F', menuPieceF), new AbstractMap.SimpleEntry<>('G', menuPieceG),
+				new AbstractMap.SimpleEntry<>('H', menuPieceH), new AbstractMap.SimpleEntry<>('M', menuPieceM),
+				new AbstractMap.SimpleEntry<>('N', menuPieceN));
+		// Mesh Group
+		meshGroup = new Group();
+		axis = buildAxes();
+		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		// Register Radio Menu Items and
+		// add all Nodes to View
 		Set<Character> set = pieceMap.keySet();
 		Character[] characters = set.toArray(new Character[set.size()]);
 		for (Character c : characters) {
 			AbstractPiece piece = pieceMap.get(c);
 			RadioMenuItem radioMenuItem = menuMap.get(c);
 			radioMenuItem.selectedProperty().bindBidirectional(piece.visibleProperty());
+			meshGroup.getChildren().add(piece);
 		}
-		// All Nodes
-		Node[] allNodes = new Node[] {
-			edge1,
-			edge2,
-			edge3,
-			edge4,
-			edge8,
-			edge7,
-			edge6,
-			edge5,
-			cornerA,
-			cornerB,
-			cornerC,
-			cornerD,
-			cornerH,
-			cornerG,
-			cornerF,
-			cornerE,
-			middleM,
-			middleN,
-		};
-		// Mesh Group
-		meshGroup = new Group();
-		axis = buildAxes();
-		meshGroup.getChildren().addAll(allNodes);
-		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		// Mouse Events
 		subScene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -272,7 +253,7 @@ public class Square1Controller implements Initializable {
 			mouseOldX = mousePosX;
 			mouseOldY = mousePosY;
 		});
-		// Animation
+		// Setup Animation
 		rotateTransition = new RotateTransition(Duration.seconds(2.000), meshGroup);
 		rotateTransition.setCycleCount(1);
 		rotateTransition.setAxis(Rotate.Y_AXIS);
@@ -280,13 +261,19 @@ public class Square1Controller implements Initializable {
 		rotateTransition.setInterpolator(Interpolator.LINEAR);
 	}
 
+	public void setPrimaryStage(Stage primaryStage) throws IOException {
+		this.primaryStage = primaryStage;
+		// Create ShortCuts Dialog
+		shortcutAlert = createShortcutStage();
+	}
+
 	@FXML
 	void doAbout(ActionEvent event) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setGraphic(ImageLoader.getLogoImageView());
 		alert.setTitle("About");
-		alert.setHeaderText("Square-1\nVersion 0.0.1");
-		alert.setContentText("Copyright © 2021, Thorsten Reimers");
+		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
+		alert.setContentText("Copyright " + Version.getAppVendor());
 		alert.initOwner(primaryStage);
 		alert.showAndWait();
 	}
@@ -376,6 +363,11 @@ public class Square1Controller implements Initializable {
 	}
 
 	@FXML
+	void doHotKeys(ActionEvent event) {
+		shortcutAlert.showAndWait();
+	}
+
+	@FXML
 	void doSolve(ActionEvent event) {
 		System.out.println("Solve");
 	}
@@ -421,5 +413,32 @@ public class Square1Controller implements Initializable {
 		zSphere.setMaterial(blueMaterial);
 		axisGroup.getChildren().addAll(xAxis, yAxis, zAxis, xSphere, ySphere, zSphere);
 		return axisGroup;
+	}
+
+	/**
+	 * Creates the stage with the key short cuts,
+	 * @throws IOException in case of load errors.
+	 */
+	private Alert createShortcutStage() throws IOException {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		// set properties
+		alert.setTitle("Keyboard Shortcuts");
+		alert.setHeaderText("Keyboard shortcut overview");
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(primaryStage.getIcons().get(0));
+		alert.setResizable(false);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initStyle(StageStyle.UTILITY);
+		// load content
+		URL resource = Square1Controller.class.getResource("keyshortcuts.fxml");
+		FXMLLoader loader = new FXMLLoader(resource);
+		Parent root = loader.load();
+		// set view's controller
+		KeyboardShortcutController controller = loader.getController();
+		controller.setMenuBar(menuBar);
+		// add content to view
+		alert.getDialogPane().setContent(root);
+		alert.initOwner(primaryStage);
+		return alert;
 	}
 }
