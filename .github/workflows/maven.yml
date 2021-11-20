@@ -28,8 +28,8 @@ jobs:
           automatic_release_tag: MacOSX
           prerelease: false
           files: |
-            target/deploy/osx/Square1_0.0.1.dmg
-            target/deploy/osx/Square1-0.0.1-mac.zip
+            target/deploy/osx/Square-1_0.0.1.dmg
+            target/deploy/osx/Square-1-0.0.1-mac.zip
 
   build-ubuntu:
 
@@ -52,9 +52,9 @@ jobs:
           automatic_release_tag: Linux
           prerelease: false
           files: |
-            target/deploy/linux/Square1_0.0.1.deb
-            target/deploy/linux/Square1_0.0.1.rpm
-            target/deploy/linux/Square1-0.0.1-linux.zip
+            target/deploy/linux/Square-1_0.0.1.deb
+            target/deploy/linux/Square-1_0.0.1.rpm
+            target/deploy/linux/Square-1-0.0.1-linux.zip
 
   build-windows:
 
@@ -77,5 +77,5 @@ jobs:
           automatic_release_tag: WindowsX64
           prerelease: false
           files: |
-            target/deploy/windows/Square1_0.0.1.exe
-            target/deploy/windows/Square1-0.0.1-windows.zip
+            target/deploy/windows/Square-1_0.0.1.exe
+            target/deploy/windows/Square-1-0.0.1-windows.zip
