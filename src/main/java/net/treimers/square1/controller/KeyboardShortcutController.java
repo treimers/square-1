@@ -36,7 +36,6 @@ public class KeyboardShortcutController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		System.out.println("Init");
 	}
 
 	public void setMenuBar(MenuBar menuBar) {

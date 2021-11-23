@@ -32,4 +32,15 @@ public class SmartGroup extends Group {
 		this.getTransforms().clear();
 		this.getTransforms().addAll(t);
 	}
+
+	/**
+	 * Rotates the smart group by an angle around z-axis.
+	 * @param ang the rotation angle.
+	 */
+	public void rotateByZ(int ang) {
+		Rotate r = new Rotate(ang, Rotate.Z_AXIS);
+		t = t.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(t);
+	}
 }
