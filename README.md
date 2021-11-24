@@ -70,12 +70,17 @@ Currently the application supports viewing only. You can use the mouse to rotate
 
 Keyboard keys can be used to toggle visibility of the pieces and control rotations:
 
+**Toggle Visibility**
+
 + **Ctrl A - H**: toggle visibility of a corner (named from A to H)
 + **Ctrl 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
 + **Ctrl M - N**: toggle visibility of a middle piece (named M and N)
 + **Ctrl 0**: hide all pieces (edges, corners and middle pieces)
 + **Ctrl 9**: show all pieces (edges, corners and middle pieces)
 + **Ctrl X**: toggle visibility of x-axis, y-axis and z-axis
+
+**Control Rotations**
+
 + **Ctrl I**: rotate in positive direction along x-axis
 + **Ctrl Shift I**: rotate in negative direction along x-axis
 + **Ctrl O**: rotate in positive direction along y-axis
