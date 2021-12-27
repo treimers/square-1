@@ -1,5 +1,8 @@
 package net.treimers.square1.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -9,6 +12,7 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
+import net.treimers.square1.controller.ColorSupport;
 
 /**
  * <p>This class is the base class for pieces of the Square-1 cube.
@@ -22,7 +26,7 @@ import javafx.scene.transform.Transform;
  * 
  * 
  */
-public abstract class AbstractPiece extends MeshView {
+public abstract class AbstractPiece extends MeshView implements PropertyChangeListener {
 	/** The triangle mesh used to model the Square-1 piece. */
 	private TriangleMesh triangleMesh;
 	/** The transform applied to the piece. */
@@ -33,7 +37,7 @@ public abstract class AbstractPiece extends MeshView {
 	 * Creates a new instance.
 	 * @param colors 
 	 */
-	public AbstractPiece(Color[] colors) {
+	public AbstractPiece(ColorSupport colorSupport) {
 		// init fields.
 		transform = new Rotate();
 		triangleMesh = new TriangleMesh();
@@ -44,15 +48,24 @@ public abstract class AbstractPiece extends MeshView {
 		// colors
 		triangleMesh.getTexCoords().addAll(Constants.COLOR_ARRAY);
 		material = new PhongMaterial();
-		setColors(colors);
+		setColors(colorSupport.getDefaultColors());
 		setMaterial(material);
+		// register
+		colorSupport.addPropertyChangeListener(this);
+	}
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		Color[] colors = (Color[]) evt.getNewValue();
+		setColors(colors);
 	}
 
 	/**
 	 * Sets the colors of the Square-1 sides.
 	 * @param colors array with colors of the Square-1 sides.
 	 */
-	public void setColors(Color[] colors) {
+	private void setColors(Color[] colors) {
 		int height = 10;
 		int width = colors.length * 10;
 		WritableImage wim = new WritableImage(width, height);

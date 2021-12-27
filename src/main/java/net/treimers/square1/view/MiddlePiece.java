@@ -1,6 +1,6 @@
 package net.treimers.square1.view;
 
-import javafx.scene.paint.Color;
+import net.treimers.square1.controller.ColorSupport;
 
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
@@ -44,8 +44,8 @@ public class MiddlePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 6 sides (bottom, left, front, right, rear, top).
 	 */
-	public MiddlePiece(int rotate, Color[] colors, int... sides) {
-		super(colors);
+	public MiddlePiece(int rotate, ColorSupport colorSupport, int... sides) {
+		super(colorSupport);
 		float[] points = {
 			// Point A
 			Constants.SIZE,

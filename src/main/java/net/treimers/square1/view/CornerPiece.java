@@ -1,6 +1,6 @@
 package net.treimers.square1.view;
 
-import javafx.scene.paint.Color;
+import net.treimers.square1.controller.ColorSupport;
 
 /**
  * <p>Instances of this class represent a Square-1 corner piece.
@@ -46,8 +46,8 @@ public class CornerPiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 6 sides (bottom, left rear, left front, right front, right rear, top).
 	 */
-	public CornerPiece(int rotate, int position, Color[] colors, int... sides) {
-		super(colors);
+	public CornerPiece(int rotate, int position, ColorSupport colorSupport, int... sides) {
+		super(colorSupport);
 		float[] points = {
 			// Point A
 			0.0f + Constants.DELTA,

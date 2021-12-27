@@ -1,7 +1,5 @@
 package net.treimers.square1.view;
 
-import java.util.Arrays;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -15,16 +13,29 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import net.treimers.square1.controller.ColorSupport;
 
-public class ColorDialog extends Dialog<ButtonType> {
+/**
+ * Instances of this class are used to open color choosing dialogs
+ * allowing the user to changes the colored sides of the Square-1.
+ */
+public class ColorDialog extends Dialog<Color[]> {
+	/** Array of color pickers to change the colored sides of the Square-1. */
 	private ColorPicker[] colorPicker;
+	/** Array with colored sides of the Square-1. */
+	private Color[] colors;
 
-	public ColorDialog(Color[] colors) {
+	/**
+	 * Creates a new instance.
+	 * @param colorSupport the color support to inform listeners.
+	 */
+	public ColorDialog(ColorSupport colorSupport) {
 		setTitle("Colors");
 		setHeaderText("Set the colors of the Square-1 sides");
-		Color[] defaultColors = Arrays.copyOf(colors, colors.length);
-		colorPicker = new ColorPicker[colors.length];
-		for (int i = 0; i < colorPicker.length; i++)
+		colors = colorSupport.getDefaultColors();
+		int numColors = colors.length;
+		colorPicker = new ColorPicker[numColors];
+		for (int i = 0; i < numColors; i++)
 			colorPicker[i] = new ColorPicker(colors[i]);
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
@@ -48,10 +59,10 @@ public class ColorDialog extends Dialog<ButtonType> {
 		Label back = new Label("Back:");
 		GridPane.setConstraints(back, 2, 2);
 		GridPane.setConstraints(colorPicker[4], 3, 2);
-		Label hidden1 = new Label("Hidden 1:");
+		Label hidden1 = new Label("Inside Vertical:");
 		GridPane.setConstraints(hidden1, 0, 3);
 		GridPane.setConstraints(colorPicker[6], 1, 3);
-		Label hidden2 = new Label("Hidden 2:");
+		Label hidden2 = new Label("Inside Horizontal:");
 		GridPane.setConstraints(hidden2, 2, 3);
 		GridPane.setConstraints(colorPicker[7], 3, 3);
 		Button reset = new Button("Reset Defaults");
@@ -62,24 +73,26 @@ public class ColorDialog extends Dialog<ButtonType> {
 		reset.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				Color[] defaultColors = colorSupport.getDefaultColors();
 				for (int i = 0; i < colorPicker.length; i++)
 					colorPicker[i].setValue(defaultColors[i]);
 			}
 		});
 		getDialogPane().setContent(grid);
 		getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		setResultConverter(new Callback<ButtonType, ButtonType>() {
+		setResultConverter(new Callback<ButtonType, Color[]>() {
 			@Override
-			public ButtonType call(ButtonType button) {
+			public Color[] call(ButtonType button) {
 				if (button == ButtonType.OK) {
-					for (int i = 0; i < colorPicker.length; i++) {
+					colors = new Color[colorPicker.length];
+					for (int i = 0; i < colors.length; i++) {
 						colors[i] = colorPicker[i].getValue();
 					}
 				} else {
 					for (int i = 0; i < colorPicker.length; i++)
 						colorPicker[i].setValue(colors[i]);
 				}
-				return button;
+				return colors;
 			}
 		});
 	}
