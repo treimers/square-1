@@ -3,7 +3,9 @@ package net.treimers.square1.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -26,6 +28,7 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioMenuItem;
@@ -41,6 +44,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.treimers.square1.Version;
 import net.treimers.square1.view.AbstractPiece;
+import net.treimers.square1.view.ColorDialog;
 import net.treimers.square1.view.Constants;
 import net.treimers.square1.view.CornerPiece;
 import net.treimers.square1.view.EdgePiece;
@@ -66,10 +70,27 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
 
 */
 
+/*
+ * Rotate camera
+ *   https://www.py4u.net/discuss/2130399
+ *   https://stackoverflow.com/questions/48948092/javafx-rotating-camera-around-a-pivot
+ */
+
 /**
  * Instances of this class are used to control the flow of the Square-1 application.
  */
 public class Square1Controller implements Initializable {
+	/** The default colors of the Square-1 sides. */
+	private static final Color[] DEFAULT_COLORS = new Color[] {
+		Color.WHITE,
+		Color.YELLOW,
+		Color.ORANGE,
+		Color.RED,
+		Color.DARKBLUE,
+		Color.GREEN,
+		Color.GRAY,
+		Color.BLACK,
+	};
 	/** The label with the moves to solve a Square-1 position. */
 	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
@@ -115,26 +136,42 @@ public class Square1Controller implements Initializable {
 	/** The radio menu item for piece N visibility. */
 	@FXML private RadioMenuItem menuPieceN;
 	@FXML private Button solveButton;
-
+	/** Sub scene with piece A. */
 	@FXML private SubScene subSceneA;
+	/** Sub scene with piece B. */
 	@FXML private SubScene subSceneB;
+	/** Sub scene with piece C. */
 	@FXML private SubScene subSceneC;
+	/** Sub scene with piece D. */
 	@FXML private SubScene subSceneD;
+	/** Sub scene with piece E. */
 	@FXML private SubScene subSceneE;
+	/** Sub scene with piece F. */
 	@FXML private SubScene subSceneF;
+	/** Sub scene with piece G. */
 	@FXML private SubScene subSceneG;
+	/** Sub scene with piece H. */
 	@FXML private SubScene subSceneH;
+	/** Sub scene with piece 1. */
 	@FXML private SubScene subScene1;
+	/** Sub scene with piece 2. */
 	@FXML private SubScene subScene2;
+	/** Sub scene with piece 3. */
 	@FXML private SubScene subScene3;
+	/** Sub scene with piece 4. */
 	@FXML private SubScene subScene4;
+	/** Sub scene with piece 5. */
 	@FXML private SubScene subScene5;
+	/** Sub scene with piece 6. */
 	@FXML private SubScene subScene6;
+	/** Sub scene with piece 7. */
 	@FXML private SubScene subScene7;
+	/** Sub scene with piece 8. */
 	@FXML private SubScene subScene8;
+	/** Sub scene with piece M. */
 	@FXML private SubScene subSceneM;
+	/** Sub scene with piece N. */
 	@FXML private SubScene subSceneN;
-
 	private double mouseOldX;
 	private double mouseOldY;
 	private double mousePosX;
@@ -158,6 +195,8 @@ public class Square1Controller implements Initializable {
 	private double mouseOldAY;
 	private double mousePosAX;
 	private double mousePosAY;
+	private ColorDialog colorDialog;
+	private Color[] colors;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -173,8 +212,6 @@ public class Square1Controller implements Initializable {
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
-//		subScene.setWidth(WIDTH);
-//		subScene.setHeight(HEIGHT);
 		subScene.setFill(Color.SILVER);
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
@@ -182,45 +219,48 @@ public class Square1Controller implements Initializable {
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
+		// Colors
+		colors = DEFAULT_COLORS;
+		colorDialog = new ColorDialog(colors);
 		// Edges
-		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.GREEN);
+		EdgePiece edge1 = new EdgePiece(0, 1, colors, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.GRAY,
+				Constants.TOP);
+		EdgePiece edge2 = new EdgePiece(1, 1, colors, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.GRAY,
+				Constants.TOP);
+		EdgePiece edge3 = new EdgePiece(2, 1, colors, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.GRAY,
+				Constants.TOP);
+		EdgePiece edge4 = new EdgePiece(3, 1, colors, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.GRAY,
+				Constants.TOP);
+		EdgePiece edge5 = new EdgePiece(3, -1, colors, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.GRAY,
+				Constants.BOTTOM);
+		EdgePiece edge6 = new EdgePiece(2, -1, colors, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.GRAY,
+				Constants.BOTTOM);
+		EdgePiece edge7 = new EdgePiece(1, -1, colors, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.GRAY,
+				Constants.BOTTOM);
+		EdgePiece edge8 = new EdgePiece(0, -1, colors, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.GRAY,
+				Constants.BOTTOM);
 		// Corners
-		CornerPiece cornerA = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.ORANGE,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerB = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.YELLOW,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerC = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.RED,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerD = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.BLUE,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerE = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.BLUE,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerF = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.RED,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerG = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.YELLOW,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerH = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
+		CornerPiece cornerA = new CornerPiece(0, 1, colors, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
+				Constants.GRAY, Constants.TOP);
+		CornerPiece cornerB = new CornerPiece(1, 1, colors, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.LEFT,
+				Constants.GRAY, Constants.TOP);
+		CornerPiece cornerC = new CornerPiece(2, 1, colors, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.BACK,
+				Constants.GRAY, Constants.TOP);
+		CornerPiece cornerD = new CornerPiece(3, 1, colors, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.RIGHT,
+				Constants.GRAY, Constants.TOP);
+		CornerPiece cornerE = new CornerPiece(3, -1, colors, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.RIGHT,
+				Constants.GRAY, Constants.BOTTOM);
+		CornerPiece cornerF = new CornerPiece(2, -1, colors, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.BACK,
+				Constants.GRAY, Constants.BOTTOM);
+		CornerPiece cornerG = new CornerPiece(1, -1, colors, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.LEFT,
+				Constants.GRAY, Constants.BOTTOM);
+		CornerPiece cornerH = new CornerPiece(0, -1, colors, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
+				Constants.GRAY, Constants.BOTTOM);
 		// Middle
-		MiddlePiece middleM = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE, Constants.GRAY,
-				Constants.RED, Constants.BLACK);
-		MiddlePiece middleN = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
-				Constants.ORANGE, Constants.BLACK);
+		MiddlePiece middleM = new MiddlePiece(0, colors, Constants.BLACK, Constants.LEFT, Constants.FRONT, Constants.GRAY,
+				Constants.BACK, Constants.BLACK);
+		MiddlePiece middleN = new MiddlePiece(1, colors, Constants.BLACK, Constants.RIGHT, Constants.BACK, Constants.GRAY,
+				Constants.FRONT, Constants.BLACK);
 		// Piece Map
 		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
 				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
@@ -287,18 +327,18 @@ public class Square1Controller implements Initializable {
 		Camera cameraA = new PerspectiveCamera(true);
 		cameraA.setNearClip(0.1);
 		cameraA.setFarClip(10000.0);
-		cameraA.setTranslateZ(-5);
+		cameraA.setTranslateZ(-4.5);
 		subSceneA.setCamera(cameraA);
 		// Piece A
-		CornerPiece cornerA1 = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.WHITE);
+		CornerPiece cornerA1 = new CornerPiece(0, 1, colors, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
+				Constants.GRAY, Constants.TOP);
 		Group meshGroupA = new Group();
 		meshGroupA.getChildren().add(cornerA1);
 		groupA.getChildren().addAll(meshGroupA, new AmbientLight(Color.WHITE));
 		// Mouse Events A
-		Rotate rotateAX = new Rotate(50, 0, 0, 0, Rotate.X_AXIS);
+		Rotate rotateAX = new Rotate(-55, 0, 0, 0, Rotate.X_AXIS);
 		Rotate rotateAY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-		Rotate rotateAZ = new Rotate(30, 0, 0, 0, Rotate.Z_AXIS);
+		Rotate rotateAZ = new Rotate(126, 0, 0, 0, Rotate.Z_AXIS);
 		meshGroupA.getTransforms().addAll(rotateAX, rotateAY, rotateAZ);
 		subSceneA.setOnMousePressed(me -> {
 			mouseOldAX = me.getSceneX();
@@ -423,6 +463,17 @@ public class Square1Controller implements Initializable {
 	@FXML
 	void doSolve(ActionEvent event) {
 		System.out.println("Solve");
+	}
+
+	@FXML
+	void doChangeColors(ActionEvent event) {
+		Optional<ButtonType> result = colorDialog.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			Collection<AbstractPiece> collection = pieceMap.values();
+			AbstractPiece[] pieces = collection.toArray(new AbstractPiece[collection.size()]);
+			for (AbstractPiece piece : pieces)
+				piece.setColors(colors);
+		}
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78

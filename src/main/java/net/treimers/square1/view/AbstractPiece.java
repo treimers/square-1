@@ -1,6 +1,8 @@
 package net.treimers.square1.view;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
 import javafx.scene.shape.MeshView;
@@ -21,44 +23,17 @@ import javafx.scene.transform.Transform;
  * 
  */
 public abstract class AbstractPiece extends MeshView {
-	/** The height of the colored squares (50%) */
-	private static final float COLOR_HEIGHT = 0.5f;
-	/** The color array used for inking the material. */
-	private static final float[] COLOR_ARRAY = {
-		// 0 black
-		(Constants.BLACK + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 1 white
-		(Constants.WHITE + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 2 yellow
-		(Constants.YELLOW + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 3 orange
-		(Constants.ORANGE + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 4 red
-		(Constants.RED + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 5 blue
-		(Constants.BLUE + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 6 green
-		(Constants.GREEN + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-		// 7 gray
-		(Constants.GRAY + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
-	};
 	/** The triangle mesh used to model the Square-1 piece. */
 	private TriangleMesh triangleMesh;
 	/** The transform applied to the piece. */
 	private Transform transform;
+	private PhongMaterial material;
     
 	/**
 	 * Creates a new instance.
+	 * @param colors 
 	 */
-	public AbstractPiece() {
+	public AbstractPiece(Color[] colors) {
 		// init fields.
 		transform = new Rotate();
 		triangleMesh = new TriangleMesh();
@@ -67,12 +42,28 @@ public abstract class AbstractPiece extends MeshView {
 		// triangle mesh
 		setMesh(triangleMesh);
 		// colors
-		triangleMesh.getTexCoords().addAll(COLOR_ARRAY);
-		// material
-		Image colorImage = new Image(AbstractPiece.class.getResourceAsStream("colors.png"));
-		PhongMaterial mat = new PhongMaterial();
-		mat.setDiffuseMap(colorImage);
-		setMaterial(mat);
+		triangleMesh.getTexCoords().addAll(Constants.COLOR_ARRAY);
+		material = new PhongMaterial();
+		setColors(colors);
+		setMaterial(material);
+	}
+
+	/**
+	 * Sets the colors of the Square-1 sides.
+	 * @param colors array with colors of the Square-1 sides.
+	 */
+	public void setColors(Color[] colors) {
+		int height = 10;
+		int width = colors.length * 10;
+		WritableImage wim = new WritableImage(width, height);
+		PixelWriter writer = wim.getPixelWriter();
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int color = i / height;
+				writer.setColor(i, j, colors[color]);
+			}
+		}
+		material.setDiffuseMap(wim);
 	}
 
 	/**

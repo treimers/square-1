@@ -1,5 +1,7 @@
 package net.treimers.square1.view;
 
+import javafx.scene.paint.Color;
+
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
  *
@@ -40,9 +42,10 @@ public class MiddlePiece extends AbstractPiece {
 	 * Creates a new instance.
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
-	 * @param colors array with colors for the 6 sides (bottom, left, front, right, rear, top).
+	 * @param sides array with colors for the 6 sides (bottom, left, front, right, rear, top).
 	 */
-	public MiddlePiece(int rotate, int... colors) {
+	public MiddlePiece(int rotate, Color[] colors, int... sides) {
+		super(colors);
 		float[] points = {
 			// Point A
 			Constants.SIZE,
@@ -82,82 +85,82 @@ public class MiddlePiece extends AbstractPiece {
 			// Faces
 			// Bottom face
 			A,
-			colors[0],
+			sides[0],
 			D,
-			colors[0],
+			sides[0],
 			C,
-			colors[0],
+			sides[0],
 			C,
-			colors[0],
+			sides[0],
 			B,
-			colors[0],
+			sides[0],
 			A,
-			colors[0],
+			sides[0],
 			// Left face
 			A,
-			colors[1],
+			sides[1],
 			B,
-			colors[1],
+			sides[1],
 			F,
-			colors[1],
+			sides[1],
 			F,
-			colors[1],
+			sides[1],
 			E,
-			colors[1],
+			sides[1],
 			A,
-			colors[1],
+			sides[1],
 			// Front face
 			F,
-			colors[2],
+			sides[2],
 			B,
-			colors[2],
+			sides[2],
 			C,
-			colors[2],
+			sides[2],
 			C,
-			colors[2],
+			sides[2],
 			G,
-			colors[2],
+			sides[2],
 			F,
-			colors[2],
+			sides[2],
 			// Right face
 			D,
-			colors[3],
+			sides[3],
 			H,
-			colors[3],
+			sides[3],
 			G,
-			colors[3],
+			sides[3],
 			G,
-			colors[3],
+			sides[3],
 			C,
-			colors[3],
+			sides[3],
 			D,
-			colors[3],
+			sides[3],
 			// Rear face
 			A,
-			colors[4],
+			sides[4],
 			E,
-			colors[4],
+			sides[4],
 			H,
-			colors[4],
+			sides[4],
 			H,
-			colors[4],
+			sides[4],
 			D,
-			colors[4],
+			sides[4],
 			A,
-			colors[4],
+			sides[4],
 			// Top face
 			E,
-			colors[5],
+			sides[5],
 			F,
-			colors[5],
+			sides[5],
 			G,
-			colors[5],
+			sides[5],
 			G,
-			colors[5],
+			sides[5],
 			H,
-			colors[5],
+			sides[5],
 			E,
-			colors[5],
+			sides[5],
 		};
 		addAllFaces(faces);
 		rotateByZ(rotate * 180);

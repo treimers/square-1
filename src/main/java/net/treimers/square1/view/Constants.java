@@ -5,24 +5,53 @@ package net.treimers.square1.view;
  */
 public interface Constants {
 	// Colors used
+	/** The value for top color. */
+	public static final int TOP = 0;
+	/** The value for left color. */
+	public static final int LEFT = 1;
+	/** The value for front color. */
+	public static final int FRONT = 2;
+	/** The value for right color. */
+	public static final int RIGHT = 3;
+	/** The value for back color. */
+	public static final int BACK = 4;
+	/** The value for bottom color. */
+	public static final int BOTTOM = 5;
 	/** The value for color black. */
-	public static final int BLACK = 0;
-	/** The value for color white. */
-	public static final int WHITE = 1;
-	/** The value for color yellow. */
-	public static final int YELLOW = 2;
-	/** The value for color orange. */
-	public static final int ORANGE = 3;
-	/** The value for color red. */
-	public static final int RED = 4;
-	/** The value for color blue. */
-	public static final int BLUE = 5;
-	/** The value for color green. */
-	public static final int GREEN = 6;
+	public static final int BLACK = 6;
 	/** The value for color gray. */
 	public static final int GRAY = 7;
 	/** The number for colors. */
 	public static final int NUM_COLORS = 8;
+	/** The height of the colored squares (50%) */
+	public static final float COLOR_HEIGHT = 0.5f;
+	/** The color array used for inking the material. */
+	public static final float[] COLOR_ARRAY = {
+		// top
+		(Constants.TOP + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// left
+		(Constants.LEFT + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// front
+		(Constants.FRONT + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// right
+		(Constants.RIGHT + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// back
+		(Constants.BACK + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// bottom
+		(Constants.BOTTOM + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// gray
+		(Constants.GRAY + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// black
+		(Constants.BLACK + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+	};
 	// Some Angles
 	/** Angle 15 degrees. */
 	public static final double ANGLE_15 = 15.0 / 180.0 * Math.PI;

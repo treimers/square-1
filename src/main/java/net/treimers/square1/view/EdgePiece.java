@@ -1,5 +1,7 @@
 package net.treimers.square1.view;
 
+import javafx.scene.paint.Color;
+
 /**
  * <p>Instances of this class represent a Square-1 edge piece.
  *
@@ -37,9 +39,10 @@ public class EdgePiece extends AbstractPiece {
 	 * Creates a new instance.
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
-	 * @param colors array with colors for the 5 sides (bottom, left, front, right, top).
+	 * @param sides array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
-	public EdgePiece(int rotate, int position, int... colors) {
+	public EdgePiece(int rotate, int position, Color[] colors, int... sides) {
+		super(colors);
 		float[] points = {
 			// Point A
 			0.0f,
@@ -70,57 +73,57 @@ public class EdgePiece extends AbstractPiece {
 		int[] faces = {
 			// Bottom face
 			A,
-			colors[0],
+			sides[0],
 			C,
-			colors[0],
+			sides[0],
 			B,
-			colors[0],
+			sides[0],
 			// Left face
 			A,
-			colors[1],
+			sides[1],
 			B,
-			colors[1],
+			sides[1],
 			E,
-			colors[1],
+			sides[1],
 			E,
-			colors[1],
+			sides[1],
 			D,
-			colors[1],
+			sides[1],
 			A,
-			colors[1],
+			sides[1],
 			// Front face
 			E,
-			colors[2],
+			sides[2],
 			B,
-			colors[2],
+			sides[2],
 			C,
-			colors[2],
+			sides[2],
 			C,
-			colors[2],
+			sides[2],
 			F,
-			colors[2],
+			sides[2],
 			E,
-			colors[2],
+			sides[2],
 			// Right face
 			D,
-			colors[3],
+			sides[3],
 			F,
-			colors[3],
+			sides[3],
 			C,
-			colors[3],
+			sides[3],
 			C,
-			colors[3],
+			sides[3],
 			A,
-			colors[3],
+			sides[3],
 			D,
-			colors[3],
+			sides[3],
 			// Top face
 			D,
-			colors[4],
+			sides[4],
 			E,
-			colors[4],
+			sides[4],
 			F,
-			colors[4],
+			sides[4],
 		};
 		addAllFaces(faces);
 		rotateByZ(90 * rotate);
