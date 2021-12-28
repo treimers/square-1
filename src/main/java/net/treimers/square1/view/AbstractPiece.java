@@ -66,17 +66,11 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 	 * @param colors array with colors of the Square-1 sides.
 	 */
 	private void setColors(Color[] colors) {
-		int height = 10;
-		int width = colors.length * 10;
-		WritableImage wim = new WritableImage(width, height);
-		PixelWriter writer = wim.getPixelWriter();
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				int color = i / height;
-				writer.setColor(i, j, colors[color]);
-			}
-		}
-		material.setDiffuseMap(wim);
+		WritableImage image = new WritableImage(colors.length, 1);
+		PixelWriter writer = image.getPixelWriter();
+		for (int i = 0; i < colors.length; i++)
+			writer.setColor(i, 0, colors[i]);
+		material.setDiffuseMap(image);
 	}
 
 	/**
