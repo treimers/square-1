@@ -4,28 +4,28 @@ package net.treimers.square1.view;
  * Provides several constants for colors, angles and length.
  */
 public interface Constants {
-	// Colors used
-	/** The value for top color. */
+	// Colors indices
+	/** The index for top color. */
 	public static final int TOP = 0;
-	/** The value for left color. */
+	/** The index for left color. */
 	public static final int LEFT = 1;
-	/** The value for front color. */
+	/** The index for front color. */
 	public static final int FRONT = 2;
-	/** The value for right color. */
+	/** The index for right color. */
 	public static final int RIGHT = 3;
-	/** The value for back color. */
+	/** The index for back color. */
 	public static final int BACK = 4;
-	/** The value for bottom color. */
+	/** The index for bottom color. */
 	public static final int BOTTOM = 5;
-	/** The value for color black. */
+	/** The index for color black. */
 	public static final int BLACK = 6;
-	/** The value for color gray. */
+	/** The index for color gray. */
 	public static final int GRAY = 7;
 	/** The number for colors. */
 	public static final int NUM_COLORS = 8;
-	/** The height of the colored squares (50%) */
+	/** The vertical pick position of the colored squares (50%) */
 	public static final float COLOR_HEIGHT = 0.5f;
-	/** The color array used for inking the material. */
+	/** The index array used to pick the colors from the writable image. */
 	public static final float[] COLOR_ARRAY = {
 		// top
 		(Constants.TOP + 0.5f) / Constants.NUM_COLORS,
