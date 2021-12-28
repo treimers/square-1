@@ -1,6 +1,6 @@
 package net.treimers.square1.view;
 
-import net.treimers.square1.controller.ColorSupport;
+import net.treimers.square1.controller.ColorBean;
 
 /**
  * <p>Instances of this class represent a Square-1 edge piece.
@@ -41,8 +41,8 @@ public class EdgePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
-	public EdgePiece(int rotate, int position, ColorSupport colorSupport, int... sides) {
-		super(colorSupport);
+	public EdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
+		super(colorBean);
 		float[] points = {
 			// Point A
 			0.0f,

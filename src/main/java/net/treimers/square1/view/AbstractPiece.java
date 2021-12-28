@@ -12,7 +12,7 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
-import net.treimers.square1.controller.ColorSupport;
+import net.treimers.square1.controller.ColorBean;
 
 /**
  * <p>This class is the base class for pieces of the Square-1 cube.
@@ -27,13 +27,14 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 	private TriangleMesh triangleMesh;
 	/** The transform applied to the piece. */
 	private Transform transform;
+	/** The material used to color the sides of the piece. */
 	private PhongMaterial material;
     
 	/**
 	 * Creates a new instance.
-	 * @param colors 
+	 * @param colorBean the bean with a Square-1 colors.
 	 */
-	public AbstractPiece(ColorSupport colorSupport) {
+	public AbstractPiece(ColorBean colorBean) {
 		// init fields.
 		transform = new Rotate();
 		triangleMesh = new TriangleMesh();
@@ -44,12 +45,11 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 		// colors
 		triangleMesh.getTexCoords().addAll(Constants.COLOR_ARRAY);
 		material = new PhongMaterial();
-		setColors(colorSupport.getDefaultColors());
+		setColors(colorBean.getDefaultColors());
 		setMaterial(material);
 		// register
-		colorSupport.addPropertyChangeListener(this);
+		colorBean.addPropertyChangeListener(this);
 	}
-
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {

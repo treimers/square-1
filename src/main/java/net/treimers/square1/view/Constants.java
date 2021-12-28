@@ -5,51 +5,51 @@ package net.treimers.square1.view;
  */
 public interface Constants {
 	// Colors indices
-	/** The index for top color. */
+	/** The index for the top side color. */
 	public static final int TOP = 0;
-	/** The index for left color. */
+	/** The index for the left side color. */
 	public static final int LEFT = 1;
-	/** The index for front color. */
+	/** The index for the front side color. */
 	public static final int FRONT = 2;
-	/** The index for right color. */
+	/** The index for the right side color. */
 	public static final int RIGHT = 3;
-	/** The index for back color. */
+	/** The index for the back side color. */
 	public static final int BACK = 4;
-	/** The index for bottom color. */
+	/** The index for the bottom side color. */
 	public static final int BOTTOM = 5;
-	/** The index for color black. */
-	public static final int BLACK = 6;
-	/** The index for color gray. */
-	public static final int GRAY = 7;
+	/** The index for the inner horizontal side color. */
+	public static final int INNER_VERTICAL = 6;
+	/** The index for the inner vertical side color. */
+	public static final int INNER_HORIZONTAL = 7;
 	/** The number for colors. */
 	public static final int NUM_COLORS = 8;
 	/** The vertical pick position of the colored squares (50%) */
 	public static final float COLOR_HEIGHT = 0.5f;
 	/** The index array used to pick the colors from the writable image. */
 	public static final float[] COLOR_ARRAY = {
-		// top
+		// position of top color
 		(Constants.TOP + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// left
+		// position of left color
 		(Constants.LEFT + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// front
+		// position of front color
 		(Constants.FRONT + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// right
+		// position of right color
 		(Constants.RIGHT + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// back
+		// position of back color
 		(Constants.BACK + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// bottom
+		// position of bottom color
 		(Constants.BOTTOM + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// gray
-		(Constants.GRAY + 0.5f) / Constants.NUM_COLORS,
+		// position of inner horizontal color
+		(Constants.INNER_HORIZONTAL + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// black
-		(Constants.BLACK + 0.5f) / Constants.NUM_COLORS,
+		// position of inner vertical color
+		(Constants.INNER_VERTICAL + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
 	};
 	// Some Angles

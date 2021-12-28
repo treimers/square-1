@@ -79,7 +79,7 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
 /**
  * Instances of this class are used to control the flow of the Square-1 application.
  */
-public class Square1Controller implements Initializable, ColorSupport {
+public class Square1Controller implements Initializable, ColorBean {
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
 		Color.WHITE,
@@ -195,12 +195,15 @@ public class Square1Controller implements Initializable, ColorSupport {
 	private double mouseOldAY;
 	private double mousePosAX;
 	private double mousePosAY;
+	/** The dialog used to set the colors of the Square-1 sides. */
 	private ColorDialog colorDialog;
+	/** A color change support object used to send out change events. */
 	private PropertyChangeSupport colorChangeSupport;
+	/** The colors of the Square-1 sides. */
+	private Color[] colors;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		colorChangeSupport = new PropertyChangeSupport(this);
 		// Position
 		position.setText("A1B2C3D45E6F7G8H");
 		position.setFocusTraversable(false);
@@ -221,46 +224,48 @@ public class Square1Controller implements Initializable, ColorSupport {
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
 		// Colors
+		colorChangeSupport = new PropertyChangeSupport(this);
 		colorDialog = new ColorDialog(this);
+		colors = DEFAULT_COLORS;
 		// Edges
-		EdgePiece edge1 = new EdgePiece(0, 1, this, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.GRAY,
+		EdgePiece edge1 = new EdgePiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.INNER_HORIZONTAL,
 				Constants.TOP);
-		EdgePiece edge2 = new EdgePiece(1, 1, this, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.GRAY,
+		EdgePiece edge2 = new EdgePiece(1, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.INNER_HORIZONTAL,
 				Constants.TOP);
-		EdgePiece edge3 = new EdgePiece(2, 1, this, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.GRAY,
+		EdgePiece edge3 = new EdgePiece(2, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.INNER_HORIZONTAL,
 				Constants.TOP);
-		EdgePiece edge4 = new EdgePiece(3, 1, this, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.GRAY,
+		EdgePiece edge4 = new EdgePiece(3, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.INNER_HORIZONTAL,
 				Constants.TOP);
-		EdgePiece edge5 = new EdgePiece(3, -1, this, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.GRAY,
+		EdgePiece edge5 = new EdgePiece(3, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.INNER_HORIZONTAL,
 				Constants.BOTTOM);
-		EdgePiece edge6 = new EdgePiece(2, -1, this, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.GRAY,
+		EdgePiece edge6 = new EdgePiece(2, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.INNER_HORIZONTAL,
 				Constants.BOTTOM);
-		EdgePiece edge7 = new EdgePiece(1, -1, this, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.GRAY,
+		EdgePiece edge7 = new EdgePiece(1, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.INNER_HORIZONTAL,
 				Constants.BOTTOM);
-		EdgePiece edge8 = new EdgePiece(0, -1, this, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.GRAY,
+		EdgePiece edge8 = new EdgePiece(0, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.INNER_HORIZONTAL,
 				Constants.BOTTOM);
 		// Corners
-		CornerPiece cornerA = new CornerPiece(0, 1, this, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
-				Constants.GRAY, Constants.TOP);
-		CornerPiece cornerB = new CornerPiece(1, 1, this, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.LEFT,
-				Constants.GRAY, Constants.TOP);
-		CornerPiece cornerC = new CornerPiece(2, 1, this, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.BACK,
-				Constants.GRAY, Constants.TOP);
-		CornerPiece cornerD = new CornerPiece(3, 1, this, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.RIGHT,
-				Constants.GRAY, Constants.TOP);
-		CornerPiece cornerE = new CornerPiece(3, -1, this, Constants.BLACK, Constants.GRAY, Constants.FRONT, Constants.RIGHT,
-				Constants.GRAY, Constants.BOTTOM);
-		CornerPiece cornerF = new CornerPiece(2, -1, this, Constants.BLACK, Constants.GRAY, Constants.RIGHT, Constants.BACK,
-				Constants.GRAY, Constants.BOTTOM);
-		CornerPiece cornerG = new CornerPiece(1, -1, this, Constants.BLACK, Constants.GRAY, Constants.BACK, Constants.LEFT,
-				Constants.GRAY, Constants.BOTTOM);
-		CornerPiece cornerH = new CornerPiece(0, -1, this, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
-				Constants.GRAY, Constants.BOTTOM);
+		CornerPiece cornerA = new CornerPiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
+				Constants.INNER_HORIZONTAL, Constants.TOP);
+		CornerPiece cornerB = new CornerPiece(1, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.LEFT,
+				Constants.INNER_HORIZONTAL, Constants.TOP);
+		CornerPiece cornerC = new CornerPiece(2, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.BACK,
+				Constants.INNER_HORIZONTAL, Constants.TOP);
+		CornerPiece cornerD = new CornerPiece(3, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.RIGHT,
+				Constants.INNER_HORIZONTAL, Constants.TOP);
+		CornerPiece cornerE = new CornerPiece(3, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.RIGHT,
+				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
+		CornerPiece cornerF = new CornerPiece(2, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.BACK,
+				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
+		CornerPiece cornerG = new CornerPiece(1, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.LEFT,
+				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
+		CornerPiece cornerH = new CornerPiece(0, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
+				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
 		// Middle
-		MiddlePiece middleM = new MiddlePiece(0, this, Constants.BLACK, Constants.LEFT, Constants.FRONT, Constants.GRAY,
-				Constants.BACK, Constants.BLACK);
-		MiddlePiece middleN = new MiddlePiece(1, this, Constants.BLACK, Constants.RIGHT, Constants.BACK, Constants.GRAY,
-				Constants.FRONT, Constants.BLACK);
+		MiddlePiece middleM = new MiddlePiece(0, this, Constants.INNER_VERTICAL, Constants.LEFT, Constants.FRONT, Constants.INNER_HORIZONTAL,
+				Constants.BACK, Constants.INNER_VERTICAL);
+		MiddlePiece middleN = new MiddlePiece(1, this, Constants.INNER_VERTICAL, Constants.RIGHT, Constants.BACK, Constants.INNER_HORIZONTAL,
+				Constants.FRONT, Constants.INNER_VERTICAL);
 		// Piece Map
 		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
 				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
@@ -330,8 +335,8 @@ public class Square1Controller implements Initializable, ColorSupport {
 		cameraA.setTranslateZ(-4.5);
 		subSceneA.setCamera(cameraA);
 		// Piece A
-		CornerPiece cornerA1 = new CornerPiece(0, 1, this, Constants.BLACK, Constants.GRAY, Constants.LEFT, Constants.FRONT,
-				Constants.GRAY, Constants.TOP);
+		CornerPiece cornerA1 = new CornerPiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
+				Constants.INNER_HORIZONTAL, Constants.TOP);
 		Group meshGroupA = new Group();
 		meshGroupA.getChildren().add(cornerA1);
 		groupA.getChildren().addAll(meshGroupA, new AmbientLight(Color.WHITE));
@@ -354,21 +359,29 @@ public class Square1Controller implements Initializable, ColorSupport {
 		});
 	}
 
+	/**
+	 * Sets the primary stage.
+	 * @param primaryStage the primary stage.
+	 * @throws IOException in case of load errors.
+	 */
 	public void setPrimaryStage(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
 		// Create ShortCuts Dialog
 		shortcutAlert = createShortcutStage();
 	}
 
+	@Override
 	public Color[] getDefaultColors() {
 		return DEFAULT_COLORS;
 	}
 	
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
         colorChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
     	colorChangeSupport.removePropertyChangeListener(listener);
     }
 
@@ -485,8 +498,11 @@ public class Square1Controller implements Initializable, ColorSupport {
 	@FXML
 	void doChangeColors(ActionEvent event) {
 		Optional<Color[]> result = colorDialog.showAndWait();
-		if (result.isPresent() && result.get() != null)
-			colorChangeSupport.firePropertyChange("colors", null, result.get());
+		if (result.isPresent()) {
+			Color[] oldColors = colors;
+			colors = result.get();
+			colorChangeSupport.firePropertyChange("colors", oldColors, colors);
+		}
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78

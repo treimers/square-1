@@ -4,7 +4,12 @@ import java.beans.PropertyChangeListener;
 
 import javafx.scene.paint.Color;
 
-public interface ColorSupport {
+/**
+ * An instance of this class holds the colors of the outer and inner sides of a Square-1.
+ * It is used by the pieces in order to get notice via property change events
+ * about any changes to the colors by the user.
+ */
+public interface ColorBean {
 	/**
 	 * Add a PropertyChangeListener to the listener list.
 	 * The listener is registered for all properties.
@@ -31,8 +36,8 @@ public interface ColorSupport {
 	public void removePropertyChangeListener(PropertyChangeListener listener);
 
 	/**
-	 * Gets the default colors of Square1 sides.
-	 * @return the default colors of Square1 sides.
+	 * Gets the default colors of Square-1 sides.
+	 * @return the default colors of Square-1 sides.
 	 */
 	public Color[] getDefaultColors();
 }

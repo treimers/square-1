@@ -1,11 +1,11 @@
 package net.treimers.square1.view;
 
-import net.treimers.square1.controller.ColorSupport;
+import net.treimers.square1.controller.ColorBean;
 
 /**
  * <p>Instances of this class represent a Square-1 corner piece.
  *
- * <p>A corner piece has three visible, colored faces: top, front and bottom or top. All other faces are
+ * <p>A corner piece has three visible, colored faces: left front, right front and bottom or top. All other faces are
  * not visible by default and colored light or dark gray.
  * 
  * <p>The piece is created using 8 corner points named A to H. All faces are build and colored using triangles based on the corners.
@@ -46,8 +46,8 @@ public class CornerPiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 6 sides (bottom, left rear, left front, right front, right rear, top).
 	 */
-	public CornerPiece(int rotate, int position, ColorSupport colorSupport, int... sides) {
-		super(colorSupport);
+	public CornerPiece(int rotate, int position, ColorBean colorBean, int... sides) {
+		super(colorBean);
 		float[] points = {
 			// Point A
 			0.0f + Constants.DELTA,
