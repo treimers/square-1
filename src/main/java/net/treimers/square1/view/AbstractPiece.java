@@ -19,11 +19,7 @@ import net.treimers.square1.controller.ColorSupport;
  * 
  * <p>It provides a triangle mesh to model the faces of the piece. A material with
  * colors for the faces is loaded and applied to the mesh. The colors are  picked
- * from an image with colored squares.
- * 
- * <p>
- * <img src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAAAaCAYAAADG19KmAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV8/RNGqgxVEHDJUJwuiRRy1CkWoEGqFVh1MLv2CJg1Jiouj4Fpw8GOx6uDirKuDqyAIfoC4uTkpukiJ/0sKLWI8OO7Hu3uPu3eAv15mqhmcAFTNMlKJuJDJrgqdr+hBEH2IYVBipj4nikl4jq97+Ph6F+VZ3uf+HL1KzmSATyCeZbphEW8QT29aOud94jArSgrxOfG4QRckfuS67PIb54LDfp4ZNtKpeeIwsVBoY7mNWdFQiWPEEUXVKN+fcVnhvMVZLVdZ8578haGctrLMdZojSGARSxAhQEYVJZRhIUqrRoqJFO3HPfzDjl8kl0yuEhg5FlCBCsnxg//B727N/NSkmxSKAx0vtv0xCnTuAo2abX8f23bjBAg8A1day1+pAzOfpNdaWuQI6N8GLq5bmrwHXO4AQ0+6ZEiOFKDpz+eB9zP6piwwcAt0r7m9Nfdx+gCkqavkDXBwCIwVKHvd491d7b39e6bZ3w9rhHKkm0NW2wAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+ULBA41C02SsOMAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAfElEQVR42u3TUQmAMBRA0TcDWGkh7GGCgVhBDLQwfg4EC2iLB8I5Be7XLbXWNxL03jMyMUbJ6ewpmbjOnM4yHymdZ1tTOu1uKZ0pAAOBgcBAYCDAQGAgMBAYCDAQGAgMBAYCAwEGAgOBgcBAgIHAQGAgMBBgIDAQGAh+6gN3aA2n5ogvngAAAABJRU5ErkJggg==" />
- * 
+ * from a writable image with width = #colors and height = 1.
  * 
  */
 public abstract class AbstractPiece extends MeshView implements PropertyChangeListener {
