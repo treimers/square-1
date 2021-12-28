@@ -6,7 +6,7 @@ package net.treimers.square1;
 public class Square1 {
 	/**
 	 * The main method of the Square-1 application.
-	 * @param args the arguments.
+	 * @param args the program arguments.
 	 */
 	public static void main(String[] args) {
 		Square1App.run(args);
