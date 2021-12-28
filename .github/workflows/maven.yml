@@ -5,6 +5,8 @@ name: Build Native Application
 
 on:
   push:
+    branches:
+      - master
 
 jobs:
   build-macosx:
