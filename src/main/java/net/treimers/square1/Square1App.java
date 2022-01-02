@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.treimers.square1.controller.Square1Controller;
-import net.treimers.square1.view.ImageLoader;
+import net.treimers.square1.view.misc.ImageLoader;
 
 /**
  * Instances of this class are used as Square-1 JavaFX application.

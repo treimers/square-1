@@ -1,4 +1,4 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.misc;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

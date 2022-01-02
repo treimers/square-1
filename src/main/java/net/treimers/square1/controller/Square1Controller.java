@@ -43,14 +43,13 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.treimers.square1.Version;
-import net.treimers.square1.view.AbstractPiece;
-import net.treimers.square1.view.ColorDialog;
-import net.treimers.square1.view.Constants;
-import net.treimers.square1.view.CornerPiece;
-import net.treimers.square1.view.EdgePiece;
-import net.treimers.square1.view.ImageLoader;
-import net.treimers.square1.view.MiddlePiece;
-import net.treimers.square1.view.SmartGroup;
+import net.treimers.square1.view.dialog.ColorDialog;
+import net.treimers.square1.view.misc.ImageLoader;
+import net.treimers.square1.view.misc.SmartGroup;
+import net.treimers.square1.view.piece.AbstractPiece;
+import net.treimers.square1.view.piece.CornerPiece;
+import net.treimers.square1.view.piece.EdgePiece;
+import net.treimers.square1.view.piece.MiddlePiece;
 
 /*
 

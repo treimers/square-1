@@ -1,4 +1,4 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.dialog;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

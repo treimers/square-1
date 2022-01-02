@@ -1,4 +1,4 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.piece;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,6 +13,7 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import net.treimers.square1.controller.ColorBean;
+import net.treimers.square1.controller.Constants;
 
 /**
  * <p>This class is the base class for pieces of the Square-1 cube.

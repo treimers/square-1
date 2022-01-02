@@ -1,6 +1,7 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.piece;
 
 import net.treimers.square1.controller.ColorBean;
+import net.treimers.square1.controller.Constants;
 
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
