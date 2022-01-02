@@ -23,23 +23,23 @@ import net.treimers.square1.controller.Constants;
  * 
  * <p>The corner width i.e. the distance between B and C is calculated and defined in the Constants class. 
  */
-public class CornerPiece extends AbstractPiece {
+public abstract class AbstractCornerPiece extends AbstractPiece {
 	/** Index of point A. */
-	private static final int A = 0;
+	private static final int POINT_A = 0;
 	/** Index of point B. */
-	private static final int B = 1;
+	private static final int POINT_B = 1;
 	/** Index of point C. */
-	private static final int C = 2;
+	private static final int POINT_C = 2;
 	/** Index of point D. */
-	private static final int D = 3;
+	private static final int POINT_D = 3;
 	/** Index of point E. */
-	private static final int E = 4;
+	private static final int POINT_E = 4;
 	/** Index of point F. */
-	private static final int F = 5;
+	private static final int POINT_F = 5;
 	/** Index of point G. */
-	private static final int G = 6;
+	private static final int POINT_G = 6;
 	/** Index of point H. */
-	private static final int H = 7;
+	private static final int POINT_H = 7;
 
 	/**
 	 * Creates a new instance.
@@ -47,7 +47,7 @@ public class CornerPiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 6 sides (bottom, left rear, left front, right front, right rear, top).
 	 */
-	public CornerPiece(int rotate, int position, ColorBean colorBean, int... sides) {
+	public AbstractCornerPiece(int rotate, int position, ColorBean colorBean, int... sides) {
 		super(colorBean);
 		float[] points = {
 			// Point A
@@ -86,82 +86,82 @@ public class CornerPiece extends AbstractPiece {
 		addAllPoints(points);
 		int[] faces = {
 			// Bottom face
-			A,
+			POINT_A,
 			sides[0],
-			D,
+			POINT_D,
 			sides[0],
-			C,
+			POINT_C,
 			sides[0],
-			C,
+			POINT_C,
 			sides[0],
-			B,
+			POINT_B,
 			sides[0],
-			A,
+			POINT_A,
 			sides[0],
 			// Left rear face
-			A,
+			POINT_A,
 			sides[1],
-			B,
+			POINT_B,
 			sides[1],
-			F,
+			POINT_F,
 			sides[1],
-			F,
+			POINT_F,
 			sides[1],
-			E,
+			POINT_E,
 			sides[1],
-			A,
+			POINT_A,
 			sides[1],
 			// Left front face
-			B,
+			POINT_B,
 			sides[2],
-			C,
+			POINT_C,
 			sides[2],
-			G,
+			POINT_G,
 			sides[2],
-			G,
+			POINT_G,
 			sides[2],
-			F,
+			POINT_F,
 			sides[2],
-			B,
+			POINT_B,
 			sides[2],
 			// Right front face
-			G,
+			POINT_G,
 			sides[3],
-			C,
+			POINT_C,
 			sides[3],
-			D,
+			POINT_D,
 			sides[3],
-			D,
+			POINT_D,
 			sides[3],
-			H,
+			POINT_H,
 			sides[3],
-			G,
+			POINT_G,
 			sides[3],
 			// Right rear face
-			E,
+			POINT_E,
 			sides[4],
-			H,
+			POINT_H,
 			sides[4],
-			D,
+			POINT_D,
 			sides[4],
-			D,
+			POINT_D,
 			sides[4],
-			A,
+			POINT_A,
 			sides[4],
-			E,
+			POINT_E,
 			sides[4],
 			// Top face
-			E,
+			POINT_E,
 			sides[5],
-			F,
+			POINT_F,
 			sides[5],
-			G,
+			POINT_G,
 			sides[5],
-			G,
+			POINT_G,
 			sides[5],
-			H,
+			POINT_H,
 			sides[5],
-			E,
+			POINT_E,
 			sides[5],
 		};
 		addAllFaces(faces);

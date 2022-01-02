@@ -22,19 +22,19 @@ import net.treimers.square1.controller.Constants;
  * 
  * <p>The edge width i.e. the distance between B and C is calculated and defined in the Constants class. 
  */
-public class EdgePiece extends AbstractPiece {
+public abstract class AbstractEdgePiece extends AbstractPiece {
 	/** Index of point A. */
-	private static final int A = 0;
+	private static final int POINT_A = 0;
 	/** Index of point B. */
-	private static final int B = 1;
+	private static final int POINT_B = 1;
 	/** Index of point C. */
-	private static final int C = 2;
+	private static final int POINT_C = 2;
 	/** Index of point D. */
-	private static final int D = 3;
+	private static final int POINT_D = 3;
 	/** Index of point E. */
-	private static final int E = 4;
+	private static final int POINT_E = 4;
 	/** Index of point F. */
-	private static final int F = 5;
+	private static final int POINT_F = 5;
 
 	/**
 	 * Creates a new instance.
@@ -42,7 +42,7 @@ public class EdgePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
-	public EdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
+	public AbstractEdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
 		super(colorBean);
 		float[] points = {
 			// Point A
@@ -73,57 +73,57 @@ public class EdgePiece extends AbstractPiece {
 		addAllPoints(points);
 		int[] faces = {
 			// Bottom face
-			A,
+			POINT_A,
 			sides[0],
-			C,
+			POINT_C,
 			sides[0],
-			B,
+			POINT_B,
 			sides[0],
 			// Left face
-			A,
+			POINT_A,
 			sides[1],
-			B,
+			POINT_B,
 			sides[1],
-			E,
+			POINT_E,
 			sides[1],
-			E,
+			POINT_E,
 			sides[1],
-			D,
+			POINT_D,
 			sides[1],
-			A,
+			POINT_A,
 			sides[1],
 			// Front face
-			E,
+			POINT_E,
 			sides[2],
-			B,
+			POINT_B,
 			sides[2],
-			C,
+			POINT_C,
 			sides[2],
-			C,
+			POINT_C,
 			sides[2],
-			F,
+			POINT_F,
 			sides[2],
-			E,
+			POINT_E,
 			sides[2],
 			// Right face
-			D,
+			POINT_D,
 			sides[3],
-			F,
+			POINT_F,
 			sides[3],
-			C,
+			POINT_C,
 			sides[3],
-			C,
+			POINT_C,
 			sides[3],
-			A,
+			POINT_A,
 			sides[3],
-			D,
+			POINT_D,
 			sides[3],
 			// Top face
-			D,
+			POINT_D,
 			sides[4],
-			E,
+			POINT_E,
 			sides[4],
-			F,
+			POINT_F,
 			sides[4],
 		};
 		addAllFaces(faces);

@@ -15,7 +15,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,11 +27,9 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -44,12 +41,31 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.treimers.square1.Version;
 import net.treimers.square1.view.dialog.ColorDialog;
+import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.SmartGroup;
+import net.treimers.square1.view.piece.AbstractCornerPiece;
+import net.treimers.square1.view.piece.AbstractEdgePiece;
+import net.treimers.square1.view.piece.AbstractMiddlePiece;
 import net.treimers.square1.view.piece.AbstractPiece;
-import net.treimers.square1.view.piece.CornerPiece;
-import net.treimers.square1.view.piece.EdgePiece;
-import net.treimers.square1.view.piece.MiddlePiece;
+import net.treimers.square1.view.piece.corner.PieceA;
+import net.treimers.square1.view.piece.corner.PieceB;
+import net.treimers.square1.view.piece.corner.PieceC;
+import net.treimers.square1.view.piece.corner.PieceD;
+import net.treimers.square1.view.piece.corner.PieceE;
+import net.treimers.square1.view.piece.corner.PieceF;
+import net.treimers.square1.view.piece.corner.PieceG;
+import net.treimers.square1.view.piece.corner.PieceH;
+import net.treimers.square1.view.piece.edge.Piece1;
+import net.treimers.square1.view.piece.edge.Piece2;
+import net.treimers.square1.view.piece.edge.Piece3;
+import net.treimers.square1.view.piece.edge.Piece4;
+import net.treimers.square1.view.piece.edge.Piece5;
+import net.treimers.square1.view.piece.edge.Piece6;
+import net.treimers.square1.view.piece.edge.Piece7;
+import net.treimers.square1.view.piece.edge.Piece8;
+import net.treimers.square1.view.piece.middle.PieceM;
+import net.treimers.square1.view.piece.middle.PieceN;
 
 /*
 
@@ -94,8 +110,6 @@ public class Square1Controller implements Initializable, ColorBean {
 	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
 	@FXML private SubScene subScene;
-	/** The position to solve. */
-	@FXML private TextField position;
 	/** The menu bar. */
 	@FXML private MenuBar menuBar;
 	/** The radio menu item for piece A visibility. */
@@ -134,43 +148,6 @@ public class Square1Controller implements Initializable, ColorBean {
 	@FXML private RadioMenuItem menuPieceM;
 	/** The radio menu item for piece N visibility. */
 	@FXML private RadioMenuItem menuPieceN;
-	@FXML private Button solveButton;
-	/** Sub scene with piece A. */
-	@FXML private SubScene subSceneA;
-	/** Sub scene with piece B. */
-	@FXML private SubScene subSceneB;
-	/** Sub scene with piece C. */
-	@FXML private SubScene subSceneC;
-	/** Sub scene with piece D. */
-	@FXML private SubScene subSceneD;
-	/** Sub scene with piece E. */
-	@FXML private SubScene subSceneE;
-	/** Sub scene with piece F. */
-	@FXML private SubScene subSceneF;
-	/** Sub scene with piece G. */
-	@FXML private SubScene subSceneG;
-	/** Sub scene with piece H. */
-	@FXML private SubScene subSceneH;
-	/** Sub scene with piece 1. */
-	@FXML private SubScene subScene1;
-	/** Sub scene with piece 2. */
-	@FXML private SubScene subScene2;
-	/** Sub scene with piece 3. */
-	@FXML private SubScene subScene3;
-	/** Sub scene with piece 4. */
-	@FXML private SubScene subScene4;
-	/** Sub scene with piece 5. */
-	@FXML private SubScene subScene5;
-	/** Sub scene with piece 6. */
-	@FXML private SubScene subScene6;
-	/** Sub scene with piece 7. */
-	@FXML private SubScene subScene7;
-	/** Sub scene with piece 8. */
-	@FXML private SubScene subScene8;
-	/** Sub scene with piece M. */
-	@FXML private SubScene subSceneM;
-	/** Sub scene with piece N. */
-	@FXML private SubScene subSceneN;
 	private double mouseOldX;
 	private double mouseOldY;
 	private double mousePosX;
@@ -190,28 +167,16 @@ public class Square1Controller implements Initializable, ColorBean {
 	/** The map with all radio menu items for piece visibility. */
 	private Map<Character, RadioMenuItem> menuMap;
 	private Alert shortcutAlert;
-	private double mouseOldAX;
-	private double mouseOldAY;
-	private double mousePosAX;
-	private double mousePosAY;
 	/** The dialog used to set the colors of the Square-1 sides. */
 	private ColorDialog colorDialog;
 	/** A color change support object used to send out change events. */
 	private PropertyChangeSupport colorChangeSupport;
 	/** The colors of the Square-1 sides. */
 	private Color[] colors;
+	private PositionDialog positionDialog;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		// Position
-		position.setText("A1B2C3D45E6F7G8H");
-		position.setFocusTraversable(false);
-		position.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				solveButton.requestFocus();
-			}
-		});
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -227,44 +192,26 @@ public class Square1Controller implements Initializable, ColorBean {
 		colorDialog = new ColorDialog(this);
 		colors = DEFAULT_COLORS;
 		// Edges
-		EdgePiece edge1 = new EdgePiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.INNER_HORIZONTAL,
-				Constants.TOP);
-		EdgePiece edge2 = new EdgePiece(1, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.INNER_HORIZONTAL,
-				Constants.TOP);
-		EdgePiece edge3 = new EdgePiece(2, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.INNER_HORIZONTAL,
-				Constants.TOP);
-		EdgePiece edge4 = new EdgePiece(3, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.INNER_HORIZONTAL,
-				Constants.TOP);
-		EdgePiece edge5 = new EdgePiece(3, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.INNER_HORIZONTAL,
-				Constants.BOTTOM);
-		EdgePiece edge6 = new EdgePiece(2, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.INNER_HORIZONTAL,
-				Constants.BOTTOM);
-		EdgePiece edge7 = new EdgePiece(1, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.INNER_HORIZONTAL,
-				Constants.BOTTOM);
-		EdgePiece edge8 = new EdgePiece(0, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.INNER_HORIZONTAL,
-				Constants.BOTTOM);
+		AbstractEdgePiece edge1 = new Piece1(0, 1, this);
+		AbstractEdgePiece edge2 = new Piece2(1, 1, this);
+		AbstractEdgePiece edge3 = new Piece3(2, 1, this);
+		AbstractEdgePiece edge4 = new Piece4(3, 1, this);
+		AbstractEdgePiece edge5 = new Piece5(3, -1, this);
+		AbstractEdgePiece edge6 = new Piece6(2, -1, this);
+		AbstractEdgePiece edge7 = new Piece7(1, -1, this);
+		AbstractEdgePiece edge8 = new Piece8(0, -1, this);
 		// Corners
-		CornerPiece cornerA = new CornerPiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
-				Constants.INNER_HORIZONTAL, Constants.TOP);
-		CornerPiece cornerB = new CornerPiece(1, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.LEFT,
-				Constants.INNER_HORIZONTAL, Constants.TOP);
-		CornerPiece cornerC = new CornerPiece(2, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.BACK,
-				Constants.INNER_HORIZONTAL, Constants.TOP);
-		CornerPiece cornerD = new CornerPiece(3, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.RIGHT,
-				Constants.INNER_HORIZONTAL, Constants.TOP);
-		CornerPiece cornerE = new CornerPiece(3, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.FRONT, Constants.RIGHT,
-				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
-		CornerPiece cornerF = new CornerPiece(2, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.RIGHT, Constants.BACK,
-				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
-		CornerPiece cornerG = new CornerPiece(1, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.BACK, Constants.LEFT,
-				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
-		CornerPiece cornerH = new CornerPiece(0, -1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
-				Constants.INNER_HORIZONTAL, Constants.BOTTOM);
+		AbstractCornerPiece cornerA = new PieceA(0, 1, this);
+		AbstractCornerPiece cornerB = new PieceB(1, 1, this);
+		AbstractCornerPiece cornerC = new PieceC(2, 1, this);
+		AbstractCornerPiece cornerD = new PieceD(3, 1, this);
+		AbstractCornerPiece cornerE = new PieceE(3, -1, this);
+		AbstractCornerPiece cornerF = new PieceF(2, -1, this);
+		AbstractCornerPiece cornerG = new PieceG(1, -1, this);
+		AbstractCornerPiece cornerH = new PieceH(0, -1, this);
 		// Middle
-		MiddlePiece middleM = new MiddlePiece(0, this, Constants.INNER_VERTICAL, Constants.LEFT, Constants.FRONT, Constants.INNER_HORIZONTAL,
-				Constants.BACK, Constants.INNER_VERTICAL);
-		MiddlePiece middleN = new MiddlePiece(1, this, Constants.INNER_VERTICAL, Constants.RIGHT, Constants.BACK, Constants.INNER_HORIZONTAL,
-				Constants.FRONT, Constants.INNER_VERTICAL);
+		AbstractMiddlePiece middleM = new PieceM(0, this);
+		AbstractMiddlePiece middleN = new PieceN(1, this);
 		// Piece Map
 		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
 				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
@@ -323,39 +270,6 @@ public class Square1Controller implements Initializable, ColorBean {
 		rotateTransition.setAxis(Rotate.Y_AXIS);
 		rotateTransition.setByAngle(360);
 		rotateTransition.setInterpolator(Interpolator.LINEAR);
-		// piece A sub scenes
-		SmartGroup groupA = new SmartGroup();
-		subSceneA.setRoot(groupA);
-		subSceneA.setFill(Color.SILVER);
-		// Camera A
-		Camera cameraA = new PerspectiveCamera(true);
-		cameraA.setNearClip(0.1);
-		cameraA.setFarClip(10000.0);
-		cameraA.setTranslateZ(-4.5);
-		subSceneA.setCamera(cameraA);
-		// Piece A
-		CornerPiece cornerA1 = new CornerPiece(0, 1, this, Constants.INNER_VERTICAL, Constants.INNER_HORIZONTAL, Constants.LEFT, Constants.FRONT,
-				Constants.INNER_HORIZONTAL, Constants.TOP);
-		Group meshGroupA = new Group();
-		meshGroupA.getChildren().add(cornerA1);
-		groupA.getChildren().addAll(meshGroupA, new AmbientLight(Color.WHITE));
-		// Mouse Events A
-		Rotate rotateAX = new Rotate(-55, 0, 0, 0, Rotate.X_AXIS);
-		Rotate rotateAY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-		Rotate rotateAZ = new Rotate(126, 0, 0, 0, Rotate.Z_AXIS);
-		meshGroupA.getTransforms().addAll(rotateAX, rotateAY, rotateAZ);
-		subSceneA.setOnMousePressed(me -> {
-			mouseOldAX = me.getSceneX();
-			mouseOldAY = me.getSceneY();
-		});
-		subSceneA.setOnMouseDragged(me -> {
-			mousePosAX = me.getSceneX();
-			mousePosAY = me.getSceneY();
-			rotateAX.setAngle(rotateAX.getAngle() - (mousePosAY - mouseOldAY));
-			rotateAY.setAngle(rotateAY.getAngle() + (mousePosAX - mouseOldAX));
-			mouseOldAX = mousePosAX;
-			mouseOldAY = mousePosAY;
-		});
 	}
 
 	/**
@@ -367,22 +281,23 @@ public class Square1Controller implements Initializable, ColorBean {
 		this.primaryStage = primaryStage;
 		// Create ShortCuts Dialog
 		shortcutAlert = createShortcutStage();
+		positionDialog = createPositionDialog();
 	}
 
 	@Override
 	public Color[] getDefaultColors() {
 		return DEFAULT_COLORS;
 	}
-	
+
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-        colorChangeSupport.addPropertyChangeListener(listener);
-    }
+		colorChangeSupport.addPropertyChangeListener(listener);
+	}
 
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-    	colorChangeSupport.removePropertyChangeListener(listener);
-    }
+		colorChangeSupport.removePropertyChangeListener(listener);
+	}
 
 	@FXML
 	void doAbout(ActionEvent event) {
@@ -398,6 +313,11 @@ public class Square1Controller implements Initializable, ColorBean {
 	@FXML
 	void doExit(ActionEvent event) {
 		primaryStage.hide();
+	}
+
+	@FXML
+	void doShowPosition(ActionEvent event) {
+		positionDialog.showAndWait();
 	}
 
 	@FXML
@@ -572,5 +492,13 @@ public class Square1Controller implements Initializable, ColorBean {
 		alert.getDialogPane().setContent(root);
 		alert.initOwner(primaryStage);
 		return alert;
+	}
+
+	private PositionDialog createPositionDialog() throws IOException {
+		PositionDialog dialog = new PositionDialog(this);
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(primaryStage.getIcons().get(0));
+		dialog.initOwner(primaryStage);
+		return dialog;
 	}
 }
