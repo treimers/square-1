@@ -44,9 +44,6 @@ import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.SmartGroup;
-import net.treimers.square1.view.piece.AbstractCornerPiece;
-import net.treimers.square1.view.piece.AbstractEdgePiece;
-import net.treimers.square1.view.piece.AbstractMiddlePiece;
 import net.treimers.square1.view.piece.AbstractPiece;
 import net.treimers.square1.view.piece.corner.PieceA;
 import net.treimers.square1.view.piece.corner.PieceB;
@@ -152,12 +149,12 @@ public class Square1Controller implements Initializable, ColorBean {
 	private double mouseOldY;
 	private double mousePosX;
 	private double mousePosY;
-	private RotateTransition rotateTransition;
-	/** The primary stage. */
-	private Stage primaryStage;
 	private Rotate rotateX;
 	private Rotate rotateY;
 	private Rotate rotateZ;
+	private RotateTransition rotateTransition;
+	/** The primary stage. */
+	private Stage primaryStage;
 	/** The group with x-, y- and z-axis. */
 	private Group axis;
 	/** The mesh group in the sub scene. */
@@ -166,6 +163,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	private Map<Character, AbstractPiece> pieceMap;
 	/** The map with all radio menu items for piece visibility. */
 	private Map<Character, RadioMenuItem> menuMap;
+	/** The alert for key short cuts. */
 	private Alert shortcutAlert;
 	/** The dialog used to set the colors of the Square-1 sides. */
 	private ColorDialog colorDialog;
@@ -173,6 +171,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	private PropertyChangeSupport colorChangeSupport;
 	/** The colors of the Square-1 sides. */
 	private Color[] colors;
+	/** The dialog used to enter a new position. */
 	private PositionDialog positionDialog;
 
 	@Override
@@ -191,47 +190,81 @@ public class Square1Controller implements Initializable, ColorBean {
 		colorChangeSupport = new PropertyChangeSupport(this);
 		colorDialog = new ColorDialog(this);
 		colors = DEFAULT_COLORS;
-		// Edges
-		AbstractEdgePiece edge1 = new Piece1(0, 1, this);
-		AbstractEdgePiece edge2 = new Piece2(1, 1, this);
-		AbstractEdgePiece edge3 = new Piece3(2, 1, this);
-		AbstractEdgePiece edge4 = new Piece4(3, 1, this);
-		AbstractEdgePiece edge5 = new Piece5(3, -1, this);
-		AbstractEdgePiece edge6 = new Piece6(2, -1, this);
-		AbstractEdgePiece edge7 = new Piece7(1, -1, this);
-		AbstractEdgePiece edge8 = new Piece8(0, -1, this);
-		// Corners
-		AbstractCornerPiece cornerA = new PieceA(0, 1, this);
-		AbstractCornerPiece cornerB = new PieceB(1, 1, this);
-		AbstractCornerPiece cornerC = new PieceC(2, 1, this);
-		AbstractCornerPiece cornerD = new PieceD(3, 1, this);
-		AbstractCornerPiece cornerE = new PieceE(3, -1, this);
-		AbstractCornerPiece cornerF = new PieceF(2, -1, this);
-		AbstractCornerPiece cornerG = new PieceG(1, -1, this);
-		AbstractCornerPiece cornerH = new PieceH(0, -1, this);
-		// Middle
-		AbstractMiddlePiece middleM = new PieceM(0, this);
-		AbstractMiddlePiece middleN = new PieceN(1, this);
 		// Piece Map
-		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
-				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
-				new AbstractMap.SimpleEntry<>('5', edge5), new AbstractMap.SimpleEntry<>('6', edge6),
-				new AbstractMap.SimpleEntry<>('7', edge7), new AbstractMap.SimpleEntry<>('8', edge8),
-				new AbstractMap.SimpleEntry<>('A', cornerA), new AbstractMap.SimpleEntry<>('B', cornerB),
-				new AbstractMap.SimpleEntry<>('C', cornerC), new AbstractMap.SimpleEntry<>('D', cornerD),
-				new AbstractMap.SimpleEntry<>('E', cornerE), new AbstractMap.SimpleEntry<>('F', cornerF),
-				new AbstractMap.SimpleEntry<>('G', cornerG), new AbstractMap.SimpleEntry<>('H', cornerH),
-				new AbstractMap.SimpleEntry<>('M', middleM), new AbstractMap.SimpleEntry<>('N', middleN));
+		pieceMap = Map.ofEntries(
+				// Piece 1
+				new AbstractMap.SimpleEntry<>('1', new Piece1(0, 1, this)),
+				// Piece 2
+				new AbstractMap.SimpleEntry<>('2', new Piece2(1, 1, this)),
+				// Piece 3
+				new AbstractMap.SimpleEntry<>('3', new Piece3(2, 1, this)),
+				// Piece 4
+				new AbstractMap.SimpleEntry<>('4', new Piece4(3, 1, this)),
+				// Piece 5
+				new AbstractMap.SimpleEntry<>('5', new Piece5(3, -1, this)),
+				// Piece 6
+				new AbstractMap.SimpleEntry<>('6', new Piece6(2, -1, this)),
+				// Piece 7
+				new AbstractMap.SimpleEntry<>('7', new Piece7(1, -1, this)),
+				// Piece 8
+				new AbstractMap.SimpleEntry<>('8', new Piece8(0, -1, this)),
+				// Piece A
+				new AbstractMap.SimpleEntry<>('A', new PieceA(0, 1, this)),
+				// Piece B
+				new AbstractMap.SimpleEntry<>('B', new PieceB(1, 1, this)),
+				// Piece C
+				new AbstractMap.SimpleEntry<>('C', new PieceC(2, 1, this)),
+				// Piece D
+				new AbstractMap.SimpleEntry<>('D', new PieceD(3, 1, this)),
+				// Piece E
+				new AbstractMap.SimpleEntry<>('E', new PieceE(3, -1, this)),
+				// Piece F
+				new AbstractMap.SimpleEntry<>('F', new PieceF(2, -1, this)),
+				// Piece G
+				new AbstractMap.SimpleEntry<>('G', new PieceG(1, -1, this)),
+				// Piece H
+				new AbstractMap.SimpleEntry<>('H', new PieceH(0, -1, this)),
+				// Piece M
+				new AbstractMap.SimpleEntry<>('M', new PieceM(0, this)),
+				// Piece N
+				new AbstractMap.SimpleEntry<>('N', new PieceN(1, this)));
 		// Menu Map
-		menuMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', menuPiece1),
-				new AbstractMap.SimpleEntry<>('2', menuPiece2), new AbstractMap.SimpleEntry<>('3', menuPiece3),
-				new AbstractMap.SimpleEntry<>('4', menuPiece4), new AbstractMap.SimpleEntry<>('5', menuPiece5),
-				new AbstractMap.SimpleEntry<>('6', menuPiece6), new AbstractMap.SimpleEntry<>('7', menuPiece7),
-				new AbstractMap.SimpleEntry<>('8', menuPiece8), new AbstractMap.SimpleEntry<>('A', menuPieceA),
-				new AbstractMap.SimpleEntry<>('B', menuPieceB), new AbstractMap.SimpleEntry<>('C', menuPieceC),
-				new AbstractMap.SimpleEntry<>('D', menuPieceD), new AbstractMap.SimpleEntry<>('E', menuPieceE),
-				new AbstractMap.SimpleEntry<>('F', menuPieceF), new AbstractMap.SimpleEntry<>('G', menuPieceG),
-				new AbstractMap.SimpleEntry<>('H', menuPieceH), new AbstractMap.SimpleEntry<>('M', menuPieceM),
+		menuMap = Map.ofEntries(
+				// Menu Toggle Piece 1
+				new AbstractMap.SimpleEntry<>('1', menuPiece1),
+				// Menu Toggle Piece 2
+				new AbstractMap.SimpleEntry<>('2', menuPiece2), 
+				// Menu Toggle Piece 3
+				new AbstractMap.SimpleEntry<>('3', menuPiece3),
+				// Menu Toggle Piece 4
+				new AbstractMap.SimpleEntry<>('4', menuPiece4), 
+				// Menu Toggle Piece 5
+				new AbstractMap.SimpleEntry<>('5', menuPiece5),
+				// Menu Toggle Piece 6
+				new AbstractMap.SimpleEntry<>('6', menuPiece6), 
+				// Menu Toggle Piece 7
+				new AbstractMap.SimpleEntry<>('7', menuPiece7),
+				// Menu Toggle Piece 8
+				new AbstractMap.SimpleEntry<>('8', menuPiece8), 
+				// Menu Toggle Piece A
+				new AbstractMap.SimpleEntry<>('A', menuPieceA),
+				// Menu Toggle Piece B
+				new AbstractMap.SimpleEntry<>('B', menuPieceB), 
+				// Menu Toggle Piece C
+				new AbstractMap.SimpleEntry<>('C', menuPieceC),
+				// Menu Toggle Piece D
+				new AbstractMap.SimpleEntry<>('D', menuPieceD), 
+				// Menu Toggle Piece E
+				new AbstractMap.SimpleEntry<>('E', menuPieceE),
+				// Menu Toggle Piece F
+				new AbstractMap.SimpleEntry<>('F', menuPieceF), 
+				// Menu Toggle Piece G
+				new AbstractMap.SimpleEntry<>('G', menuPieceG),
+				// Menu Toggle Piece H
+				new AbstractMap.SimpleEntry<>('H', menuPieceH), 
+				// Menu Toggle Piece M
+				new AbstractMap.SimpleEntry<>('M', menuPieceM),
+				// Menu Toggle Piece N
 				new AbstractMap.SimpleEntry<>('N', menuPieceN));
 		// Mesh Group
 		meshGroup = new Group();
@@ -468,7 +501,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	/**
-	 * Creates the stage with the key short cuts,
+	 * Creates the stage with the key short cuts.
 	 * @throws IOException in case of load errors.
 	 */
 	private Alert createShortcutStage() throws IOException {
@@ -494,6 +527,11 @@ public class Square1Controller implements Initializable, ColorBean {
 		return alert;
 	}
 
+	/**
+	 * Creates a new position dialog allowing the user to define a position to be solved.
+	 * @return a new position dialog.
+	 * @throws IOException in case of load errors.
+	 */
 	private PositionDialog createPositionDialog() throws IOException {
 		PositionDialog dialog = new PositionDialog(this);
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
