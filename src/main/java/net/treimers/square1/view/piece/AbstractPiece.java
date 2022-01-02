@@ -87,8 +87,30 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 	}
 
 	/**
+	 * Rotates piece by angle around x-axis.
+	 * @param ang the angle.
+	 */
+	public void rotateByX(int ang) {
+		Rotate r = new Rotate(ang, Rotate.X_AXIS);
+		transform = transform.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(transform);
+	}
+
+	/**
+	 * Rotates piece by angle around y-axis.
+	 * @param ang the angle.
+	 */
+	public void rotateByY(int ang) {
+		Rotate r = new Rotate(ang, Rotate.Y_AXIS);
+		transform = transform.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(transform);
+	}
+
+	/**
 	 * Rotates piece by angle around z-axis.
-	 * @param ang
+	 * @param ang the angle.
 	 */
 	public void rotateByZ(int ang) {
 		Rotate r = new Rotate(ang, Rotate.Z_AXIS);

@@ -24,5 +24,6 @@ public class PieceN extends AbstractMiddlePiece {
 	 */
 	public PieceN(int rotate, ColorBean colorBean) {
 		super(rotate, colorBean, SIDES);
+		rotateByZ(180);
 	}
 }

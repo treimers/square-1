@@ -225,9 +225,9 @@ public class Square1Controller implements Initializable, ColorBean {
 				// Piece H
 				new AbstractMap.SimpleEntry<>('H', new PieceH(0, -1, this)),
 				// Piece M
-				new AbstractMap.SimpleEntry<>('M', new PieceM(0, this)),
+				new AbstractMap.SimpleEntry<>('M', new PieceM(this)),
 				// Piece N
-				new AbstractMap.SimpleEntry<>('N', new PieceN(1, this)));
+				new AbstractMap.SimpleEntry<>('N', new PieceN(0, this)));
 		// Menu Map
 		menuMap = Map.ofEntries(
 				// Menu Toggle Piece 1

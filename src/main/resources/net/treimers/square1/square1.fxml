@@ -26,7 +26,10 @@
 				</Menu>
             <Menu mnemonicParsing="false" text="Position">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Show Position Dialog" />
+                <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Show Position Dialog">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
               </items>
             </Menu>
 				<Menu mnemonicParsing="false" text="View">

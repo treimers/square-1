@@ -164,6 +164,6 @@ public abstract class AbstractMiddlePiece extends AbstractPiece {
 			sides[5],
 		};
 		addAllFaces(faces);
-		rotateByZ(rotate * 180);
+		rotateByX(rotate * 180);
 	}
 }

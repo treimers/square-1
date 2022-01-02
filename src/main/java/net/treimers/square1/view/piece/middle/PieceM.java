@@ -22,7 +22,7 @@ public class PieceM extends AbstractMiddlePiece {
 	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
 	 * or 3 for 270 degrees).
 	 */
-	public PieceM(int rotate, ColorBean colorBean) {
-		super(rotate, colorBean, SIDES);
+	public PieceM(ColorBean colorBean) {
+		super(0, colorBean, SIDES);
 	}
 }
