@@ -562,7 +562,7 @@ public class Square1Controller implements Initializable, ColorBean {
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initStyle(StageStyle.UTILITY);
 		// load content
-		URL resource = Square1Controller.class.getResource("keyshortcuts.fxml");
+		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyshortcuts.fxml");
 		FXMLLoader loader = new FXMLLoader(resource);
 		Parent root = loader.load();
 		// set view's controller

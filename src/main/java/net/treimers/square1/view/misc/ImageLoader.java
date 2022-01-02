@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
  * This library class provides image loading capabilities. 
  */
 public class ImageLoader {
-	private static final Image LOGO_IMAGE = new Image(ImageLoader.class.getResourceAsStream("Square1.png"));
+	private static final Image LOGO_IMAGE = new Image(ImageLoader.class.getResourceAsStream("/net/treimers/square1/square1.png"));
 
 	/**
 	 * Private constructor, never used.
