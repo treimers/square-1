@@ -85,7 +85,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneM" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+				<SubScene fx:id="subSceneMinus" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -193,7 +193,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneN" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+				<SubScene fx:id="subSceneSlash" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
