@@ -1,4 +1,4 @@
-package net.treimers.square1.controller;
+package net.treimers.square1.model;
 
 /**
  * Provides several constants for colors, angles and length.

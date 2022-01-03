@@ -100,7 +100,7 @@
 				<Label text="B" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<Label text="2" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-				<Label text="/" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+				<Label text="-" GridPane.columnIndex="4" GridPane.rowIndex="3" />
 				<SubScene fx:id="subSceneC" depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
@@ -208,7 +208,7 @@
 				<Label text="F" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 				<Label text="5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
 				<Label text="6" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-				<Label text="-" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+				<Label text="/" GridPane.columnIndex="4" GridPane.rowIndex="5" />
 				<SubScene fx:id="subSceneG" depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="6">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />

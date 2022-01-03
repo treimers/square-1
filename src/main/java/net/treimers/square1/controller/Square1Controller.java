@@ -40,6 +40,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.treimers.square1.Version;
+import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
@@ -536,6 +537,7 @@ public class Square1Controller implements Initializable, ColorBean {
 		PositionDialog dialog = new PositionDialog(this);
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(primaryStage.getIcons().get(0));
+		stage.initModality(Modality.APPLICATION_MODAL);
 		dialog.initOwner(primaryStage);
 		return dialog;
 	}

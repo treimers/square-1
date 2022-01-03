@@ -8,8 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.util.Callback;
-import net.treimers.square1.controller.ColorBean;
 import net.treimers.square1.controller.PositionDialogController;
+import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
 
 public class PositionDialog extends Dialog<Position> {

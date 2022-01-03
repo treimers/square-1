@@ -8,6 +8,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.view.misc.SmartGroup;
 import net.treimers.square1.view.piece.AbstractPiece;
 import net.treimers.square1.view.piece.corner.PieceA;
@@ -94,7 +95,7 @@ public class PositionDialogController {
         Camera camera = new PerspectiveCamera(true);
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
-        camera.setTranslateZ(-4.5);
+        camera.setTranslateZ(-5.5);
         subScene.setCamera(camera);
         // Piece
         Group meshGroup = new Group();
@@ -127,7 +128,7 @@ public class PositionDialogController {
         Camera camera = new PerspectiveCamera(true);
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
-        camera.setTranslateZ(-4.5);
+        camera.setTranslateZ(-5.5);
         subScene.setCamera(camera);
         // Piece
         Group meshGroup = new Group();

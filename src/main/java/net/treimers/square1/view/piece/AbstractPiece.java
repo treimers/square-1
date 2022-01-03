@@ -12,8 +12,8 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
-import net.treimers.square1.controller.ColorBean;
-import net.treimers.square1.controller.Constants;
+import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Constants;
 
 /**
  * <p>This class is the base class for pieces of the Square-1 cube.

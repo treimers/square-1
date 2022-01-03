@@ -1,7 +1,7 @@
 package net.treimers.square1.view.piece;
 
-import net.treimers.square1.controller.ColorBean;
-import net.treimers.square1.controller.Constants;
+import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Constants;
 
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
@@ -165,5 +165,6 @@ public abstract class AbstractMiddlePiece extends AbstractPiece {
 		};
 		addAllFaces(faces);
 		rotateByX(rotate * 180);
+		rotateByZ(rotate * -30);
 	}
 }

@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import net.treimers.square1.controller.ColorBean;
+import net.treimers.square1.model.ColorBean;
 
 /**
  * Instances of this class are used to display a color choosing dialog

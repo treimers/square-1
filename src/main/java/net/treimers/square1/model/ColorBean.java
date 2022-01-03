@@ -1,4 +1,4 @@
-package net.treimers.square1.controller;
+package net.treimers.square1.model;
 
 import java.beans.PropertyChangeListener;
 
