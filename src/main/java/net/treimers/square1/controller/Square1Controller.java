@@ -41,6 +41,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.treimers.square1.Version;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Position;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
@@ -351,7 +352,9 @@ public class Square1Controller implements Initializable, ColorBean {
 
 	@FXML
 	void doShowPosition(ActionEvent event) {
-		positionDialog.showAndWait();
+		positionDialog.getPositionDialogController().reset();
+		Optional<Position> result = positionDialog.showAndWait();
+		System.out.println(result);
 	}
 
 	@FXML

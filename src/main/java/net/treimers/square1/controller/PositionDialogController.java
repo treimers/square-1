@@ -4,11 +4,13 @@ import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.input.ClipboardContent;
@@ -19,6 +21,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Position;
 import net.treimers.square1.view.misc.SmartGroup;
 import net.treimers.square1.view.piece.AbstractPiece;
 import net.treimers.square1.view.piece.corner.PieceA;
@@ -60,8 +63,11 @@ public class PositionDialogController {
 	@FXML private SubScene subSceneH;
 	@FXML private SubScene subSceneMinus;
 	@FXML private SubScene subSceneSlash;
+	private Map<String, SubScene> subSceneMap;
+	private Position position;
 
 	public void init(ColorBean colorBean) {
+		position = new Position();
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -73,43 +79,43 @@ public class PositionDialogController {
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
 		// piece sub scenes
-		Map<Character, SubScene> subSceneMap = Map.ofEntries(
+		subSceneMap = Map.ofEntries(
 				// Scene A
-				new AbstractMap.SimpleEntry<>('A', subSceneA),
+				new AbstractMap.SimpleEntry<>("A", subSceneA),
 				// Scene B
-				new AbstractMap.SimpleEntry<>('B', subSceneB),
+				new AbstractMap.SimpleEntry<>("B", subSceneB),
 				// Scene C
-				new AbstractMap.SimpleEntry<>('C', subSceneC),
+				new AbstractMap.SimpleEntry<>("C", subSceneC),
 				// Scene D
-				new AbstractMap.SimpleEntry<>('D', subSceneD),
+				new AbstractMap.SimpleEntry<>("D", subSceneD),
 				// Scene E
-				new AbstractMap.SimpleEntry<>('E', subSceneE),
+				new AbstractMap.SimpleEntry<>("E", subSceneE),
 				// Scene F
-				new AbstractMap.SimpleEntry<>('F', subSceneF),
+				new AbstractMap.SimpleEntry<>("F", subSceneF),
 				// Scene G
-				new AbstractMap.SimpleEntry<>('G', subSceneG),
+				new AbstractMap.SimpleEntry<>("G", subSceneG),
 				// Scene H
-				new AbstractMap.SimpleEntry<>('H', subSceneH),
+				new AbstractMap.SimpleEntry<>("H", subSceneH),
 				// Scene 1
-				new AbstractMap.SimpleEntry<>('1', subScene1),
+				new AbstractMap.SimpleEntry<>("1", subScene1),
 				// Scene 2
-				new AbstractMap.SimpleEntry<>('2', subScene2),
+				new AbstractMap.SimpleEntry<>("2", subScene2),
 				// Scene 3
-				new AbstractMap.SimpleEntry<>('3', subScene3),
+				new AbstractMap.SimpleEntry<>("3", subScene3),
 				// Scene 4
-				new AbstractMap.SimpleEntry<>('4', subScene4),
+				new AbstractMap.SimpleEntry<>("4", subScene4),
 				// Scene 5
-				new AbstractMap.SimpleEntry<>('5', subScene5),
+				new AbstractMap.SimpleEntry<>("5", subScene5),
 				// Scene 6
-				new AbstractMap.SimpleEntry<>('6', subScene6),
+				new AbstractMap.SimpleEntry<>("6", subScene6),
 				// Scene 7
-				new AbstractMap.SimpleEntry<>('7', subScene7),
+				new AbstractMap.SimpleEntry<>("7", subScene7),
 				// Scene 8
-				new AbstractMap.SimpleEntry<>('8', subScene8),
+				new AbstractMap.SimpleEntry<>("8", subScene8),
 				// Scene -
-				new AbstractMap.SimpleEntry<>('-', subSceneMinus),
+				new AbstractMap.SimpleEntry<>("-", subSceneMinus),
 				// Scene /
-				new AbstractMap.SimpleEntry<>('/', subSceneSlash));
+				new AbstractMap.SimpleEntry<>("/", subSceneSlash));
 		createPieceScene(subSceneA, new PieceA(0, 1, colorBean));
 		createPieceScene(subSceneB, new PieceB(0, 1, colorBean));
 		createPieceScene(subSceneC, new PieceC(0, 1, colorBean));
@@ -128,25 +134,40 @@ public class PositionDialogController {
 		createPieceScene(subScene8, new Piece8(0, 1, colorBean));
 		createMiddleScene(subSceneMinus, new PieceM(colorBean), new PieceN(0, colorBean));
 		createMiddleScene(subSceneSlash, new PieceM(colorBean), new PieceN(1, colorBean));
-		Set<Character> keySet = subSceneMap.keySet();
-		for (Character c : keySet) {
-			SubScene pieceScene = subSceneMap.get(c);
-			registerDragAndDrop(c, pieceScene);
+		Set<String> keySet = subSceneMap.keySet();
+		for (String key : keySet) {
+			SubScene pieceScene = subSceneMap.get(key);
+			registerDragAndDrop(key, pieceScene);
 		}
 	}
-	
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void reset() {
+		position.reset();
+		Set<String> keySet = subSceneMap.keySet();
+		for (String key : keySet) {
+			SubScene pieceScene = subSceneMap.get(key);
+			setVisibility(pieceScene, true);
+		}
+	}
+
 	// drag and drop
 	// https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
-	private void registerDragAndDrop(Character c, SubScene pieceScene) {
+	private void registerDragAndDrop(String name, SubScene pieceScene) {
 		pieceScene.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				/* drag was detected, start a drag-and-drop gesture*/
-				/* allow any transfer mode */
-				Dragboard db = pieceScene.startDragAndDrop(TransferMode.ANY);
-				/* Put a string on a dragboard */
-				ClipboardContent content = new ClipboardContent();
-				content.putString(c.toString());
-				db.setContent(content);
+				if (position.accept(name)) {
+					/* drag was detected, start a drag-and-drop gesture*/
+					/* allow any transfer mode */
+					Dragboard db = pieceScene.startDragAndDrop(TransferMode.ANY);
+					/* Put a string on a dragboard */
+					ClipboardContent content = new ClipboardContent();
+					content.putString(name);
+					db.setContent(content);
+				}
 				event.consume();
 			}
 		});
@@ -155,7 +176,8 @@ public class PositionDialogController {
 				/* data is dragged over the target */
 				/* accept it only if it is not dragged from the same node 
 				 * and if it has a string data */
-				if (event.getGestureSource() != subScene && event.getDragboard().hasString()) {
+				if (event.getGestureSource() != subScene && event.getDragboard().hasString()
+						&& position.accept(event.getDragboard().getString())) {
 					/* allow for both copying and moving, whatever user chooses */
 					event.acceptTransferModes(TransferMode.MOVE);
 				}
@@ -166,7 +188,8 @@ public class PositionDialogController {
 			public void handle(DragEvent event) {
 				/* the drag-and-drop gesture entered the target */
 				/* show to the user that it is an actual gesture target */
-				if (event.getGestureSource() != subScene && event.getDragboard().hasString()) {
+				if (event.getGestureSource() != subScene && event.getDragboard().hasString()
+						&& position.accept(event.getDragboard().getString())) {
 					subScene.setFill(Color.GRAY);
 				}
 				event.consume();
@@ -186,12 +209,21 @@ public class PositionDialogController {
 				Dragboard db = event.getDragboard();
 				boolean success = false;
 				if (db.hasString()) {
-					System.out.println(db.getString());
+					position.add(db.getString());
 					success = true;
 				}
 				/* let the source know whether the string was successfully 
 				 * transferred and used */
 				event.setDropCompleted(success);
+				event.consume();
+			}
+		});
+		pieceScene.setOnDragDone(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				/* the drag and drop gesture ended */
+				/* if the data was successfully moved, clear it */
+				if (event.getTransferMode() == TransferMode.MOVE)
+					setVisibility(pieceScene, false);
 				event.consume();
 			}
 		});
@@ -237,5 +269,12 @@ public class PositionDialogController {
 		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
 		Rotate rotateZ = new Rotate(126, 0, 0, 0, Rotate.Z_AXIS);
 		meshGroup.getTransforms().addAll(rotateX, rotateY, rotateZ);
+	}
+
+	private void setVisibility(SubScene pieceScene, boolean visibility) {
+		Group group = (Group) pieceScene.getRoot().getChildrenUnmodifiable().get(0);
+		ObservableList<Node> children = group.getChildren();
+		for (Node child : children)
+			child.setVisible(visibility);
 	}
 }

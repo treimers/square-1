@@ -3,11 +3,28 @@ package net.treimers.square1.model;
 public class Position {
 	private String position;
 
-	public Position(String position) {
-		this.position = position;
+	public Position() {
+		position = "";
 	}
 
-	public String getPosition() {
+	public boolean accept(String name) {
+		return !position.contains(name);
+	}
+
+	public boolean add(String name) {
+		if (accept(name)) {
+			position += name;
+			return true;
+		} else
+			return false;
+	}
+
+	public void reset() {
+		position = "";
+	}
+	
+	@Override
+	public String toString() {
 		return position;
-	}	
+	}
 }

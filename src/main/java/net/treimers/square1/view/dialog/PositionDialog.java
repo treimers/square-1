@@ -13,8 +13,8 @@ import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
 
 public class PositionDialog extends Dialog<Position> {
-	private Position position;
-
+	private PositionDialogController positionDialogController;
+	
 	public PositionDialog(ColorBean colorBean) throws IOException {
 		setTitle("Position");
 		// dialog content
@@ -23,7 +23,7 @@ public class PositionDialog extends Dialog<Position> {
 		Parent root = loader.load();
 		getDialogPane().setContent(root);
 		// controller
-		PositionDialogController positionDialogController = loader.getController();
+		positionDialogController = loader.getController();
 		positionDialogController.init(colorBean);
 		// buttons
 		getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -32,10 +32,14 @@ public class PositionDialog extends Dialog<Position> {
 			@Override
 			public Position call(ButtonType button) {
 				if (button == ButtonType.OK) {
-					return position;
-				}
-				return null;
+					return positionDialogController.getPosition();
+				} else
+					return null;
 			}
 		});
+	}
+	
+	public PositionDialogController getPositionDialogController() {
+		return positionDialogController;
 	}
 }
