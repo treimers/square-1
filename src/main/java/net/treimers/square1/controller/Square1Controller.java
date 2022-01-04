@@ -5,7 +5,9 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -164,7 +166,6 @@ public class Square1Controller implements Initializable, ColorBean {
 	/** The map with all pieces. */
 	private Map<Character, AbstractPiece> pieceMap;
 	/** The map with all radio menu items for piece visibility. */
-	private Map<Character, RadioMenuItem> menuMap;
 	/** The alert for key short cuts. */
 	private Alert shortcutAlert;
 	/** The dialog used to set the colors of the Square-1 sides. */
@@ -231,7 +232,7 @@ public class Square1Controller implements Initializable, ColorBean {
 				// Piece N
 				new AbstractMap.SimpleEntry<>('N', new PieceN(0, this)));
 		// Menu Map
-		menuMap = Map.ofEntries(
+		Map<Character, RadioMenuItem> menuMap = Map.ofEntries(
 				// Menu Toggle Piece 1
 				new AbstractMap.SimpleEntry<>('1', menuPiece1),
 				// Menu Toggle Piece 2
@@ -321,7 +322,7 @@ public class Square1Controller implements Initializable, ColorBean {
 
 	@Override
 	public Color[] getDefaultColors() {
-		return DEFAULT_COLORS;
+		return Arrays.copyOf(DEFAULT_COLORS, DEFAULT_COLORS.length);
 	}
 
 	@Override
@@ -422,18 +423,16 @@ public class Square1Controller implements Initializable, ColorBean {
 
 	@FXML
 	void doHideAll(ActionEvent event) {
-		Set<Character> set = pieceMap.keySet();
-		for (Character c : set) {
-			pieceMap.get(c).setVisible(false);
-		}
+		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
+		for (Entry<Character, AbstractPiece> entry : entrySet)
+			entry.getValue().setVisible(false);
 	}
 
 	@FXML
 	void doShowAll(ActionEvent event) {
-		Set<Character> set = pieceMap.keySet();
-		for (Character c : set) {
-			pieceMap.get(c).setVisible(true);
-		}
+		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
+		for (Entry<Character, AbstractPiece> entry : entrySet)
+			entry.getValue().setVisible(true);
 	}
 
 	@FXML

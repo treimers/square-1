@@ -45,7 +45,7 @@ public abstract class AbstractMiddlePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 6 sides (bottom, left, front, right, rear, top).
 	 */
-	public AbstractMiddlePiece(int rotate, ColorBean colorBean, int... sides) {
+	protected AbstractMiddlePiece(int rotate, ColorBean colorBean, int... sides) {
 		super(colorBean);
 		float[] points = {
 			// Point A

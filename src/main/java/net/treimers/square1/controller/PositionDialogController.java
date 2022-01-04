@@ -2,6 +2,7 @@ package net.treimers.square1.controller;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javafx.collections.ObservableList;
@@ -134,11 +135,9 @@ public class PositionDialogController {
 		createPieceScene(subScene8, new Piece8(0, 1, colorBean));
 		createMiddleScene(subSceneMinus, new PieceM(colorBean), new PieceN(0, colorBean));
 		createMiddleScene(subSceneSlash, new PieceM(colorBean), new PieceN(1, colorBean));
-		Set<String> keySet = subSceneMap.keySet();
-		for (String key : keySet) {
-			SubScene pieceScene = subSceneMap.get(key);
-			registerDragAndDrop(key, pieceScene);
-		}
+		Set<Entry<String, SubScene>> entrySet = subSceneMap.entrySet();
+		for (Entry<String, SubScene> entry : entrySet)
+			registerDragAndDrop(entry.getKey(), entry.getValue());
 	}
 
 	public Position getPosition() {
@@ -147,11 +146,9 @@ public class PositionDialogController {
 
 	public void reset() {
 		position.reset();
-		Set<String> keySet = subSceneMap.keySet();
-		for (String key : keySet) {
-			SubScene pieceScene = subSceneMap.get(key);
-			setVisibility(pieceScene, true);
-		}
+		Set<Entry<String, SubScene>> entrySet = subSceneMap.entrySet();
+		for (Entry<String, SubScene> entry : entrySet)
+			setVisibility(entry.getValue(), true);
 	}
 
 	// drag and drop

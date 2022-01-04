@@ -1,30 +1,30 @@
 package net.treimers.square1.model;
 
 public class Position {
-	private String position;
+	private String positionString;
 
 	public Position() {
-		position = "";
+		positionString = "";
 	}
 
 	public boolean accept(String name) {
-		return !position.contains(name);
+		return !positionString.contains(name);
 	}
 
 	public boolean add(String name) {
 		if (accept(name)) {
-			position += name;
+			positionString += name;
 			return true;
 		} else
 			return false;
 	}
 
 	public void reset() {
-		position = "";
+		positionString = "";
 	}
 	
 	@Override
 	public String toString() {
-		return position;
+		return positionString;
 	}
 }

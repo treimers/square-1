@@ -1,9 +1,11 @@
 package net.treimers.square1.model;
 
+import java.util.Arrays;
+
 /**
  * Provides several constants for colors, angles and length.
  */
-public interface Constants {
+public class Constants {
 	// Colors indices
 	/** The index for the top side color. */
 	public static final int TOP = 0;
@@ -26,7 +28,7 @@ public interface Constants {
 	/** The vertical pick position of the colored squares (50%) */
 	public static final float COLOR_HEIGHT = 0.5f;
 	/** The index array used to pick the colors from the writable image. */
-	public static final float[] COLOR_ARRAY = {
+	private static final float[] COLOR_ARRAY = {
 		// position of top color
 		(Constants.TOP + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
@@ -62,14 +64,28 @@ public interface Constants {
 	/** Angle 90 degrees. */
 	public static final double ANGLE_90 = 90.0 / 180.0 * Math.PI;
 	/** Angle 180 degrees. */
-	public static final double ANGLE_180 = 180.0 / 180.0 * Math.PI;
+	public static final double ANGLE_180 = Math.PI;
 	// Some lengths
 	/** The size of the cube (half length of a side). */
 	public static final float SIZE = 1.0f;
 	/** Width of an edge piece. */
 	public static final float EDGE_WIDTH = (float) (2 * Constants.SIZE * Math.sin(Constants.ANGLE_15));
 	/** Width of a corner piece. */
-	public static final float CORNER_WIDTH = (float) (Constants.SIZE - EDGE_WIDTH / 2.0f);
+	public static final float CORNER_WIDTH = Constants.SIZE - EDGE_WIDTH / 2.0f;
 	/** Small delta used to create gaps between pieces. */
 	public static final float DELTA = 0.02f;
+	
+	/**
+	 * Don't let anyone instantiate this class.
+	 */
+	private Constants() {
+	}
+	
+	/**
+	 * Gets the color array.
+	 * @return the color array.
+	 */
+	public static float[] getColorArray() {
+		return Arrays.copyOf(COLOR_ARRAY, COLOR_ARRAY.length);
+	}
 }

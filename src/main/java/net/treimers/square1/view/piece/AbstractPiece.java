@@ -35,7 +35,7 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 	 * Creates a new instance.
 	 * @param colorBean the bean with a Square-1 colors.
 	 */
-	public AbstractPiece(ColorBean colorBean) {
+	protected AbstractPiece(ColorBean colorBean) {
 		// init fields.
 		transform = new Rotate();
 		triangleMesh = new TriangleMesh();
@@ -44,7 +44,7 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 		// triangle mesh
 		setMesh(triangleMesh);
 		// colors
-		triangleMesh.getTexCoords().addAll(Constants.COLOR_ARRAY);
+		triangleMesh.getTexCoords().addAll(Constants.getColorArray());
 		material = new PhongMaterial();
 		setColors(colorBean.getDefaultColors());
 		setMaterial(material);

@@ -42,7 +42,7 @@ public abstract class AbstractEdgePiece extends AbstractPiece {
 	 * or 3 for 270 degrees).
 	 * @param sides array with colors for the 5 sides (bottom, left, front, right, top).
 	 */
-	public AbstractEdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
+	protected AbstractEdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
 		super(colorBean);
 		float[] points = {
 			// Point A

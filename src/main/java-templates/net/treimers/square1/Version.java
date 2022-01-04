@@ -7,9 +7,15 @@ public class Version {
 	/** The application title. */
 	private static final String TITLE = "@project.name@";
 	/** The application version. */
-	private static final String VERSION = "@project.version@";
+	private static final String VERSION_NUMBER = "@project.version@";
 	/** The application vendor. */
 	private static final String APP_VENDOR = "@organization.name@";
+
+	/**
+	 * Don't let anyone instantiate this class.
+	 */
+	private Version() {
+	}
 
 	/**
 	 * Returns the application title.
@@ -26,7 +32,7 @@ public class Version {
 	 * @return the application version.
 	 */
 	public static String getAppVersion() {
-		return VERSION;
+		return VERSION_NUMBER;
 	}
 
 	/**
