@@ -5,15 +5,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
+import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -64,11 +64,11 @@ public class PositionDialogController {
 	@FXML private SubScene subSceneH;
 	@FXML private SubScene subSceneMinus;
 	@FXML private SubScene subSceneSlash;
+	@FXML private Label positionLabel;
 	private Map<String, SubScene> subSceneMap;
 	private Position position;
-
+	
 	public void init(ColorBean colorBean) {
-		position = new Position();
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -139,16 +139,31 @@ public class PositionDialogController {
 		for (Entry<String, SubScene> entry : entrySet)
 			registerDragAndDrop(entry.getKey(), entry.getValue());
 	}
+	
+	public void doClear(ActionEvent event) {
+		clear();
+	}
+
+	public void clear() {
+		position.clear();
+		displayPosition(position);
+	}
 
 	public Position getPosition() {
 		return position;
 	}
 
-	public void reset() {
-		position.reset();
+	public void setPosition(Position position) {
+		this.position = new Position(position);
+		displayPosition(position);
+	}
+	
+	private void displayPosition(Position position) {
+		// TODO correct handling for Minus and Slash
 		Set<Entry<String, SubScene>> entrySet = subSceneMap.entrySet();
 		for (Entry<String, SubScene> entry : entrySet)
-			setVisibility(entry.getValue(), true);
+			setVisibility(entry.getValue(), position.accept(entry.getKey()));
+		positionLabel.setText(position.toString());
 	}
 
 	// drag and drop
@@ -219,8 +234,14 @@ public class PositionDialogController {
 			public void handle(DragEvent event) {
 				/* the drag and drop gesture ended */
 				/* if the data was successfully moved, clear it */
-				if (event.getTransferMode() == TransferMode.MOVE)
-					setVisibility(pieceScene, false);
+				if (event.getTransferMode() == TransferMode.MOVE) {
+					if (name.equals("-") || name.equals("/")) {
+						setVisibility(subSceneMinus, false);
+						setVisibility(subSceneSlash, false);
+					} else
+						setVisibility(pieceScene, false);
+					positionLabel.setText(position.toString());
+				}
 				event.consume();
 			}
 		});
@@ -270,8 +291,6 @@ public class PositionDialogController {
 
 	private void setVisibility(SubScene pieceScene, boolean visibility) {
 		Group group = (Group) pieceScene.getRoot().getChildrenUnmodifiable().get(0);
-		ObservableList<Node> children = group.getChildren();
-		for (Node child : children)
-			child.setVisible(visibility);
+		group.setVisible(visibility);
 	}
 }

@@ -174,11 +174,15 @@ public class Square1Controller implements Initializable, ColorBean {
 	private PropertyChangeSupport colorChangeSupport;
 	/** The colors of the Square-1 sides. */
 	private Color[] colors;
+	/** The position that shall be solved. */
+	private Position position;
 	/** The dialog used to enter a new position. */
 	private PositionDialog positionDialog;
+	private PositionDialogController positionDialogController;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		position = new Position();
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		subScene.setRoot(smartGroup);
@@ -236,35 +240,35 @@ public class Square1Controller implements Initializable, ColorBean {
 				// Menu Toggle Piece 1
 				new AbstractMap.SimpleEntry<>('1', menuPiece1),
 				// Menu Toggle Piece 2
-				new AbstractMap.SimpleEntry<>('2', menuPiece2), 
+				new AbstractMap.SimpleEntry<>('2', menuPiece2),
 				// Menu Toggle Piece 3
 				new AbstractMap.SimpleEntry<>('3', menuPiece3),
 				// Menu Toggle Piece 4
-				new AbstractMap.SimpleEntry<>('4', menuPiece4), 
+				new AbstractMap.SimpleEntry<>('4', menuPiece4),
 				// Menu Toggle Piece 5
 				new AbstractMap.SimpleEntry<>('5', menuPiece5),
 				// Menu Toggle Piece 6
-				new AbstractMap.SimpleEntry<>('6', menuPiece6), 
+				new AbstractMap.SimpleEntry<>('6', menuPiece6),
 				// Menu Toggle Piece 7
 				new AbstractMap.SimpleEntry<>('7', menuPiece7),
 				// Menu Toggle Piece 8
-				new AbstractMap.SimpleEntry<>('8', menuPiece8), 
+				new AbstractMap.SimpleEntry<>('8', menuPiece8),
 				// Menu Toggle Piece A
 				new AbstractMap.SimpleEntry<>('A', menuPieceA),
 				// Menu Toggle Piece B
-				new AbstractMap.SimpleEntry<>('B', menuPieceB), 
+				new AbstractMap.SimpleEntry<>('B', menuPieceB),
 				// Menu Toggle Piece C
 				new AbstractMap.SimpleEntry<>('C', menuPieceC),
 				// Menu Toggle Piece D
-				new AbstractMap.SimpleEntry<>('D', menuPieceD), 
+				new AbstractMap.SimpleEntry<>('D', menuPieceD),
 				// Menu Toggle Piece E
 				new AbstractMap.SimpleEntry<>('E', menuPieceE),
 				// Menu Toggle Piece F
-				new AbstractMap.SimpleEntry<>('F', menuPieceF), 
+				new AbstractMap.SimpleEntry<>('F', menuPieceF),
 				// Menu Toggle Piece G
 				new AbstractMap.SimpleEntry<>('G', menuPieceG),
 				// Menu Toggle Piece H
-				new AbstractMap.SimpleEntry<>('H', menuPieceH), 
+				new AbstractMap.SimpleEntry<>('H', menuPieceH),
 				// Menu Toggle Piece M
 				new AbstractMap.SimpleEntry<>('M', menuPieceM),
 				// Menu Toggle Piece N
@@ -353,9 +357,13 @@ public class Square1Controller implements Initializable, ColorBean {
 
 	@FXML
 	void doShowPosition(ActionEvent event) {
-		positionDialog.getPositionDialogController().reset();
+		positionDialogController.setPosition(position);
 		Optional<Position> result = positionDialog.showAndWait();
-		System.out.println(result);
+		if (result.isPresent()) {
+			position = result.get();
+			System.out.println(position);
+		} else
+			System.out.println(result);
 	}
 
 	@FXML
@@ -536,7 +544,15 @@ public class Square1Controller implements Initializable, ColorBean {
 	 * @throws IOException in case of load errors.
 	 */
 	private PositionDialog createPositionDialog() throws IOException {
-		PositionDialog dialog = new PositionDialog(this);
+		// dialog content
+		URL resource = getClass().getResource("/net/treimers/square1/positiondialog.fxml");
+		FXMLLoader loader = new FXMLLoader(resource);
+		Parent root = loader.load();
+		// controller
+		positionDialogController = loader.getController();
+		positionDialogController.init(this);
+		// dialog
+		PositionDialog dialog = new PositionDialog(root, positionDialogController);
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(primaryStage.getIcons().get(0));
 		stage.initModality(Modality.APPLICATION_MODAL);
