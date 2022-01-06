@@ -67,6 +67,7 @@ public class PositionDialogController {
 	@FXML private Label positionLabel;
 	private Map<String, SubScene> subSceneMap;
 	private Position position;
+	private Position lastPosition;
 	
 	public void init(ColorBean colorBean) {
 		// Sub Scene
@@ -140,30 +141,36 @@ public class PositionDialogController {
 			registerDragAndDrop(entry.getKey(), entry.getValue());
 	}
 	
-	public void doClear(ActionEvent event) {
-		clear();
+	public void doSetEmptyPosition(ActionEvent event) {
+		this.position = Position.fromString("");
+		displayPosition(this.position);
 	}
 
-	public void clear() {
-		position.clear();
-		displayPosition(position);
+	public void doSetSolvedPosition(ActionEvent event) {
+		this.position = new Position();
+		displayPosition(this.position);
+	}
+
+	public void doSetLastPosition(ActionEvent event) {
+		this.position = new Position(this.lastPosition);
+		displayPosition(this.position);
 	}
 
 	public Position getPosition() {
-		return position;
+		return this.position;
 	}
 
 	public void setPosition(Position position) {
 		this.position = new Position(position);
-		displayPosition(position);
+		this.lastPosition = position;
+		displayPosition(this.position);
 	}
 	
 	private void displayPosition(Position position) {
-		// TODO correct handling for Minus and Slash
-		Set<Entry<String, SubScene>> entrySet = subSceneMap.entrySet();
+		Set<Entry<String, SubScene>> entrySet = this.subSceneMap.entrySet();
 		for (Entry<String, SubScene> entry : entrySet)
-			setVisibility(entry.getValue(), position.accept(entry.getKey()));
-		positionLabel.setText(position.toString());
+			setVisibility(entry.getValue(), this.position.allows(entry.getKey()));
+		this.positionLabel.setText(this.position.toString());
 	}
 
 	// drag and drop

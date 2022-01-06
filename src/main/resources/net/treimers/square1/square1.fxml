@@ -24,12 +24,14 @@
 						</MenuItem>
 					</items>
 				</Menu>
-            <Menu mnemonicParsing="false" text="Position">
+            <Menu mnemonicParsing="false" text="Square-1">
               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Change Colors" />
                 <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Show Position Dialog">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#doSolvePosition" text="Solve Position" />
               </items>
             </Menu>
 				<Menu mnemonicParsing="false" text="View">
@@ -84,7 +86,6 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Pieces">
 					<items>
-                  <MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Change Colors" />
 						<Menu mnemonicParsing="false" text="Corner Pieces">
 							<items>
 								<RadioMenuItem fx:id="menuPieceA" mnemonicParsing="false" onAction="#doToggle" text="Corner A">

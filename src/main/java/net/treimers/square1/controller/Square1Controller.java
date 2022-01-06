@@ -355,6 +355,21 @@ public class Square1Controller implements Initializable, ColorBean {
 		primaryStage.hide();
 	}
 
+	/**
+	 * Opens color dialog and informs all listeners (pieces)
+	 * about color changes.
+	 * @param event the event fired by JavaFX.
+	 */
+	@FXML
+	void doChangeColors(ActionEvent event) {
+		Optional<Color[]> result = colorDialog.showAndWait();
+		if (result.isPresent()) {
+			Color[] oldColors = colors;
+			colors = result.get();
+			colorChangeSupport.firePropertyChange("colors", oldColors, colors);
+		}
+	}
+
 	@FXML
 	void doShowPosition(ActionEvent event) {
 		positionDialogController.setPosition(position);
@@ -364,6 +379,11 @@ public class Square1Controller implements Initializable, ColorBean {
 			System.out.println(position);
 		} else
 			System.out.println(result);
+	}
+
+	@FXML
+	void doSolvePosition(ActionEvent event) {
+		System.out.println("Solve");
 	}
 
 	@FXML
@@ -446,26 +466,6 @@ public class Square1Controller implements Initializable, ColorBean {
 	@FXML
 	void doHotKeys(ActionEvent event) {
 		shortcutAlert.showAndWait();
-	}
-
-	@FXML
-	void doSolve(ActionEvent event) {
-		System.out.println("Solve");
-	}
-
-	/**
-	 * Opens color dialog and informs all listeners (pieces)
-	 * about color changes.
-	 * @param event the event fired by JavaFX.
-	 */
-	@FXML
-	void doChangeColors(ActionEvent event) {
-		Optional<Color[]> result = colorDialog.showAndWait();
-		if (result.isPresent()) {
-			Color[] oldColors = colors;
-			colors = result.get();
-			colorChangeSupport.firePropertyChange("colors", oldColors, colors);
-		}
 	}
 
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
