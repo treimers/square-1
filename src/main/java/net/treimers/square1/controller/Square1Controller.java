@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
-import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,26 +46,9 @@ import net.treimers.square1.model.Position;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
+import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
 import net.treimers.square1.view.piece.AbstractPiece;
-import net.treimers.square1.view.piece.corner.PieceA;
-import net.treimers.square1.view.piece.corner.PieceB;
-import net.treimers.square1.view.piece.corner.PieceC;
-import net.treimers.square1.view.piece.corner.PieceD;
-import net.treimers.square1.view.piece.corner.PieceE;
-import net.treimers.square1.view.piece.corner.PieceF;
-import net.treimers.square1.view.piece.corner.PieceG;
-import net.treimers.square1.view.piece.corner.PieceH;
-import net.treimers.square1.view.piece.edge.Piece1;
-import net.treimers.square1.view.piece.edge.Piece2;
-import net.treimers.square1.view.piece.edge.Piece3;
-import net.treimers.square1.view.piece.edge.Piece4;
-import net.treimers.square1.view.piece.edge.Piece5;
-import net.treimers.square1.view.piece.edge.Piece6;
-import net.treimers.square1.view.piece.edge.Piece7;
-import net.treimers.square1.view.piece.edge.Piece8;
-import net.treimers.square1.view.piece.middle.PieceM;
-import net.treimers.square1.view.piece.middle.PieceN;
 
 /*
 
@@ -101,8 +83,8 @@ public class Square1Controller implements Initializable, ColorBean {
 		Color.WHITE,
 		Color.YELLOW,
 		Color.ORANGE,
-		Color.RED,
 		Color.DARKBLUE,
+		Color.RED,
 		Color.GREEN,
 		Color.GRAY,
 		Color.BLACK,
@@ -162,7 +144,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	/** The group with x-, y- and z-axis. */
 	private Group axis;
 	/** The mesh group in the sub scene. */
-	private Group meshGroup;
+	private MeshGroup meshGroup;
 	/** The map with all pieces. */
 	private Map<Character, AbstractPiece> pieceMap;
 	/** The map with all radio menu items for piece visibility. */
@@ -180,11 +162,21 @@ public class Square1Controller implements Initializable, ColorBean {
 	private PositionDialog positionDialog;
 	private PositionDialogController positionDialogController;
 
+	public Square1Controller() {
+		position = new Position();
+		colors = DEFAULT_COLORS;
+		colorChangeSupport = new PropertyChangeSupport(this);
+	}
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		position = new Position();
+		// Colors
+		colorDialog = new ColorDialog(this);
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
+		meshGroup = new MeshGroup(this);
+		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		meshGroup.setContent(position);
 		subScene.setRoot(smartGroup);
 		subScene.setFill(Color.SILVER);
 		// Camera
@@ -193,90 +185,9 @@ public class Square1Controller implements Initializable, ColorBean {
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
-		// Colors
-		colorChangeSupport = new PropertyChangeSupport(this);
-		colorDialog = new ColorDialog(this);
-		colors = DEFAULT_COLORS;
-		// Piece Map
-		pieceMap = Map.ofEntries(
-				// Piece 1
-				new AbstractMap.SimpleEntry<>('1', new Piece1(0, 1, this)),
-				// Piece 2
-				new AbstractMap.SimpleEntry<>('2', new Piece2(1, 1, this)),
-				// Piece 3
-				new AbstractMap.SimpleEntry<>('3', new Piece3(2, 1, this)),
-				// Piece 4
-				new AbstractMap.SimpleEntry<>('4', new Piece4(3, 1, this)),
-				// Piece 5
-				new AbstractMap.SimpleEntry<>('5', new Piece5(3, -1, this)),
-				// Piece 6
-				new AbstractMap.SimpleEntry<>('6', new Piece6(2, -1, this)),
-				// Piece 7
-				new AbstractMap.SimpleEntry<>('7', new Piece7(1, -1, this)),
-				// Piece 8
-				new AbstractMap.SimpleEntry<>('8', new Piece8(0, -1, this)),
-				// Piece A
-				new AbstractMap.SimpleEntry<>('A', new PieceA(0, 1, this)),
-				// Piece B
-				new AbstractMap.SimpleEntry<>('B', new PieceB(1, 1, this)),
-				// Piece C
-				new AbstractMap.SimpleEntry<>('C', new PieceC(2, 1, this)),
-				// Piece D
-				new AbstractMap.SimpleEntry<>('D', new PieceD(3, 1, this)),
-				// Piece E
-				new AbstractMap.SimpleEntry<>('E', new PieceE(3, -1, this)),
-				// Piece F
-				new AbstractMap.SimpleEntry<>('F', new PieceF(2, -1, this)),
-				// Piece G
-				new AbstractMap.SimpleEntry<>('G', new PieceG(1, -1, this)),
-				// Piece H
-				new AbstractMap.SimpleEntry<>('H', new PieceH(0, -1, this)),
-				// Piece M
-				new AbstractMap.SimpleEntry<>('M', new PieceM(this)),
-				// Piece N
-				new AbstractMap.SimpleEntry<>('N', new PieceN(0, this)));
-		// Menu Map
-		Map<Character, RadioMenuItem> menuMap = Map.ofEntries(
-				// Menu Toggle Piece 1
-				new AbstractMap.SimpleEntry<>('1', menuPiece1),
-				// Menu Toggle Piece 2
-				new AbstractMap.SimpleEntry<>('2', menuPiece2),
-				// Menu Toggle Piece 3
-				new AbstractMap.SimpleEntry<>('3', menuPiece3),
-				// Menu Toggle Piece 4
-				new AbstractMap.SimpleEntry<>('4', menuPiece4),
-				// Menu Toggle Piece 5
-				new AbstractMap.SimpleEntry<>('5', menuPiece5),
-				// Menu Toggle Piece 6
-				new AbstractMap.SimpleEntry<>('6', menuPiece6),
-				// Menu Toggle Piece 7
-				new AbstractMap.SimpleEntry<>('7', menuPiece7),
-				// Menu Toggle Piece 8
-				new AbstractMap.SimpleEntry<>('8', menuPiece8),
-				// Menu Toggle Piece A
-				new AbstractMap.SimpleEntry<>('A', menuPieceA),
-				// Menu Toggle Piece B
-				new AbstractMap.SimpleEntry<>('B', menuPieceB),
-				// Menu Toggle Piece C
-				new AbstractMap.SimpleEntry<>('C', menuPieceC),
-				// Menu Toggle Piece D
-				new AbstractMap.SimpleEntry<>('D', menuPieceD),
-				// Menu Toggle Piece E
-				new AbstractMap.SimpleEntry<>('E', menuPieceE),
-				// Menu Toggle Piece F
-				new AbstractMap.SimpleEntry<>('F', menuPieceF),
-				// Menu Toggle Piece G
-				new AbstractMap.SimpleEntry<>('G', menuPieceG),
-				// Menu Toggle Piece H
-				new AbstractMap.SimpleEntry<>('H', menuPieceH),
-				// Menu Toggle Piece M
-				new AbstractMap.SimpleEntry<>('M', menuPieceM),
-				// Menu Toggle Piece N
-				new AbstractMap.SimpleEntry<>('N', menuPieceN));
 		// Mesh Group
-		meshGroup = new Group();
 		axis = buildAxes();
-		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		/*
 		// Register Radio Menu Items and
 		// add all Nodes to View
 		Set<Character> set = pieceMap.keySet();
@@ -287,6 +198,7 @@ public class Square1Controller implements Initializable, ColorBean {
 			radioMenuItem.selectedProperty().bindBidirectional(piece.visibleProperty());
 			meshGroup.getChildren().add(piece);
 		}
+		*/
 		// Mouse Events
 		subScene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -325,8 +237,8 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@Override
-	public Color[] getDefaultColors() {
-		return Arrays.copyOf(DEFAULT_COLORS, DEFAULT_COLORS.length);
+	public Color[] getColors() {
+		return Arrays.copyOf(colors, colors.length);
 	}
 
 	@Override
@@ -376,9 +288,8 @@ public class Square1Controller implements Initializable, ColorBean {
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
 			position = result.get();
-			System.out.println(position);
-		} else
-			System.out.println(result);
+			meshGroup.setContent(position);
+		}
 	}
 
 	@FXML

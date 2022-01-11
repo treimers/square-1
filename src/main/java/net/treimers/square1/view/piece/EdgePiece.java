@@ -1,5 +1,7 @@
 package net.treimers.square1.view.piece;
 
+import java.util.Map;
+
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Constants;
 
@@ -22,7 +24,7 @@ import net.treimers.square1.model.Constants;
  * 
  * <p>The edge width i.e. the distance between B and C is calculated and defined in the Constants class. 
  */
-public abstract class AbstractEdgePiece extends AbstractPiece {
+public class EdgePiece extends AbstractPiece {
 	/** Index of point A. */
 	private static final int POINT_A = 0;
 	/** Index of point B. */
@@ -35,40 +37,109 @@ public abstract class AbstractEdgePiece extends AbstractPiece {
 	private static final int POINT_E = 4;
 	/** Index of point F. */
 	private static final int POINT_F = 5;
+	/** The map with the piece names and their side defitions. */
+	private static final Map<Character, int[]> SIDE_MAP = Map.of(
+			// Piece 1
+			'1', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.LEFT,
+				Constants.INNER_VERTICAL,
+				Constants.TOP,
+			},
+			// Piece 2
+			'2', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.BACK,
+				Constants.INNER_VERTICAL,
+				Constants.TOP,
+			},
+			// Piece 3
+			'3', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.RIGHT,
+				Constants.INNER_VERTICAL,
+				Constants.TOP,
+			},
+			// Piece 4
+			'4', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.FRONT,
+				Constants.INNER_VERTICAL,
+				Constants.TOP,
+			},
+			// Piece 5
+			'5', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.FRONT,
+				Constants.INNER_VERTICAL,
+				Constants.BOTTOM,
+			},
+			// Piece 6
+			'6', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.RIGHT,
+				Constants.INNER_VERTICAL,
+				Constants.BOTTOM,
+			},
+			// Piece 7
+			'7', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.BACK,
+				Constants.INNER_VERTICAL,
+				Constants.BOTTOM,
+			},
+			// Piece 8
+			'8', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.INNER_VERTICAL,
+				Constants.LEFT,
+				Constants.INNER_VERTICAL,
+				Constants.BOTTOM,
+			}
+	//
+	);
 
 	/**
 	 * Creates a new instance.
-	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
-	 * or 3 for 270 degrees).
-	 * @param sides array with colors for the 5 sides (bottom, left, front, right, top).
+	 * 
+	 * @param colorBean the bean used to get the colors.
+	 * @param name the name of the edge piece '1' to '8'.
 	 */
-	protected AbstractEdgePiece(int rotate, int position, ColorBean colorBean, int... sides) {
+	public EdgePiece(ColorBean colorBean, char name) {
 		super(colorBean);
+		int[] sides = SIDE_MAP.get(name);
 		float[] points = {
 			// Point A
 			0.0f,
 			0.0f,
-			-position * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
+			-1 * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
 			// Point B
 			Constants.SIZE,
 			Constants.EDGE_WIDTH / 2.0f - Constants.DELTA,
-			-position * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
+			-1 * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
 			// Point C
 			Constants.SIZE,
 			-Constants.EDGE_WIDTH / 2.0f + Constants.DELTA,
-			-position * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
+			-1 * (Constants.EDGE_WIDTH / 2.0f + Constants.DELTA),
 			// Point D
 			0.0f + Constants.DELTA,
 			0.0f,
-			-position * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
+			-1 * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
 			// Point E
 			Constants.SIZE,
 			Constants.EDGE_WIDTH / 2.0f - Constants.DELTA,
-			-position * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
+			-1 * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
 			// Point F
 			Constants.SIZE,
 			-Constants.EDGE_WIDTH / 2.0f + Constants.DELTA,
-			-position * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
+			-1 * (Constants.CORNER_WIDTH + Constants.EDGE_WIDTH / 2.0f - Constants.DELTA),
 		};
 		addAllPoints(points);
 		int[] faces = {
@@ -127,6 +198,6 @@ public abstract class AbstractEdgePiece extends AbstractPiece {
 			sides[4],
 		};
 		addAllFaces(faces);
-		rotateByZ(90 * rotate);
+		rotateByZ(-60);
 	}
 }

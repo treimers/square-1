@@ -20,29 +20,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
+import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
-import net.treimers.square1.view.piece.AbstractPiece;
-import net.treimers.square1.view.piece.corner.PieceA;
-import net.treimers.square1.view.piece.corner.PieceB;
-import net.treimers.square1.view.piece.corner.PieceC;
-import net.treimers.square1.view.piece.corner.PieceD;
-import net.treimers.square1.view.piece.corner.PieceE;
-import net.treimers.square1.view.piece.corner.PieceF;
-import net.treimers.square1.view.piece.corner.PieceG;
-import net.treimers.square1.view.piece.corner.PieceH;
-import net.treimers.square1.view.piece.edge.Piece1;
-import net.treimers.square1.view.piece.edge.Piece2;
-import net.treimers.square1.view.piece.edge.Piece3;
-import net.treimers.square1.view.piece.edge.Piece4;
-import net.treimers.square1.view.piece.edge.Piece5;
-import net.treimers.square1.view.piece.edge.Piece6;
-import net.treimers.square1.view.piece.edge.Piece7;
-import net.treimers.square1.view.piece.edge.Piece8;
-import net.treimers.square1.view.piece.middle.PieceM;
-import net.treimers.square1.view.piece.middle.PieceN;
 
 public class PositionDialogController {
 	@FXML private SubScene subScene;
@@ -65,13 +46,16 @@ public class PositionDialogController {
 	@FXML private SubScene subSceneMinus;
 	@FXML private SubScene subSceneSlash;
 	@FXML private Label positionLabel;
-	private Map<String, SubScene> subSceneMap;
+	private Map<Character, SubScene> subSceneMap;
 	private Position position;
 	private Position lastPosition;
-	
+	private MeshGroup meshGroup;
+
 	public void init(ColorBean colorBean) {
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
+		meshGroup = new MeshGroup(colorBean);
+		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		subScene.setRoot(smartGroup);
 		subScene.setFill(Color.SILVER);
 		// Camera
@@ -83,64 +67,67 @@ public class PositionDialogController {
 		// piece sub scenes
 		subSceneMap = Map.ofEntries(
 				// Scene A
-				new AbstractMap.SimpleEntry<>("A", subSceneA),
+				new AbstractMap.SimpleEntry<>('A', subSceneA),
 				// Scene B
-				new AbstractMap.SimpleEntry<>("B", subSceneB),
+				new AbstractMap.SimpleEntry<>('B', subSceneB),
 				// Scene C
-				new AbstractMap.SimpleEntry<>("C", subSceneC),
+				new AbstractMap.SimpleEntry<>('C', subSceneC),
 				// Scene D
-				new AbstractMap.SimpleEntry<>("D", subSceneD),
+				new AbstractMap.SimpleEntry<>('D', subSceneD),
 				// Scene E
-				new AbstractMap.SimpleEntry<>("E", subSceneE),
+				new AbstractMap.SimpleEntry<>('E', subSceneE),
 				// Scene F
-				new AbstractMap.SimpleEntry<>("F", subSceneF),
+				new AbstractMap.SimpleEntry<>('F', subSceneF),
 				// Scene G
-				new AbstractMap.SimpleEntry<>("G", subSceneG),
+				new AbstractMap.SimpleEntry<>('G', subSceneG),
 				// Scene H
-				new AbstractMap.SimpleEntry<>("H", subSceneH),
+				new AbstractMap.SimpleEntry<>('H', subSceneH),
 				// Scene 1
-				new AbstractMap.SimpleEntry<>("1", subScene1),
+				new AbstractMap.SimpleEntry<>('1', subScene1),
 				// Scene 2
-				new AbstractMap.SimpleEntry<>("2", subScene2),
+				new AbstractMap.SimpleEntry<>('2', subScene2),
 				// Scene 3
-				new AbstractMap.SimpleEntry<>("3", subScene3),
+				new AbstractMap.SimpleEntry<>('3', subScene3),
 				// Scene 4
-				new AbstractMap.SimpleEntry<>("4", subScene4),
+				new AbstractMap.SimpleEntry<>('4', subScene4),
 				// Scene 5
-				new AbstractMap.SimpleEntry<>("5", subScene5),
+				new AbstractMap.SimpleEntry<>('5', subScene5),
 				// Scene 6
-				new AbstractMap.SimpleEntry<>("6", subScene6),
+				new AbstractMap.SimpleEntry<>('6', subScene6),
 				// Scene 7
-				new AbstractMap.SimpleEntry<>("7", subScene7),
+				new AbstractMap.SimpleEntry<>('7', subScene7),
 				// Scene 8
-				new AbstractMap.SimpleEntry<>("8", subScene8),
+				new AbstractMap.SimpleEntry<>('8', subScene8),
 				// Scene -
-				new AbstractMap.SimpleEntry<>("-", subSceneMinus),
+				new AbstractMap.SimpleEntry<>('-', subSceneMinus),
 				// Scene /
-				new AbstractMap.SimpleEntry<>("/", subSceneSlash));
-		createPieceScene(subSceneA, new PieceA(0, 1, colorBean));
-		createPieceScene(subSceneB, new PieceB(0, 1, colorBean));
-		createPieceScene(subSceneC, new PieceC(0, 1, colorBean));
-		createPieceScene(subSceneD, new PieceD(0, 1, colorBean));
-		createPieceScene(subSceneE, new PieceE(0, 1, colorBean));
-		createPieceScene(subSceneF, new PieceF(0, 1, colorBean));
-		createPieceScene(subSceneG, new PieceG(0, 1, colorBean));
-		createPieceScene(subSceneH, new PieceH(0, 1, colorBean));
-		createPieceScene(subScene1, new Piece1(0, 1, colorBean));
-		createPieceScene(subScene2, new Piece2(0, 1, colorBean));
-		createPieceScene(subScene3, new Piece3(0, 1, colorBean));
-		createPieceScene(subScene4, new Piece4(0, 1, colorBean));
-		createPieceScene(subScene5, new Piece5(0, 1, colorBean));
-		createPieceScene(subScene6, new Piece6(0, 1, colorBean));
-		createPieceScene(subScene7, new Piece7(0, 1, colorBean));
-		createPieceScene(subScene8, new Piece8(0, 1, colorBean));
-		createMiddleScene(subSceneMinus, new PieceM(colorBean), new PieceN(0, colorBean));
-		createMiddleScene(subSceneSlash, new PieceM(colorBean), new PieceN(1, colorBean));
-		Set<Entry<String, SubScene>> entrySet = subSceneMap.entrySet();
-		for (Entry<String, SubScene> entry : entrySet)
+				new AbstractMap.SimpleEntry<>('/', subSceneSlash));
+		//
+		createPieceScene(subSceneA, 'A', colorBean);
+		createPieceScene(subSceneB, 'B', colorBean);
+		createPieceScene(subSceneC, 'C', colorBean);
+		createPieceScene(subSceneD, 'D', colorBean);
+		createPieceScene(subSceneE, 'E', colorBean);
+		createPieceScene(subSceneF, 'F', colorBean);
+		createPieceScene(subSceneG, 'G', colorBean);
+		createPieceScene(subSceneH, 'H', colorBean);
+		createPieceScene(subScene1, '1', colorBean);
+		createPieceScene(subScene2, '2', colorBean);
+		createPieceScene(subScene3, '3', colorBean);
+		createPieceScene(subScene4, '4', colorBean);
+		createPieceScene(subScene5, '5', colorBean);
+		createPieceScene(subScene6, '6', colorBean);
+		createPieceScene(subScene7, '7', colorBean);
+		createPieceScene(subScene8, '8', colorBean);
+
+		createMiddleScene(subSceneMinus, '-', colorBean);
+		createMiddleScene(subSceneSlash, '/', colorBean);
+
+		Set<Entry<Character, SubScene>> entrySet = subSceneMap.entrySet();
+		for (Entry<Character, SubScene> entry : entrySet)
 			registerDragAndDrop(entry.getKey(), entry.getValue());
 	}
-	
+
 	public void doSetEmptyPosition(ActionEvent event) {
 		this.position = Position.fromString("");
 		displayPosition(this.position);
@@ -165,26 +152,27 @@ public class PositionDialogController {
 		this.lastPosition = position;
 		displayPosition(this.position);
 	}
-	
+
 	private void displayPosition(Position position) {
-		Set<Entry<String, SubScene>> entrySet = this.subSceneMap.entrySet();
-		for (Entry<String, SubScene> entry : entrySet)
-			setVisibility(entry.getValue(), this.position.allows(entry.getKey()));
-		this.positionLabel.setText(this.position.toString());
+		Set<Entry<Character, SubScene>> entrySet = this.subSceneMap.entrySet();
+		for (Entry<Character, SubScene> entry : entrySet)
+			setVisibility(entry.getValue(), position.isAvailable(entry.getKey()));
+		this.positionLabel.setText(position.toString());
+		meshGroup.setContent(position);
 	}
 
 	// drag and drop
 	// https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
-	private void registerDragAndDrop(String name, SubScene pieceScene) {
+	private void registerDragAndDrop(Character name, SubScene pieceScene) {
 		pieceScene.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if (position.accept(name)) {
-					/* drag was detected, start a drag-and-drop gesture*/
+				if (position.canAdd(name)) {
+					/* drag was detected, start a drag-and-drop gesture */
 					/* allow any transfer mode */
 					Dragboard db = pieceScene.startDragAndDrop(TransferMode.ANY);
 					/* Put a string on a dragboard */
 					ClipboardContent content = new ClipboardContent();
-					content.putString(name);
+					content.putString(name.toString());
 					db.setContent(content);
 				}
 				event.consume();
@@ -196,7 +184,7 @@ public class PositionDialogController {
 				/* accept it only if it is not dragged from the same node 
 				 * and if it has a string data */
 				if (event.getGestureSource() != subScene && event.getDragboard().hasString()
-						&& position.accept(event.getDragboard().getString())) {
+						&& position.canAdd(event.getDragboard().getString().charAt(0))) {
 					/* allow for both copying and moving, whatever user chooses */
 					event.acceptTransferModes(TransferMode.MOVE);
 				}
@@ -208,7 +196,7 @@ public class PositionDialogController {
 				/* the drag-and-drop gesture entered the target */
 				/* show to the user that it is an actual gesture target */
 				if (event.getGestureSource() != subScene && event.getDragboard().hasString()
-						&& position.accept(event.getDragboard().getString())) {
+						&& position.canAdd(event.getDragboard().getString().charAt(0))) {
 					subScene.setFill(Color.GRAY);
 				}
 				event.consume();
@@ -228,7 +216,7 @@ public class PositionDialogController {
 				Dragboard db = event.getDragboard();
 				boolean success = false;
 				if (db.hasString()) {
-					position.add(db.getString());
+					position.add(db.getString().charAt(0));
 					success = true;
 				}
 				/* let the source know whether the string was successfully 
@@ -242,11 +230,12 @@ public class PositionDialogController {
 				/* the drag and drop gesture ended */
 				/* if the data was successfully moved, clear it */
 				if (event.getTransferMode() == TransferMode.MOVE) {
-					if (name.equals("-") || name.equals("/")) {
+					if (name == '-' || name == '/') {
 						setVisibility(subSceneMinus, false);
 						setVisibility(subSceneSlash, false);
 					} else
 						setVisibility(pieceScene, false);
+					meshGroup.setContent(position);
 					positionLabel.setText(position.toString());
 				}
 				event.consume();
@@ -254,46 +243,38 @@ public class PositionDialogController {
 		});
 	}
 
-	private void createPieceScene(SubScene subScene, AbstractPiece piece) {
+	private void createPieceScene(SubScene subScene, Character pieceName, ColorBean colorBean) {
+		// Smart Group
 		SmartGroup group = new SmartGroup();
 		subScene.setRoot(group);
 		subScene.setFill(Color.SILVER);
+		// Piece
+		MeshGroup pieceMeshGroup = new MeshGroup(colorBean);
+		pieceMeshGroup.setContent(Position.fromString(pieceName.toString()));
+		group.getChildren().addAll(pieceMeshGroup, new AmbientLight(Color.WHITE));
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-5.5);
 		subScene.setCamera(camera);
-		// Piece
-		Group meshGroup = new Group();
-		meshGroup.getChildren().add(piece);
-		group.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
-		// Mouse Events
-		Rotate rotateX = new Rotate(-55, 0, 0, 0, Rotate.X_AXIS);
-		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-		Rotate rotateZ = new Rotate(126, 0, 0, 0, Rotate.Z_AXIS);
-		meshGroup.getTransforms().addAll(rotateX, rotateY, rotateZ);
 	}
 
-	private void createMiddleScene(SubScene subScene, AbstractPiece pieceM, AbstractPiece pieceN) {
+	private void createMiddleScene(SubScene subScene, Character positionName, ColorBean colorBean) {
+		// Smart Group
 		SmartGroup group = new SmartGroup();
 		subScene.setRoot(group);
 		subScene.setFill(Color.SILVER);
+		// Piece
+		MeshGroup middleMeshGroup = new MeshGroup(colorBean);
+		middleMeshGroup.setContent(Position.fromString(positionName.toString()));
+		group.getChildren().addAll(middleMeshGroup, new AmbientLight(Color.WHITE));
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-5.5);
 		subScene.setCamera(camera);
-		// Piece
-		Group meshGroup = new Group();
-		meshGroup.getChildren().addAll(pieceM, pieceN);
-		group.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
-		// Mouse Events
-		Rotate rotateX = new Rotate(-55, 0, 0, 0, Rotate.X_AXIS);
-		Rotate rotateY = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-		Rotate rotateZ = new Rotate(126, 0, 0, 0, Rotate.Z_AXIS);
-		meshGroup.getTransforms().addAll(rotateX, rotateY, rotateZ);
 	}
 
 	private void setVisibility(SubScene pieceScene, boolean visibility) {

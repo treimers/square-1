@@ -19,9 +19,9 @@ public class Constants {
 	public static final int BACK = 4;
 	/** The index for the bottom side color. */
 	public static final int BOTTOM = 5;
-	/** The index for the inner horizontal side color. */
-	public static final int INNER_VERTICAL = 6;
 	/** The index for the inner vertical side color. */
+	public static final int INNER_VERTICAL = 6;
+	/** The index for the inner horizontal side color. */
 	public static final int INNER_HORIZONTAL = 7;
 	/** The number for colors. */
 	public static final int NUM_COLORS = 8;
@@ -47,11 +47,11 @@ public class Constants {
 		// position of bottom color
 		(Constants.BOTTOM + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
-		// position of inner horizontal color
-		(Constants.INNER_HORIZONTAL + 0.5f) / Constants.NUM_COLORS,
-		COLOR_HEIGHT,
 		// position of inner vertical color
 		(Constants.INNER_VERTICAL + 0.5f) / Constants.NUM_COLORS,
+		COLOR_HEIGHT,
+		// position of inner horizontal color
+		(Constants.INNER_HORIZONTAL + 0.5f) / Constants.NUM_COLORS,
 		COLOR_HEIGHT,
 	};
 	// Some Angles

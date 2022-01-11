@@ -32,7 +32,7 @@ public class ColorDialog extends Dialog<Color[]> {
 	public ColorDialog(ColorBean colorBean) {
 		setTitle("Colors");
 		setHeaderText("Set the colors of the Square-1 sides");
-		colors = colorBean.getDefaultColors();
+		colors = colorBean.getColors();
 		int numColors = colors.length;
 		colorPicker = new ColorPicker[numColors];
 		for (int i = 0; i < numColors; i++)
@@ -74,7 +74,7 @@ public class ColorDialog extends Dialog<Color[]> {
 			@Override
 			public void handle(ActionEvent event) {
 				// set all colors there defaults
-				Color[] defaultColors = colorBean.getDefaultColors();
+				Color[] defaultColors = colorBean.getColors();
 				for (int i = 0; i < colorPicker.length; i++)
 					colorPicker[i].setValue(defaultColors[i]);
 			}

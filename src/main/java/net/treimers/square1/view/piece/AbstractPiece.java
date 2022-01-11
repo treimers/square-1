@@ -46,7 +46,7 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 		// colors
 		triangleMesh.getTexCoords().addAll(Constants.getColorArray());
 		material = new PhongMaterial();
-		setColors(colorBean.getDefaultColors());
+		setColors(colorBean.getColors());
 		setMaterial(material);
 		// register
 		colorBean.addPropertyChangeListener(this);

@@ -9,7 +9,14 @@ import javafx.scene.transform.Transform;
  */
 public class SmartGroup extends Group {
 	/** The initial transform. */
-	private Transform t = new Rotate();
+	private Transform t;
+
+	/**
+	 * Creates a new instance.
+	 */
+	public SmartGroup() {
+		t = new Rotate();
+	}
 
 	/**
 	 * Rotates the smart group by an angle around x-axis.
