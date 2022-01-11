@@ -65,6 +65,7 @@ public class PositionDialogController {
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
 		// piece sub scenes
+		
 		subSceneMap = Map.ofEntries(
 				// Scene A
 				new AbstractMap.SimpleEntry<>('A', subSceneA),
@@ -119,10 +120,9 @@ public class PositionDialogController {
 		createPieceScene(subScene6, '6', colorBean);
 		createPieceScene(subScene7, '7', colorBean);
 		createPieceScene(subScene8, '8', colorBean);
-
-		createMiddleScene(subSceneMinus, '-', colorBean);
-		createMiddleScene(subSceneSlash, '/', colorBean);
-
+		createPieceScene(subSceneMinus, '-', colorBean);
+		createPieceScene(subSceneSlash, '/', colorBean);
+		// Register Drag And Drop
 		Set<Entry<Character, SubScene>> entrySet = subSceneMap.entrySet();
 		for (Entry<Character, SubScene> entry : entrySet)
 			registerDragAndDrop(entry.getKey(), entry.getValue());
@@ -252,23 +252,6 @@ public class PositionDialogController {
 		MeshGroup pieceMeshGroup = new MeshGroup(colorBean);
 		pieceMeshGroup.setContent(Position.fromString(pieceName.toString()));
 		group.getChildren().addAll(pieceMeshGroup, new AmbientLight(Color.WHITE));
-		// Camera
-		Camera camera = new PerspectiveCamera(true);
-		camera.setNearClip(0.1);
-		camera.setFarClip(10000.0);
-		camera.setTranslateZ(-5.5);
-		subScene.setCamera(camera);
-	}
-
-	private void createMiddleScene(SubScene subScene, Character positionName, ColorBean colorBean) {
-		// Smart Group
-		SmartGroup group = new SmartGroup();
-		subScene.setRoot(group);
-		subScene.setFill(Color.SILVER);
-		// Piece
-		MeshGroup middleMeshGroup = new MeshGroup(colorBean);
-		middleMeshGroup.setContent(Position.fromString(positionName.toString()));
-		group.getChildren().addAll(middleMeshGroup, new AmbientLight(Color.WHITE));
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);

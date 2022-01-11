@@ -15,15 +15,15 @@ public class Position {
 	public static Position fromString(String positionString) {
 		return new Position(positionString);
 	}
-			
+
 	public Position() {
 		this(SOLVED_POSITION_STRING);
 	}
-	
+
 	public Position(Position position) {
 		this(position.positionString);
 	}
-	
+
 	private Position(String positionString) {
 		this.positionString = positionString;
 	}
@@ -46,7 +46,7 @@ public class Position {
 			return positionString.length() < SOLVED_POSITION_STRING.length();
 		return !positionString.contains(name.toString());
 	}
-	
+
 	public boolean add(Character name) {
 		if (canAdd(name)) {
 			this.positionString += name;
@@ -67,15 +67,17 @@ public class Position {
 		List<Character> middle = new ArrayList<>();
 		for (int i = 0; i < positionString.length(); i++) {
 			char c = positionString.charAt(i);
-			if (angle < CIRCLE)
-				top.add(c);
-			else if (angle < 2 * CIRCLE)
-				bottom.add(c);
-			else
+			if (c == '-' || c == '/')
 				middle.add(c);
-			angle++;
-			if (Character.isAlphabetic(c))
+			else {
+				if (angle < CIRCLE)
+					top.add(c);
+				else if (angle < 2 * CIRCLE)
+					bottom.add(c);
 				angle++;
+				if (Character.isAlphabetic(c))
+					angle++;
+			}
 		}
 		retval.put(Layer.TOP, top.toArray(new Character[top.size()]));
 		retval.put(Layer.BOTTOM, bottom.toArray(new Character[bottom.size()]));

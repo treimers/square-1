@@ -2,7 +2,9 @@ package net.treimers.square1.view.misc;
 
 import java.util.Map;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
@@ -14,6 +16,7 @@ import net.treimers.square1.view.piece.MiddlePiece;
 
 public class MeshGroup extends Group {
 	private ColorBean colorBean;
+	private Position position;
 
 	public MeshGroup(ColorBean colorBean) {
 		this.colorBean = colorBean;
@@ -23,7 +26,13 @@ public class MeshGroup extends Group {
 	}
 
 	public void setContent(Position position) {
-		getChildren().clear();
+		this.position = position;
+		ObservableList<Node> children = getChildren();
+		// We cannot iterate over the list in a for-each loop and remove entries.
+		// This will lead to a java.util.ConcurrentModificationException.
+		// I found this https://www.baeldung.com/java-concurrentmodificationexception
+		// although I am not very happy using lambdas :(
+		children.removeIf(AbstractPiece.class::isInstance);
 		Map<Layer, Character[]> layerMap = position.getPieces();
 		Character[] topPieces = layerMap.get(Layer.TOP);
 		addOuterLayer(topPieces, false);
@@ -74,5 +83,10 @@ public class MeshGroup extends Group {
 			}
 			getChildren().add(pieceN);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return position.toString();
 	}
 }
