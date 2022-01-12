@@ -1,4 +1,9 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.piece;
+
+import java.util.Map;
+
+import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Constants;
 
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
@@ -20,29 +25,53 @@ package net.treimers.square1.view;
  */
 public class MiddlePiece extends AbstractPiece {
 	/** Index of point A. */
-	private static final int A = 0;
+	private static final int POINT_A = 0;
 	/** Index of point B. */
-	private static final int B = 1;
+	private static final int POINT_B = 1;
 	/** Index of point C. */
-	private static final int C = 2;
+	private static final int POINT_C = 2;
 	/** Index of point D. */
-	private static final int D = 3;
+	private static final int POINT_D = 3;
 	/** Index of point E. */
-	private static final int E = 4;
+	private static final int POINT_E = 4;
 	/** Index of point F. */
-	private static final int F = 5;
+	private static final int POINT_F = 5;
 	/** Index of point G. */
-	private static final int G = 6;
+	private static final int POINT_G = 6;
 	/** Index of point H. */
-	private static final int H = 7;
+	private static final int POINT_H = 7;
+	/** The map with the piece names and their side defitions. */
+	private static final Map<Character, int[]> SIDE_MAP = Map.of(
+			// Piece A
+			'M', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.LEFT,
+				Constants.FRONT,
+				Constants.INNER_VERTICAL,
+				Constants.BACK,
+				Constants.INNER_HORIZONTAL,
+			},
+			// Piece B
+			'N', new int[] {
+				Constants.INNER_HORIZONTAL,
+				Constants.RIGHT,
+				Constants.BACK,
+				Constants.INNER_VERTICAL,
+				Constants.FRONT,
+				Constants.INNER_HORIZONTAL,
+			}
+			//
+			);
 
 	/**
 	 * Creates a new instance.
-	 * @param rotate value to rotate piece around top (allowed values are 0 for no rotation, 1 for 90 degrees, 2 for 180 degrees
-	 * or 3 for 270 degrees).
-	 * @param colors array with colors for the 6 sides (bottom, left, front, right, rear, top).
+	 * 
+	 * @param colorBean the bean used to get the colors.
+	 * @param name the name of the middle piece 'M' or 'N'.
 	 */
-	public MiddlePiece(int rotate, int... colors) {
+	public MiddlePiece(ColorBean colorBean, char name) {
+		super(colorBean);
+		int[] sides = SIDE_MAP.get(name);
 		float[] points = {
 			// Point A
 			Constants.SIZE,
@@ -81,85 +110,84 @@ public class MiddlePiece extends AbstractPiece {
 		int[] faces = {
 			// Faces
 			// Bottom face
-			A,
-			colors[0],
-			D,
-			colors[0],
-			C,
-			colors[0],
-			C,
-			colors[0],
-			B,
-			colors[0],
-			A,
-			colors[0],
+			POINT_A,
+			sides[0],
+			POINT_D,
+			sides[0],
+			POINT_C,
+			sides[0],
+			POINT_C,
+			sides[0],
+			POINT_B,
+			sides[0],
+			POINT_A,
+			sides[0],
 			// Left face
-			A,
-			colors[1],
-			B,
-			colors[1],
-			F,
-			colors[1],
-			F,
-			colors[1],
-			E,
-			colors[1],
-			A,
-			colors[1],
+			POINT_A,
+			sides[1],
+			POINT_B,
+			sides[1],
+			POINT_F,
+			sides[1],
+			POINT_F,
+			sides[1],
+			POINT_E,
+			sides[1],
+			POINT_A,
+			sides[1],
 			// Front face
-			F,
-			colors[2],
-			B,
-			colors[2],
-			C,
-			colors[2],
-			C,
-			colors[2],
-			G,
-			colors[2],
-			F,
-			colors[2],
+			POINT_F,
+			sides[2],
+			POINT_B,
+			sides[2],
+			POINT_C,
+			sides[2],
+			POINT_C,
+			sides[2],
+			POINT_G,
+			sides[2],
+			POINT_F,
+			sides[2],
 			// Right face
-			D,
-			colors[3],
-			H,
-			colors[3],
-			G,
-			colors[3],
-			G,
-			colors[3],
-			C,
-			colors[3],
-			D,
-			colors[3],
+			POINT_D,
+			sides[3],
+			POINT_H,
+			sides[3],
+			POINT_G,
+			sides[3],
+			POINT_G,
+			sides[3],
+			POINT_C,
+			sides[3],
+			POINT_D,
+			sides[3],
 			// Rear face
-			A,
-			colors[4],
-			E,
-			colors[4],
-			H,
-			colors[4],
-			H,
-			colors[4],
-			D,
-			colors[4],
-			A,
-			colors[4],
+			POINT_A,
+			sides[4],
+			POINT_E,
+			sides[4],
+			POINT_H,
+			sides[4],
+			POINT_H,
+			sides[4],
+			POINT_D,
+			sides[4],
+			POINT_A,
+			sides[4],
 			// Top face
-			E,
-			colors[5],
-			F,
-			colors[5],
-			G,
-			colors[5],
-			G,
-			colors[5],
-			H,
-			colors[5],
-			E,
-			colors[5],
+			POINT_E,
+			sides[5],
+			POINT_F,
+			sides[5],
+			POINT_G,
+			sides[5],
+			POINT_G,
+			sides[5],
+			POINT_H,
+			sides[5],
+			POINT_E,
+			sides[5],
 		};
 		addAllFaces(faces);
-		rotateByZ(rotate * 180);
 	}
 }

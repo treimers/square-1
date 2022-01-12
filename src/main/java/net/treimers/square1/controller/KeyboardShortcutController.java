@@ -1,13 +1,10 @@
 package net.treimers.square1.controller;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -31,13 +28,10 @@ import javafx.scene.text.FontWeight;
  * from the view is filled with the shortcuts and
  * the corresponding text.
  */
-public class KeyboardShortcutController implements Initializable {
+public class KeyboardShortcutController {
+	private static final String SHORTCUT = "Shortcut";
+	private static final String DESCRIPTION = "Description";
 	@FXML private GridPane gridPane;
-
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		System.out.println("Init");
-	}
 
 	public void setMenuBar(MenuBar menuBar) {
 		// set column width 15%, 35%, 15% and 35%
@@ -72,14 +66,14 @@ public class KeyboardShortcutController implements Initializable {
 		row++;
 		// add heading 1
 		Font font = Font.font("System", FontWeight.BOLD, 13);
-		Label shortcut = new Label("Shortcut");
+		Label shortcut = new Label(SHORTCUT);
 		shortcut.setFont(font);
 		children.add(shortcut);
 		GridPane.setRowIndex(shortcut, row);
 		GridPane.setColumnIndex(shortcut, 0);
 		GridPane.setMargin(shortcut, new Insets(10));
 		GridPane.setHgrow(shortcut, Priority.SOMETIMES);
-		Label description = new Label("Description");
+		Label description = new Label(DESCRIPTION);
 		description.setFont(font);
 		children.add(description);
 		GridPane.setRowIndex(description, row);
@@ -88,14 +82,14 @@ public class KeyboardShortcutController implements Initializable {
 		GridPane.setHgrow(description, Priority.ALWAYS);
 		gridPane.getRowConstraints().add(new RowConstraints(23));
 		// add heading 2
-		shortcut = new Label("Shortcut");
+		shortcut = new Label(SHORTCUT);
 		shortcut.setFont(font);
 		children.add(shortcut);
 		GridPane.setRowIndex(shortcut, row);
 		GridPane.setColumnIndex(shortcut, 2);
 		GridPane.setMargin(shortcut, new Insets(10));
 		GridPane.setHgrow(shortcut, Priority.SOMETIMES);
-		description = new Label("Description");
+		description = new Label(DESCRIPTION);
 		description.setFont(font);
 		children.add(description);
 		GridPane.setRowIndex(description, row);
@@ -103,14 +97,14 @@ public class KeyboardShortcutController implements Initializable {
 		GridPane.setMargin(description, new Insets(10));
 		GridPane.setHgrow(description, Priority.ALWAYS);
 		// add heading 2
-		shortcut = new Label("Shortcut");
+		shortcut = new Label(SHORTCUT);
 		shortcut.setFont(font);
 		children.add(shortcut);
 		GridPane.setRowIndex(shortcut, row);
 		GridPane.setColumnIndex(shortcut, 4);
 		GridPane.setMargin(shortcut, new Insets(10));
 		GridPane.setHgrow(shortcut, Priority.SOMETIMES);
-		description = new Label("Description");
+		description = new Label(DESCRIPTION);
 		description.setFont(font);
 		children.add(description);
 		GridPane.setRowIndex(description, row);
@@ -128,10 +122,7 @@ public class KeyboardShortcutController implements Initializable {
 			MenuItem menuItem = menuItems.get(i);
 			KeyCombination accelerator = menuItem.getAccelerator();
 			// ignore all disabled menu items
-			if (menuItem.isDisable())
-				continue;
-			// ignore all menu items without accelerator
-			if (accelerator == null)
+			if (menuItem.isDisable() || accelerator == null)
 				continue;
 			String text = menuItem.getText();
 			String keyString = accelerator.getDisplayText();
@@ -151,10 +142,6 @@ public class KeyboardShortcutController implements Initializable {
 				row++;
 			}
 		}
-		// set height of all shortcut lines
-		//		for (int i = 0; i < hotKeys.length; i++) {
-		//			gridPane.getRowConstraints().add(new RowConstraints(23));
-		//		}
 	}
 
 	private void addMenuItems(List<MenuItem> menuItems, Menu menu) {
@@ -167,10 +154,7 @@ public class KeyboardShortcutController implements Initializable {
 			} else {
 				KeyCombination accelerator = menuItem.getAccelerator();
 				// ignore all disabled menu items
-				if (menuItem.isDisable())
-					continue;
-				// ignore all menu items without accelerator
-				if (accelerator == null)
+				if (menuItem.isDisable() || accelerator == null)
 					continue;
 				menuItems.add(menuItem);
 			}

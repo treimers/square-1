@@ -1,4 +1,4 @@
-package net.treimers.square1.view;
+package net.treimers.square1.view.misc;
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
@@ -9,7 +9,14 @@ import javafx.scene.transform.Transform;
  */
 public class SmartGroup extends Group {
 	/** The initial transform. */
-	private Transform t = new Rotate();
+	private Transform t;
+
+	/**
+	 * Creates a new instance.
+	 */
+	public SmartGroup() {
+		t = new Rotate();
+	}
 
 	/**
 	 * Rotates the smart group by an angle around x-axis.
@@ -28,6 +35,17 @@ public class SmartGroup extends Group {
 	 */
 	public void rotateByY(int ang) {
 		Rotate r = new Rotate(ang, Rotate.Y_AXIS);
+		t = t.createConcatenation(r);
+		this.getTransforms().clear();
+		this.getTransforms().addAll(t);
+	}
+
+	/**
+	 * Rotates the smart group by an angle around z-axis.
+	 * @param ang the rotation angle.
+	 */
+	public void rotateByZ(int ang) {
+		Rotate r = new Rotate(ang, Rotate.Z_AXIS);
 		t = t.createConcatenation(r);
 		this.getTransforms().clear();
 		this.getTransforms().addAll(t);

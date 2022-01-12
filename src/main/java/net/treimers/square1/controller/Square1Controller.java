@@ -1,18 +1,17 @@
 package net.treimers.square1.controller;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
-import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Set;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,11 +24,11 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -38,15 +37,15 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import net.treimers.square1.Version;
-import net.treimers.square1.view.AbstractPiece;
-import net.treimers.square1.view.Constants;
-import net.treimers.square1.view.CornerPiece;
-import net.treimers.square1.view.EdgePiece;
-import net.treimers.square1.view.ImageLoader;
-import net.treimers.square1.view.MiddlePiece;
-import net.treimers.square1.view.SmartGroup;
+import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Position;
+import net.treimers.square1.view.dialog.ColorDialog;
+import net.treimers.square1.view.dialog.PositionDialog;
+import net.treimers.square1.view.misc.ImageLoader;
+import net.treimers.square1.view.misc.MeshGroup;
+import net.treimers.square1.view.misc.SmartGroup;
+import net.treimers.square1.view.piece.Layer;
 
 /*
 
@@ -66,95 +65,81 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
 
 */
 
+/*
+ * Rotate camera
+ *   https://www.py4u.net/discuss/2130399
+ *   https://stackoverflow.com/questions/48948092/javafx-rotating-camera-around-a-pivot
+ */
+
 /**
  * Instances of this class are used to control the flow of the Square-1 application.
  */
-public class Square1Controller implements Initializable {
-	/** The sub scene width. */
-	private static final int WIDTH = 800;
-	/** The sub scene height. */
-	private static final int HEIGHT = 600;
+public class Square1Controller implements Initializable, ColorBean {
+	/** The default colors of the Square-1 sides. */
+	private static final Color[] DEFAULT_COLORS = new Color[] {
+		Color.WHITE,
+		Color.YELLOW,
+		Color.ORANGE,
+		Color.DARKBLUE,
+		Color.RED,
+		Color.GREEN,
+		Color.GRAY,
+		Color.BLACK,
+	};
 	/** The label with the moves to solve a Square-1 position. */
 	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
 	@FXML private SubScene subScene;
-	/** The position to solve. */
-	@FXML private TextField position;
 	/** The menu bar. */
 	@FXML private MenuBar menuBar;
-	/** The radio menu item for piece A visibility. */
-	@FXML private RadioMenuItem menuPieceA;
-	/** The radio menu item for piece B visibility. */
-	@FXML private RadioMenuItem menuPieceB;
-	/** The radio menu item for piece C visibility. */
-	@FXML private RadioMenuItem menuPieceC;
-	/** The radio menu item for piece D visibility. */
-	@FXML private RadioMenuItem menuPieceD;
-	/** The radio menu item for piece E visibility. */
-	@FXML private RadioMenuItem menuPieceE;
-	/** The radio menu item for piece F visibility. */
-	@FXML private RadioMenuItem menuPieceF;
-	/** The radio menu item for piece G visibility. */
-	@FXML private RadioMenuItem menuPieceG;
-	/** The radio menu item for piece H visibility. */
-	@FXML private RadioMenuItem menuPieceH;
-	/** The radio menu item for piece 1 visibility. */
-	@FXML private RadioMenuItem menuPiece1;
-	/** The radio menu item for piece 2 visibility. */
-	@FXML private RadioMenuItem menuPiece2;
-	/** The radio menu item for piece 3 visibility. */
-	@FXML private RadioMenuItem menuPiece3;
-	/** The radio menu item for piece 4 visibility. */
-	@FXML private RadioMenuItem menuPiece4;
-	/** The radio menu item for piece 5 visibility. */
-	@FXML private RadioMenuItem menuPiece5;
-	/** The radio menu item for piece 6 visibility. */
-	@FXML private RadioMenuItem menuPiece6;
-	/** The radio menu item for piece 7 visibility. */
-	@FXML private RadioMenuItem menuPiece7;
-	/** The radio menu item for piece 8 visibility. */
-	@FXML private RadioMenuItem menuPiece8;
-	/** The radio menu item for piece M visibility. */
-	@FXML private RadioMenuItem menuPieceM;
-	/** The radio menu item for piece N visibility. */
-	@FXML private RadioMenuItem menuPieceN;
-	@FXML private Button solveButton;
+	/** The menu with the piece visibility radio menu items. */
+	@FXML private Menu menuPieces;
 	private double mouseOldX;
 	private double mouseOldY;
 	private double mousePosX;
 	private double mousePosY;
-	private RotateTransition rotateTransition;
-	/** The primary stage. */
-	private Stage primaryStage;
 	private Rotate rotateX;
 	private Rotate rotateY;
 	private Rotate rotateZ;
+	/** The primary stage. */
+	private Stage primaryStage;
 	/** The group with x-, y- and z-axis. */
 	private Group axis;
 	/** The mesh group in the sub scene. */
-	private Group meshGroup;
-	/** The map with all pieces. */
-	private Map<Character, AbstractPiece> pieceMap;
+	private MeshGroup meshGroup;
 	/** The map with all radio menu items for piece visibility. */
-	private Map<Character, RadioMenuItem> menuMap;
+	/** The alert for key short cuts. */
 	private Alert shortcutAlert;
+	/** The dialog used to set the colors of the Square-1 sides. */
+	private ColorDialog colorDialog;
+	/** A color change support object used to send out change events. */
+	private PropertyChangeSupport colorChangeSupport;
+	/** The colors of the Square-1 sides. */
+	private Color[] colors;
+	/** The position that shall be solved. */
+	private Position position;
+	/** The dialog used to enter a new position. */
+	private PositionDialog positionDialog;
+	private PositionDialogController positionDialogController;
+	private Map<Character, RadioMenuItem> menuMap;
+
+	public Square1Controller() {
+		position = new Position();
+		menuMap = new HashMap<>();
+		colors = DEFAULT_COLORS;
+		colorChangeSupport = new PropertyChangeSupport(this);
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		// Position
-		position.setText("A1B2C3D45E6F7G8H");
-		position.setFocusTraversable(false);
-		position.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				solveButton.requestFocus();
-			}
-		});
+		// Colors
+		colorDialog = new ColorDialog(this);
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
+		meshGroup = new MeshGroup(this);
+		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
+		meshGroup.setContent(position);
 		subScene.setRoot(smartGroup);
-		subScene.setWidth(WIDTH);
-		subScene.setHeight(HEIGHT);
 		subScene.setFill(Color.SILVER);
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
@@ -162,80 +147,17 @@ public class Square1Controller implements Initializable {
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
-		// Edges
-		EdgePiece edge1 = new EdgePiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge2 = new EdgePiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge3 = new EdgePiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge4 = new EdgePiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.WHITE);
-		EdgePiece edge5 = new EdgePiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge6 = new EdgePiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge7 = new EdgePiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.GRAY,
-				Constants.GREEN);
-		EdgePiece edge8 = new EdgePiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.GRAY,
-				Constants.GREEN);
-		// Corners
-		CornerPiece cornerA = new CornerPiece(0, 1, Constants.BLACK, Constants.GRAY, Constants.YELLOW, Constants.ORANGE,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerB = new CornerPiece(1, 1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.YELLOW,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerC = new CornerPiece(2, 1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.RED,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerD = new CornerPiece(3, 1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.BLUE,
-				Constants.GRAY, Constants.WHITE);
-		CornerPiece cornerE = new CornerPiece(3, -1, Constants.BLACK, Constants.GRAY, Constants.ORANGE, Constants.BLUE,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerF = new CornerPiece(2, -1, Constants.BLACK, Constants.GRAY, Constants.BLUE, Constants.RED,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerG = new CornerPiece(1, -1, Constants.BLACK, Constants.GRAY, Constants.RED, Constants.YELLOW,
-				Constants.GRAY, Constants.GREEN);
-		CornerPiece cornerH = new CornerPiece(0, -1, Constants.BLACK, Constants.GRAY, Constants.YELLOW,
-				Constants.ORANGE, Constants.GRAY, Constants.GREEN);
-		// Middle
-		MiddlePiece middleM = new MiddlePiece(0, Constants.BLACK, Constants.YELLOW, Constants.ORANGE, Constants.GRAY,
-				Constants.RED, Constants.BLACK);
-		MiddlePiece middleN = new MiddlePiece(1, Constants.BLACK, Constants.BLUE, Constants.RED, Constants.GRAY,
-				Constants.ORANGE, Constants.BLACK);
-		// Piece Map
-		pieceMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', edge1), new AbstractMap.SimpleEntry<>('2', edge2),
-				new AbstractMap.SimpleEntry<>('3', edge3), new AbstractMap.SimpleEntry<>('4', edge4),
-				new AbstractMap.SimpleEntry<>('5', edge5), new AbstractMap.SimpleEntry<>('6', edge6),
-				new AbstractMap.SimpleEntry<>('7', edge7), new AbstractMap.SimpleEntry<>('8', edge8),
-				new AbstractMap.SimpleEntry<>('A', cornerA), new AbstractMap.SimpleEntry<>('B', cornerB),
-				new AbstractMap.SimpleEntry<>('C', cornerC), new AbstractMap.SimpleEntry<>('D', cornerD),
-				new AbstractMap.SimpleEntry<>('E', cornerE), new AbstractMap.SimpleEntry<>('F', cornerF),
-				new AbstractMap.SimpleEntry<>('G', cornerG), new AbstractMap.SimpleEntry<>('H', cornerH),
-				new AbstractMap.SimpleEntry<>('M', middleM), new AbstractMap.SimpleEntry<>('N', middleN));
-		// Menu Map
-		menuMap = Map.ofEntries(new AbstractMap.SimpleEntry<>('1', menuPiece1),
-				new AbstractMap.SimpleEntry<>('2', menuPiece2), new AbstractMap.SimpleEntry<>('3', menuPiece3),
-				new AbstractMap.SimpleEntry<>('4', menuPiece4), new AbstractMap.SimpleEntry<>('5', menuPiece5),
-				new AbstractMap.SimpleEntry<>('6', menuPiece6), new AbstractMap.SimpleEntry<>('7', menuPiece7),
-				new AbstractMap.SimpleEntry<>('8', menuPiece8), new AbstractMap.SimpleEntry<>('A', menuPieceA),
-				new AbstractMap.SimpleEntry<>('B', menuPieceB), new AbstractMap.SimpleEntry<>('C', menuPieceC),
-				new AbstractMap.SimpleEntry<>('D', menuPieceD), new AbstractMap.SimpleEntry<>('E', menuPieceE),
-				new AbstractMap.SimpleEntry<>('F', menuPieceF), new AbstractMap.SimpleEntry<>('G', menuPieceG),
-				new AbstractMap.SimpleEntry<>('H', menuPieceH), new AbstractMap.SimpleEntry<>('M', menuPieceM),
-				new AbstractMap.SimpleEntry<>('N', menuPieceN));
 		// Mesh Group
-		meshGroup = new Group();
 		axis = buildAxes();
-		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
-		// Register Radio Menu Items and
-		// add all Nodes to View
-		Set<Character> set = pieceMap.keySet();
-		Character[] characters = set.toArray(new Character[set.size()]);
-		for (Character c : characters) {
-			AbstractPiece piece = pieceMap.get(c);
-			RadioMenuItem radioMenuItem = menuMap.get(c);
-			radioMenuItem.selectedProperty().bindBidirectional(piece.visibleProperty());
-			meshGroup.getChildren().add(piece);
+		//
+		ObservableList<MenuItem> menuItems = menuPieces.getItems();
+		for (MenuItem menuItem : menuItems) {
+			if (menuItem instanceof Menu) {
+				Menu menu = (Menu) menuItem;
+				retrieveToggleMenues(menu);
+			}
 		}
+
 		// Mouse Events
 		subScene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -253,22 +175,47 @@ public class Square1Controller implements Initializable {
 			mouseOldX = mousePosX;
 			mouseOldY = mousePosY;
 		});
-		// Setup Animation
-		rotateTransition = new RotateTransition(Duration.seconds(2.000), meshGroup);
-		rotateTransition.setCycleCount(1);
-		rotateTransition.setAxis(Rotate.Y_AXIS);
-		rotateTransition.setByAngle(360);
-		rotateTransition.setInterpolator(Interpolator.LINEAR);
 	}
 
+	private void retrieveToggleMenues(Menu menu) {
+		ObservableList<MenuItem> items = menu.getItems();
+		for (MenuItem menuItem : items) {
+			if (menuItem instanceof Menu)
+				retrieveToggleMenues((Menu) menuItem);
+			else if (menuItem instanceof RadioMenuItem)
+				menuMap.put(menuItem.getId().charAt(0), (RadioMenuItem) menuItem);
+		}
+	}
+
+	/**
+	 * Sets the primary stage.
+	 * @param primaryStage the primary stage.
+	 * @throws IOException in case of load errors.
+	 */
 	public void setPrimaryStage(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
-		// Create ShortCuts Dialog
+		// Create Dialog
 		shortcutAlert = createShortcutStage();
+		positionDialog = createPositionDialog();
+	}
+
+	@Override
+	public Color[] getColors() {
+		return Arrays.copyOf(colors, colors.length);
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		colorChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		colorChangeSupport.removePropertyChangeListener(listener);
 	}
 
 	@FXML
-	void doAbout(ActionEvent event) {
+	void doAbout() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setGraphic(ImageLoader.getLogoImageView());
 		alert.setTitle("About");
@@ -279,42 +226,82 @@ public class Square1Controller implements Initializable {
 	}
 
 	@FXML
-	void doExit(ActionEvent event) {
+	void doExit() {
 		primaryStage.hide();
 	}
 
+	/**
+	 * Opens color dialog and informs all listeners (pieces)
+	 * about color changes.
+	 * @param event the event fired by JavaFX.
+	 */
 	@FXML
-	void doXClock(ActionEvent event) {
+	void doChangeColors() {
+		Optional<Color[]> result = colorDialog.showAndWait();
+		if (result.isPresent()) {
+			Color[] oldColors = colors;
+			colors = result.get();
+			colorChangeSupport.firePropertyChange("colors", oldColors, colors);
+		}
+	}
+
+	@FXML
+	void doShowPosition() {
+		Map<Layer, Character[]> pieces = position.getPieces();
+		Layer[] layers = pieces.keySet().toArray(new Layer[0]);
+		for (Layer layer : layers) {
+			Character[] pieceNames = pieces.get(layer);
+			for (Character character : pieceNames) {
+				RadioMenuItem radioMenuItem = menuMap.get(character);
+				if (radioMenuItem != null)
+					radioMenuItem.setSelected(true);
+			}
+		}
+		positionDialogController.setPosition(position);
+		Optional<Position> result = positionDialog.showAndWait();
+		if (result.isPresent()) {
+			position = result.get();
+			meshGroup.setContent(position);
+		}
+	}
+
+	@FXML
+	void doSolvePosition() {
+		System.out.println("Solve");
+	}
+
+	@FXML
+	void doXClock() {
 		rotateX.setAngle(rotateX.getAngle() + 10.0f);
 	}
 
 	@FXML
-	void doXAntiClock(ActionEvent event) {
+	void doXAntiClock() {
 		rotateX.setAngle(rotateX.getAngle() - 10.0f);
 	}
 
 	@FXML
-	void doYClock(ActionEvent event) {
+	void doYClock() {
 		rotateY.setAngle(rotateY.getAngle() + 10.0f);
 	}
 
 	@FXML
-	void doYAntiClock(ActionEvent event) {
+	void doYAntiClock() {
 		rotateY.setAngle(rotateY.getAngle() - 10.0f);
 	}
 
 	@FXML
-	void doZClock(ActionEvent event) {
+	void doZClock() {
 		rotateZ.setAngle(rotateZ.getAngle() + 10.0f);
 	}
 
 	@FXML
-	void doZAntiClock(ActionEvent event) {
+	void doZAntiClock() {
 		rotateZ.setAngle(rotateZ.getAngle() - 10.0f);
 	}
 
 	@FXML
-	void doToggleAxis(ActionEvent event) {
+	void doToggleAxis() {
 		ObservableList<Node> children = meshGroup.getChildren();
 		if (children.contains(axis))
 			children.remove(axis);
@@ -322,13 +309,16 @@ public class Square1Controller implements Initializable {
 			children.add(axis);
 	}
 
+	/**
+	 * Performs an animated 360° rotation of the Square-1.
+	 */
 	@FXML
-	void doRotate(ActionEvent event) {
-		animate();
+	void doRotate() {
+		meshGroup.animate();
 	}
 
 	@FXML
-	void doReset(ActionEvent event) {
+	void doReset() {
 		rotateX.setAngle(0.0f);
 		rotateY.setAngle(0.0f);
 		rotateZ.setAngle(0.0f);
@@ -342,43 +332,30 @@ public class Square1Controller implements Initializable {
 		if (index < 0)
 			return;
 		char c = text.charAt(index + 1);
-		AbstractPiece piece = pieceMap.get(c);
-		piece.setVisible(source.isSelected());
+		meshGroup.setPieceVisibility(c, source.isSelected());
 	}
 
 	@FXML
-	void doHideAll(ActionEvent event) {
-		Set<Character> set = pieceMap.keySet();
-		for (Character c : set) {
-			pieceMap.get(c).setVisible(false);
-		}
+	void doHideAll() {
+		/*
+		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
+		for (Entry<Character, AbstractPiece> entry : entrySet)
+			entry.getValue().setVisible(false);
+			*/
 	}
 
 	@FXML
-	void doShowAll(ActionEvent event) {
-		Set<Character> set = pieceMap.keySet();
-		for (Character c : set) {
-			pieceMap.get(c).setVisible(true);
-		}
+	void doShowAll() {
+		/*
+		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
+		for (Entry<Character, AbstractPiece> entry : entrySet)
+			entry.getValue().setVisible(true);
+			*/
 	}
 
 	@FXML
-	void doHotKeys(ActionEvent event) {
+	void doHotKeys() {
 		shortcutAlert.showAndWait();
-	}
-
-	@FXML
-	void doSolve(ActionEvent event) {
-		System.out.println("Solve");
-	}
-
-	// https://www.youtube.com/watch?v=oaL8n1bmD78
-	/**
-	 * Animates a 360° rotation of the Square-1.
-	 */
-	private void animate() {
-		if (rotateTransition.getStatus() != Status.RUNNING)
-			rotateTransition.playFromStart();
 	}
 
 	/**
@@ -416,7 +393,7 @@ public class Square1Controller implements Initializable {
 	}
 
 	/**
-	 * Creates the stage with the key short cuts,
+	 * Creates the stage with the key short cuts.
 	 * @throws IOException in case of load errors.
 	 */
 	private Alert createShortcutStage() throws IOException {
@@ -430,7 +407,7 @@ public class Square1Controller implements Initializable {
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initStyle(StageStyle.UTILITY);
 		// load content
-		URL resource = Square1Controller.class.getResource("keyshortcuts.fxml");
+		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyshortcuts.fxml");
 		FXMLLoader loader = new FXMLLoader(resource);
 		Parent root = loader.load();
 		// set view's controller
@@ -440,5 +417,27 @@ public class Square1Controller implements Initializable {
 		alert.getDialogPane().setContent(root);
 		alert.initOwner(primaryStage);
 		return alert;
+	}
+
+	/**
+	 * Creates a new position dialog allowing the user to define a position to be solved.
+	 * @return a new position dialog.
+	 * @throws IOException in case of load errors.
+	 */
+	private PositionDialog createPositionDialog() throws IOException {
+		// dialog content
+		URL resource = getClass().getResource("/net/treimers/square1/positiondialog.fxml");
+		FXMLLoader loader = new FXMLLoader(resource);
+		Parent root = loader.load();
+		// controller
+		positionDialogController = loader.getController();
+		positionDialogController.init(this);
+		// dialog
+		PositionDialog dialog = new PositionDialog(root, positionDialogController);
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(primaryStage.getIcons().get(0));
+		stage.initModality(Modality.APPLICATION_MODAL);
+		dialog.initOwner(primaryStage);
+		return dialog;
 	}
 }

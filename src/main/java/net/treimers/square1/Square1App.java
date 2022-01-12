@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.treimers.square1.controller.Square1Controller;
-import net.treimers.square1.view.ImageLoader;
+import net.treimers.square1.view.misc.ImageLoader;
 
 /**
  * Instances of this class are used as Square-1 JavaFX application.
@@ -23,7 +23,7 @@ public class Square1App extends Application {
 		Image image = ImageLoader.getLogoImage();
 		primaryStage.getIcons().add(image);
 		// load view
-		FXMLLoader loader = new FXMLLoader(Square1App.class.getResource("square1.fxml"));
+		FXMLLoader loader = new FXMLLoader(Square1App.class.getResource("/net/treimers/square1/square1.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		Square1Controller controller = loader.getController();
