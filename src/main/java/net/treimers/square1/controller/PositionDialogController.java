@@ -13,7 +13,7 @@ import javafx.scene.Camera;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -36,7 +36,7 @@ public class PositionDialogController {
 	/** The grid pane with all sub scenes for single pieces used as drag sources. */
 	@FXML private GridPane pieceGridPane;
 	/** The label reflecting the current position. */
-	@FXML private Label positionLabel;
+	@FXML private TextField positionNode;
 	/** The current position. */
 	private Position position;
 	/** The last position used for reset. */
@@ -174,7 +174,7 @@ public class PositionDialogController {
 		Set<Entry<Character, MeshGroup>> entrySet = this.pieceGroupMap.entrySet();
 		for (Entry<Character, MeshGroup> entry : entrySet)
 			entry.getValue().setVisible(position.isAvailable(entry.getKey()));
-		this.positionLabel.setText(position.toString());
+		this.positionNode.setText(position.toString());
 		meshGroup.setContent(position);
 	}
 
@@ -263,7 +263,7 @@ public class PositionDialogController {
 						pieceGroup.setVisible(false);
 					}
 					meshGroup.setContent(position);
-					positionLabel.setText(position.toString());
+					positionNode.setText(position.toString());
 				}
 				event.consume();
 			}
