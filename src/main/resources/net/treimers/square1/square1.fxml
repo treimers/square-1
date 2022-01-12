@@ -84,46 +84,46 @@
 						</MenuItem>
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="Pieces">
+				<Menu fx:id="menuPieces" mnemonicParsing="false" text="Pieces">
 					<items>
 						<Menu mnemonicParsing="false" text="Corner Pieces">
 							<items>
-								<RadioMenuItem fx:id="menuPieceA" mnemonicParsing="false" onAction="#doToggle" text="Corner A">
+								<RadioMenuItem id="A" mnemonicParsing="false" onAction="#doToggle" selected="true" text="Corner A">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceB" mnemonicParsing="false" onAction="#doToggle" text="Corner B">
+								<RadioMenuItem id="B" mnemonicParsing="false" onAction="#doToggle" text="Corner B">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceC" mnemonicParsing="false" onAction="#doToggle" text="Corner C">
+								<RadioMenuItem id="C" mnemonicParsing="false" onAction="#doToggle" text="Corner C">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceD" mnemonicParsing="false" onAction="#doToggle" text="Corner D">
+								<RadioMenuItem id="D" mnemonicParsing="false" onAction="#doToggle" text="Corner D">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceE" mnemonicParsing="false" onAction="#doToggle" text="Corner E">
+								<RadioMenuItem id="E" mnemonicParsing="false" onAction="#doToggle" text="Corner E">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceF" mnemonicParsing="false" onAction="#doToggle" text="Corner F">
+								<RadioMenuItem id="F" mnemonicParsing="false" onAction="#doToggle" text="Corner F">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceG" mnemonicParsing="false" onAction="#doToggle" text="Corner G">
+								<RadioMenuItem id="G" mnemonicParsing="false" onAction="#doToggle" text="Corner G">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceH" mnemonicParsing="false" onAction="#doToggle" text="Corner H">
+								<RadioMenuItem id="H" mnemonicParsing="false" onAction="#doToggle" text="Corner H">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
@@ -132,42 +132,42 @@
 						</Menu>
 						<Menu mnemonicParsing="false" text="Edge Pieces">
 							<items>
-								<RadioMenuItem fx:id="menuPiece1" mnemonicParsing="false" onAction="#doToggle" text="Edge 1">
+								<RadioMenuItem id="1" mnemonicParsing="false" onAction="#doToggle" text="Edge 1">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT1" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece2" mnemonicParsing="false" onAction="#doToggle" text="Edge 2">
+								<RadioMenuItem id="2" mnemonicParsing="false" onAction="#doToggle" text="Edge 2">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT2" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece3" mnemonicParsing="false" onAction="#doToggle" text="Edge 3">
+								<RadioMenuItem id="3" mnemonicParsing="false" onAction="#doToggle" text="Edge 3">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT3" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece4" mnemonicParsing="false" onAction="#doToggle" text="Edge 4">
+								<RadioMenuItem id="4" mnemonicParsing="false" onAction="#doToggle" text="Edge 4">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT4" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece5" mnemonicParsing="false" onAction="#doToggle" text="Edge 5">
+								<RadioMenuItem id="5" mnemonicParsing="false" onAction="#doToggle" text="Edge 5">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT5" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece6" mnemonicParsing="false" onAction="#doToggle" text="Edge 6">
+								<RadioMenuItem id="6" mnemonicParsing="false" onAction="#doToggle" text="Edge 6">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT6" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece7" mnemonicParsing="false" onAction="#doToggle" text="Edge 7">
+								<RadioMenuItem id="7" mnemonicParsing="false" onAction="#doToggle" text="Edge 7">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT7" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPiece8" mnemonicParsing="false" onAction="#doToggle" text="Edge 8">
+								<RadioMenuItem id="8" mnemonicParsing="false" onAction="#doToggle" text="Edge 8">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT8" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
@@ -176,12 +176,12 @@
 						</Menu>
 						<Menu mnemonicParsing="false" text="Middle Pieces">
 							<items>
-								<RadioMenuItem fx:id="menuPieceM" mnemonicParsing="false" onAction="#doToggle" text="Middle M">
+								<RadioMenuItem id="M" mnemonicParsing="false" onAction="#doToggle" text="Middle M">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</RadioMenuItem>
-								<RadioMenuItem fx:id="menuPieceN" mnemonicParsing="false" onAction="#doToggle" text="Middle N">
+								<RadioMenuItem id="N" mnemonicParsing="false" onAction="#doToggle" text="Middle N">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>

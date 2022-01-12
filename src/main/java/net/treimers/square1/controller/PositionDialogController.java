@@ -113,6 +113,17 @@ public class PositionDialogController {
 	}
 
 	/**
+	 * Performs an animated 360° rotation of the Square-1.
+	 */
+		public void doRotate() {
+		meshGroup.animate();
+		Set<Character> pieceNames = pieceGroupMap.keySet();
+		for (Character c : pieceNames) {
+			pieceGroupMap.get(c).animate();
+		}
+	}
+	
+	/**
 	 * Sets the position to empty position.
 	 */
 	public void doSetEmptyPosition() {
@@ -260,7 +271,7 @@ public class PositionDialogController {
 	}
 
 	/**
-	 * Filles a piece sub scene with content.
+	 * Fills a piece sub scene with content.
 	 * 
 	 * @param pieceScene the piece sub scene.
 	 * @param gridEntry the piece data (name, grid x position, grid y position).
