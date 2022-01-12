@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.treimers.square1.controller.PositionDialogController">
 	<center>
-		<SubScene fx:id="subScene" depthBuffer="true" height="600.0" width="600.0" BorderPane.alignment="CENTER">
+		<SubScene fx:id="square1Scene" depthBuffer="true" height="600.0" width="600.0" BorderPane.alignment="CENTER">
 			<antiAliasing>
 				<SceneAntialiasing fx:constant="BALANCED" />
 			</antiAliasing>
@@ -23,7 +23,7 @@
 		</SubScene>
 	</center>
 	<right>
-		<GridPane BorderPane.alignment="CENTER">
+		<GridPane fx:id="pieceGridPane" BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
 				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
@@ -42,7 +42,7 @@
 				<RowConstraints vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<SubScene fx:id="subSceneA" depthBuffer="true" height="100.0" width="100.0">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -53,7 +53,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneB" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -64,7 +64,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene1" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -75,7 +75,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene2" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -86,7 +86,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneMinus" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -102,7 +102,7 @@
 				<Label text="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<Label text="2" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 				<Label text="-" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-				<SubScene fx:id="subSceneC" depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -113,7 +113,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneD" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -124,7 +124,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene3" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -135,7 +135,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene4" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -150,7 +150,7 @@
 				<Label text="D" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				<Label text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 				<Label text="4" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-				<SubScene fx:id="subSceneE" depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="4">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -161,7 +161,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneF" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -172,7 +172,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene5" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -183,7 +183,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene6" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -194,7 +194,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneSlash" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -210,7 +210,7 @@
 				<Label text="5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
 				<Label text="6" GridPane.columnIndex="3" GridPane.rowIndex="5" />
 				<Label text="/" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-				<SubScene fx:id="subSceneG" depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="6">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.rowIndex="6">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -221,7 +221,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subSceneH" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -232,7 +232,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene7" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -243,7 +243,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
 				</SubScene>
-				<SubScene fx:id="subScene8" depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+				<SubScene depthBuffer="true" height="100.0" width="100.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
 					<antiAliasing>
 						<SceneAntialiasing fx:constant="BALANCED" />
 					</antiAliasing>
@@ -287,7 +287,7 @@
                </GridPane.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#doSetSolvedPosition" text="Solved Position" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onAction="#doSetLastPosition" text="Last Position" GridPane.columnIndex="4" />
+            <Button mnemonicParsing="false" onAction="#doResetPosition" text="Reset Position" GridPane.columnIndex="4" />
          </children>
       </GridPane>
    </bottom>

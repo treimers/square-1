@@ -26,10 +26,10 @@
 				</Menu>
             <Menu mnemonicParsing="false" text="Square-1">
               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Change Colors" />
-                <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Show Position Dialog">
+                  <MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Change Colors..." />
+                <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Enter Position...">
                      <accelerator>
-                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#doSolvePosition" text="Solve Position" />
               </items>
@@ -38,32 +38,32 @@
 					<items>
 						<MenuItem mnemonicParsing="false" onAction="#doXClock" text="X Clockwise ↷">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="J" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#doXAntiClock" text="X Anticlockwise ↶">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="J" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#doYClock" text="Y Clockwise ↷">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="K" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem fx:id="doYAntiClock" mnemonicParsing="false" onAction="#doYAntiClock" text="Y Anticlockwise ↶">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="K" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#doZClock" text="Z Clockwise ↷">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem fx:id="doZAntiClock" mnemonicParsing="false" onAction="#doZAntiClock" text="Z Anticlockwise ↶">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
@@ -203,13 +203,13 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#doHotKeys" text="Hot Keys">
+						<MenuItem mnemonicParsing="false" onAction="#doHotKeys" text="Hot Keys...">
 							<accelerator>
 								<KeyCodeCombination alt="DOWN" code="K" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" onAction="#doAbout" text="About">
+						<MenuItem mnemonicParsing="false" onAction="#doAbout" text="About...">
 							<accelerator>
 								<KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
