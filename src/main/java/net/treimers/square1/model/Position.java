@@ -10,7 +10,8 @@ import net.treimers.square1.view.piece.Layer;
 public class Position {
 	private static final int CIRCLE = 12;
 	private static final String SOLVED_POSITION_STRING = "A1B2C3D45E6F7G8H-";
-	private String positionString;
+	private String pieceString;
+	private Character middlePiece;
 
 	public static Position fromString(String positionString) {
 		return new Position(positionString);
@@ -21,42 +22,48 @@ public class Position {
 	}
 
 	public Position(Position position) {
-		this(position.positionString);
+		this(position.toString());
 	}
 
 	private Position(String positionString) {
-		this.positionString = positionString;
+		this.pieceString = "";
+		this.middlePiece = null;
+		for (int i = 0; i < positionString.length(); i++) {
+			char c = positionString.charAt(i);
+			add(c);
+		}
 	}
 
 	public boolean canAdd(Character name) {
-		// do not allow anything after all positions filled
-		if (positionString.length() >= SOLVED_POSITION_STRING.length())
-			return false;
-		// allow middle pieces as last position only
+		// allow middle pieces?
 		if (name == '-' || name == '/')
-			return positionString.length() == SOLVED_POSITION_STRING.length() - 1;
+			return middlePiece == null;
 		// disallow A-H pieces when only small slot left in top layer
-		if (getAngle(positionString) == CIRCLE - 1 && Character.isAlphabetic(name))
+		if (getAngle(pieceString) == CIRCLE - 1 && Character.isAlphabetic(name))
 			return false;
-		return !positionString.contains(name.toString());
+		return !pieceString.contains(name.toString());
 	}
 
 	public boolean isAvailable(Character name) {
 		if (name == '-' || name == '/')
-			return positionString.length() < SOLVED_POSITION_STRING.length();
-		return !positionString.contains(name.toString());
+			return middlePiece == null;
+		return !pieceString.contains(name.toString());
 	}
 
 	public boolean add(Character name) {
 		if (canAdd(name)) {
-			this.positionString += name;
+			if (name == '-' || name == '/')
+				middlePiece = name;
+			else
+				this.pieceString += name;
 			return true;
 		} else
 			return false;
 	}
 
 	public void clear() {
-		positionString = "";
+		pieceString = "";
+		middlePiece = null;
 	}
 
 	public Map<Layer, Character[]> getPieces() {
@@ -64,30 +71,31 @@ public class Position {
 		int angle = 0;
 		List<Character> top = new ArrayList<>();
 		List<Character> bottom = new ArrayList<>();
-		List<Character> middle = new ArrayList<>();
-		for (int i = 0; i < positionString.length(); i++) {
-			char c = positionString.charAt(i);
-			if (c == '-' || c == '/')
-				middle.add(c);
-			else {
-				if (angle < CIRCLE)
-					top.add(c);
-				else if (angle < 2 * CIRCLE)
-					bottom.add(c);
+		for (int i = 0; i < pieceString.length(); i++) {
+			char c = pieceString.charAt(i);
+			if (angle < CIRCLE)
+				top.add(c);
+			else if (angle < 2 * CIRCLE)
+				bottom.add(c);
+			angle++;
+			if (Character.isAlphabetic(c))
 				angle++;
-				if (Character.isAlphabetic(c))
-					angle++;
-			}
 		}
 		retval.put(Layer.TOP, top.toArray(new Character[top.size()]));
 		retval.put(Layer.BOTTOM, bottom.toArray(new Character[bottom.size()]));
+		List<Character> middle = new ArrayList<>();
+		if (middlePiece != null)
+			middle.add(middlePiece);
 		retval.put(Layer.MIDDLE, middle.toArray(new Character[middle.size()]));
 		return retval;
 	}
 
 	@Override
 	public String toString() {
-		return this.positionString;
+		String retval = this.pieceString;
+		if (middlePiece != null)
+			retval += this.middlePiece;
+		return retval;
 	}
 
 	private int getAngle(String pos) {
