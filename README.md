@@ -80,7 +80,7 @@ You can use the mouse to rotate the Square-1 cube and see all sides. Keyboard ke
 
 + **ShortCut C**: change colors of Square-1 sides
 + **ShortCut P**: enter a position
-+ **ShortCut V**: enter current position
++ **ShortCut V**: solve current position
 
 **View Menu**
 
