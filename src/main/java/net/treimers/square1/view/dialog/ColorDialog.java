@@ -74,7 +74,7 @@ public class ColorDialog extends Dialog<Color[]> {
 			@Override
 			public void handle(ActionEvent event) {
 				// set all colors there defaults
-				Color[] defaultColors = colorBean.getColors();
+				Color[] defaultColors = colorBean.getDefaultColors();
 				for (int i = 0; i < colorPicker.length; i++)
 					colorPicker[i].setValue(defaultColors[i]);
 			}

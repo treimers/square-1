@@ -225,6 +225,11 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@Override
+	public Color[] getDefaultColors() {
+		return Arrays.copyOf(DEFAULT_COLORS, DEFAULT_COLORS.length);
+	}
+
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		colorChangeSupport.addPropertyChangeListener(listener);
 	}
@@ -246,7 +251,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@FXML
-	public void doLoadPosition() throws IOException {
+	void doLoadPosition() throws IOException {
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Load Position");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -261,7 +266,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@FXML
-	public void doSavePosition() throws IOException {
+	void doSavePosition() throws IOException {
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Save Position");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));

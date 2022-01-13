@@ -39,5 +39,11 @@ public interface ColorBean {
 	 * Gets the default colors of Square-1 sides.
 	 * @return the default colors of Square-1 sides.
 	 */
+	public Color[] getDefaultColors();
+
+	/**
+	 * Gets the colors of Square-1 sides.
+	 * @return the colors of Square-1 sides.
+	 */
 	public Color[] getColors();
 }
