@@ -66,26 +66,34 @@ Releases can be found here for download
 
 # Usage
 
-Currently the application supports viewing only. You can use the mouse to rotate the Square-1 cube and see all sides.
+Application supports viewing and position editing currently. Solving the Square-1 is coming next. 
 
-Keyboard keys can be used to toggle visibility of the pieces and control rotations:
+You can use the mouse to rotate the Square-1 cube and see all sides. Keyboard keys can be used to control different rotations as well.
 
-**Toggle Visibility**
+**File Menu**
 
-+ **Ctrl A - H**: toggle visibility of a corner (named from A to H)
-+ **Ctrl 1 - 8**: toggle visibility of an edge (numbered from 1 to 8)
-+ **Ctrl M - N**: toggle visibility of a middle piece (named M and N)
-+ **Ctrl 0**: hide all pieces (edges, corners and middle pieces)
-+ **Ctrl 9**: show all pieces (edges, corners and middle pieces)
-+ **Ctrl X**: toggle visibility of x-axis, y-axis and z-axis
++ **ShortCut L**: load position from file
++ **ShortCut S**: save position to file
++ **ShortCut Q**: quit application
 
-**Control Rotations**
+**Square-1 Menu**
 
-+ **Ctrl I**: rotate in positive direction along x-axis
-+ **Ctrl Shift I**: rotate in negative direction along x-axis
-+ **Ctrl O**: rotate in positive direction along y-axis
-+ **Ctrl Shift O**: rotate in negative direction along y-axis
-+ **Ctrl P**: rotate in positive direction along z-axis
-+ **Ctrl Shift P**: rotate in negative direction along z-axis
-+ **Ctrl R**: run an animated rotation (360 degrees) once
-+ **Ctrl Shift R**: reset all rotations (x, y and z) to 0
++ **ShortCut C**: change colors of Square-1 sides
++ **ShortCut P**: enter a position
++ **ShortCut V**: enter current position
+
+**View Menu**
+
++ **ShortCut B**: rotate in positive direction along x-axis
++ **Alt ShortCut B**: rotate in negative direction along x-axis
++ **ShortCut N**: rotate in positive direction along y-axis
++ **Alt ShortCut N**: rotate in negative direction along y-axis
++ **ShortCut M**: rotate in positive direction along z-axis
++ **Alt ShortCut M**: rotate in negative direction along z-axis
++ **ShortCut X**: toggle visibility of x-axis, y-axis and z-axis
++ **ShortCut R**: run an animated rotation (360 degrees) once
++ **Alt ShortCut R**: reset all rotations (x, y and z) to 0
+
+**Help Menu**
++ **ShortCut K**: show hot keys
++ **ShortCut A**: show about screen
