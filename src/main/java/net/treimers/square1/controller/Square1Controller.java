@@ -2,8 +2,11 @@ package net.treimers.square1.controller;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +15,7 @@ import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,11 +33,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -122,6 +129,7 @@ public class Square1Controller implements Initializable, ColorBean {
 	private PositionDialog positionDialog;
 	private PositionDialogController positionDialogController;
 	private Map<Character, RadioMenuItem> menuMap;
+	private String lastFilename;
 
 	public Square1Controller() {
 		position = new Position();
@@ -141,6 +149,7 @@ public class Square1Controller implements Initializable, ColorBean {
 		meshGroup.setContent(position);
 		subScene.setRoot(smartGroup);
 		subScene.setFill(Color.SILVER);
+		// Key
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);
@@ -197,6 +206,17 @@ public class Square1Controller implements Initializable, ColorBean {
 		// Create Dialog
 		shortcutAlert = createShortcutStage();
 		positionDialog = createPositionDialog();
+		// Key Event to enable Piece Menu
+		menuPieces.setVisible(false);
+		final EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.isShortcutDown() && keyEvent.isAltDown() && keyEvent.isShiftDown()
+						&& keyEvent.getCode() == KeyCode.A)
+					menuPieces.setVisible(!menuPieces.isVisible());
+				keyEvent.consume();
+			}
+		};
+		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, keyEventHandler);
 	}
 
 	@Override
@@ -223,6 +243,34 @@ public class Square1Controller implements Initializable, ColorBean {
 		alert.setContentText("Copyright " + Version.getAppVendor());
 		alert.initOwner(primaryStage);
 		alert.showAndWait();
+	}
+
+	@FXML
+	public void doLoadPosition() throws IOException {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Load Position");
+		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+		chooser.setInitialFileName(lastFilename);
+		File file = chooser.showOpenDialog(primaryStage);
+		if (file != null) {
+			byte[] pos = Files.readAllBytes(file.toPath());
+			String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
+			position = Position.fromString(posString);
+			meshGroup.setContent(position);
+		}
+	}
+
+	@FXML
+	public void doSavePosition() throws IOException {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Save Position");
+		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+		chooser.setInitialFileName(lastFilename);
+		File file = chooser.showSaveDialog(primaryStage);
+		if (file != null) {
+			String text = position.toString();
+			Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
+		}
 	}
 
 	@FXML
@@ -373,20 +421,20 @@ public class Square1Controller implements Initializable, ColorBean {
 		final PhongMaterial blueMaterial = new PhongMaterial();
 		blueMaterial.setDiffuseColor(Color.DARKBLUE);
 		blueMaterial.setSpecularColor(Color.BLUE);
-		final Box xAxis = new Box(4.0f, 0.02f, 0.02f);
+		final Box xAxis = new Box(3.5f, 0.02f, 0.02f);
 		xAxis.setMaterial(redMaterial);
-		final Box yAxis = new Box(0.02f, 4.0f, 0.02f);
+		final Box yAxis = new Box(0.02f, 3.5f, 0.02f);
 		yAxis.setMaterial(greenMaterial);
-		final Box zAxis = new Box(0.02f, 0.02f, 4.0f);
+		final Box zAxis = new Box(0.02f, 0.02f, 3.5f);
 		zAxis.setMaterial(blueMaterial);
 		Sphere xSphere = new Sphere(0.04f);
-		xSphere.setTranslateX(2.0f);
+		xSphere.setTranslateX(1.75f);
 		xSphere.setMaterial(redMaterial);
 		Sphere ySphere = new Sphere(0.04f);
-		ySphere.setTranslateY(2.0f);
+		ySphere.setTranslateY(1.75f);
 		ySphere.setMaterial(greenMaterial);
 		Sphere zSphere = new Sphere(0.04f);
-		zSphere.setTranslateZ(2.0f);
+		zSphere.setTranslateZ(1.75f);
 		zSphere.setMaterial(blueMaterial);
 		axisGroup.getChildren().addAll(xAxis, yAxis, zAxis, xSphere, ySphere, zSphere);
 		return axisGroup;
