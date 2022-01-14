@@ -127,7 +127,7 @@ public class PositionDialogController {
 	 * Sets the position to empty position.
 	 */
 	public void doSetEmptyPosition() {
-		this.position = Position.fromString("");
+		this.position = new Position("");
 		displayPosition(this.position);
 	}
 
@@ -284,7 +284,7 @@ public class PositionDialogController {
 		pieceScene.setFill(Color.SILVER);
 		// Piece
 		MeshGroup pieceMeshGroup = new MeshGroup(colorBean);
-		pieceMeshGroup.setContent(Position.fromString(gridEntry.toString()));
+		pieceMeshGroup.setContent(new Position(gridEntry.toString()));
 		group.getChildren().addAll(pieceMeshGroup, new AmbientLight(Color.WHITE));
 		// Camera
 		Camera camera = new PerspectiveCamera(true);

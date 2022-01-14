@@ -2,14 +2,7 @@ package net.treimers.square1.model;
 
 import java.beans.PropertyChangeListener;
 
-import javafx.scene.paint.Color;
-
-/**
- * An instance of this class holds the colors of the outer and inner sides of a Square-1.
- * It is used by the pieces in order to get notice via property change events
- * about any changes to the colors by the user.
- */
-public interface ColorBean {
+public interface PieceHolder {
 	/**
 	 * Add a PropertyChangeListener to the listener list.
 	 * The listener is registered for all properties.
@@ -20,7 +13,7 @@ public interface ColorBean {
 	 *
 	 * @param listener  The PropertyChangeListener to be added
 	 */
-	public void addColorChangeListener(PropertyChangeListener listener);
+	public void addPieceChangeListener(PropertyChangeListener listener);
 
 	/**
 	 * Remove a PropertyChangeListener from the listener list.
@@ -33,17 +26,5 @@ public interface ColorBean {
 	 *
 	 * @param listener  The PropertyChangeListener to be removed
 	 */
-	public void removeColorChangeListener(PropertyChangeListener listener);
-
-	/**
-	 * Gets the default colors of Square-1 sides.
-	 * @return the default colors of Square-1 sides.
-	 */
-	public Color[] getDefaultColors();
-
-	/**
-	 * Gets the colors of Square-1 sides.
-	 * @return the colors of Square-1 sides.
-	 */
-	public Color[] getColors();
+	public void removePieceChangeListener(PropertyChangeListener listener);
 }

@@ -49,7 +49,7 @@ public abstract class AbstractPiece extends MeshView implements PropertyChangeLi
 		setColors(colorBean.getColors());
 		setMaterial(material);
 		// register
-		colorBean.addPropertyChangeListener(this);
+		colorBean.addColorChangeListener(this);
 	}
 
 	@Override

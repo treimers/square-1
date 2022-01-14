@@ -1,5 +1,6 @@
 package net.treimers.square1.controller;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -12,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +53,7 @@ import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
-import net.treimers.square1.view.piece.Layer;
+import net.treimers.square1.view.piece.AbstractPiece;
 
 /*
 
@@ -81,7 +82,7 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
 /**
  * Instances of this class are used to control the flow of the Square-1 application.
  */
-public class Square1Controller implements Initializable, ColorBean {
+public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener {
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
 		Color.WHITE,
@@ -142,14 +143,22 @@ public class Square1Controller implements Initializable, ColorBean {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// Colors
 		colorDialog = new ColorDialog(this);
+		// Piece Menu
+		ObservableList<MenuItem> menuItems = menuPieces.getItems();
+		for (MenuItem menuItem : menuItems) {
+			if (menuItem instanceof Menu) {
+				Menu menu = (Menu) menuItem;
+				retrieveToggleMenues(menu);
+			}
+		}
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		meshGroup = new MeshGroup(this);
+		meshGroup.addPieceChangeListener(this);
 		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		meshGroup.setContent(position);
 		subScene.setRoot(smartGroup);
 		subScene.setFill(Color.SILVER);
-		// Key
 		// Camera
 		Camera camera = new PerspectiveCamera(true);
 		camera.setNearClip(0.1);
@@ -158,15 +167,6 @@ public class Square1Controller implements Initializable, ColorBean {
 		subScene.setCamera(camera);
 		// Mesh Group
 		axis = buildAxes();
-		//
-		ObservableList<MenuItem> menuItems = menuPieces.getItems();
-		for (MenuItem menuItem : menuItems) {
-			if (menuItem instanceof Menu) {
-				Menu menu = (Menu) menuItem;
-				retrieveToggleMenues(menu);
-			}
-		}
-
 		// Mouse Events
 		subScene.setOnMousePressed(me -> {
 			mouseOldX = me.getSceneX();
@@ -230,12 +230,12 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addColorChangeListener(PropertyChangeListener listener) {
 		colorChangeSupport.addPropertyChangeListener(listener);
 	}
 
 	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removeColorChangeListener(PropertyChangeListener listener) {
 		colorChangeSupport.removePropertyChangeListener(listener);
 	}
 
@@ -245,7 +245,7 @@ public class Square1Controller implements Initializable, ColorBean {
 		alert.setGraphic(ImageLoader.getLogoImageView());
 		alert.setTitle("About");
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
-		alert.setContentText("Copyright " + Version.getAppVendor());
+		alert.setContentText("Copyright © " + Version.getAppVendor());
 		alert.initOwner(primaryStage);
 		alert.showAndWait();
 	}
@@ -260,7 +260,7 @@ public class Square1Controller implements Initializable, ColorBean {
 		if (file != null) {
 			byte[] pos = Files.readAllBytes(file.toPath());
 			String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
-			position = Position.fromString(posString);
+			position = new Position(posString);
 			meshGroup.setContent(position);
 		}
 	}
@@ -300,16 +300,6 @@ public class Square1Controller implements Initializable, ColorBean {
 
 	@FXML
 	void doShowPosition() {
-		Map<Layer, Character[]> pieces = position.getPieces();
-		Layer[] layers = pieces.keySet().toArray(new Layer[0]);
-		for (Layer layer : layers) {
-			Character[] pieceNames = pieces.get(layer);
-			for (Character character : pieceNames) {
-				RadioMenuItem radioMenuItem = menuMap.get(character);
-				if (radioMenuItem != null)
-					radioMenuItem.setSelected(true);
-			}
-		}
 		positionDialogController.setPosition(position);
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
@@ -378,37 +368,31 @@ public class Square1Controller implements Initializable, ColorBean {
 	}
 
 	@FXML
-	void doToggle(ActionEvent event) {
-		RadioMenuItem source = (RadioMenuItem) event.getSource();
-		String text = source.getText();
-		int index = text.indexOf(' ');
-		if (index < 0)
-			return;
-		char c = text.charAt(index + 1);
-		meshGroup.setPieceVisibility(c, source.isSelected());
-	}
-
-	@FXML
 	void doHideAll() {
-		/*
-		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
-		for (Entry<Character, AbstractPiece> entry : entrySet)
-			entry.getValue().setVisible(false);
-			*/
+		selectAllPieces(false);
 	}
 
 	@FXML
 	void doShowAll() {
-		/*
-		Set<Entry<Character, AbstractPiece>> entrySet = pieceMap.entrySet();
-		for (Entry<Character, AbstractPiece> entry : entrySet)
-			entry.getValue().setVisible(true);
-			*/
+		selectAllPieces(true);
 	}
 
 	@FXML
 	void doHotKeys() {
 		shortcutAlert.showAndWait();
+	}
+
+	/**
+	 * Shows or hides all pieces via the radio menu items.
+	 * 
+	 * @param selected true for show, false for hide.
+	 */
+	private void selectAllPieces(boolean selected) {
+		Set<Character> menuSet = menuMap.keySet();
+		for (Character c : menuSet) {
+			RadioMenuItem radioMenuItem = menuMap.get(c);
+			radioMenuItem.setSelected(selected);
+		}
 	}
 
 	/**
@@ -492,5 +476,24 @@ public class Square1Controller implements Initializable, ColorBean {
 		stage.initModality(Modality.APPLICATION_MODAL);
 		dialog.initOwner(primaryStage);
 		return dialog;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		@SuppressWarnings("unchecked")
+		Map<Character, AbstractPiece> pieceMap = (Map<Character, AbstractPiece>) evt.getNewValue();
+		Set<Character> menuSet = menuMap.keySet();
+		for (Character c : menuSet) {
+			RadioMenuItem radioMenuItem = menuMap.get(c);
+			if (pieceMap.containsKey(c)) {
+				radioMenuItem.setDisable(false);
+				radioMenuItem.setSelected(true);
+				AbstractPiece piece = pieceMap.get(c);
+				piece.visibleProperty().bind(radioMenuItem.selectedProperty());
+			} else {
+				radioMenuItem.setSelected(false);
+				radioMenuItem.setDisable(true);
+			}
+		}
 	}
 }

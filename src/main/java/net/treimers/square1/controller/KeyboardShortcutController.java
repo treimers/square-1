@@ -29,10 +29,18 @@ import javafx.scene.text.FontWeight;
  * the corresponding text.
  */
 public class KeyboardShortcutController {
+	/** The short cut header text. */
 	private static final String SHORTCUT = "Shortcut";
+	/** The description header text. */
 	private static final String DESCRIPTION = "Description";
+	/** The grid pane with the short cuts. */
 	@FXML private GridPane gridPane;
 
+	/**
+	 * Sets the menu bar in order to scan all accelerator keys.
+	 *  
+	 * @param menuBar the menu bar with accelerator keys.
+	 */
 	public void setMenuBar(MenuBar menuBar) {
 		// set column width 15%, 35%, 15% and 35%
 		ColumnConstraints c1 = new ColumnConstraints();
@@ -144,6 +152,12 @@ public class KeyboardShortcutController {
 		}
 	}
 
+	/**
+	 * Adds all menu items from a menu that have an accelerator to a list of menus.
+	 * 
+	 * @param menuItems list of menus.
+	 * @param menu start menu.
+	 */
 	private void addMenuItems(List<MenuItem> menuItems, Menu menu) {
 		ObservableList<MenuItem> items = menu.getItems();
 		for (int j = 0; j < items.size(); j++) {

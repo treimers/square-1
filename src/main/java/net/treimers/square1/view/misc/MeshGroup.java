@@ -1,5 +1,7 @@
 package net.treimers.square1.view.misc;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.PieceHolder;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.view.piece.AbstractPiece;
 import net.treimers.square1.view.piece.CornerPiece;
@@ -23,7 +26,7 @@ import net.treimers.square1.view.piece.MiddlePiece;
  * Instances of this class are used to visualize the pieces
  * in a position or a single piece only.
  */
-public class MeshGroup extends Group {
+public class MeshGroup extends Group implements PieceHolder {
 	/** Indicator for correct middle layer. */
 	private static final char MIDDLE_CORRECT = '-';
 	/** Indicator for swapped middle layer. */
@@ -40,7 +43,9 @@ public class MeshGroup extends Group {
 	private Position position;
 	/** Rotate transition used to perform an animated 360° rotation of the Square-1. */
 	private RotateTransition rotateTransition;
-	
+	/** A piece change support object used to send out change events. */
+	private PropertyChangeSupport pieceChangeSupport;
+
 	/**
 	 * Creates a new mesh group instance.
 	 * 
@@ -48,6 +53,7 @@ public class MeshGroup extends Group {
 	 */
 	public MeshGroup(ColorBean colorBean) {
 		this.colorBean = colorBean;
+		this.pieceChangeSupport = new PropertyChangeSupport(this);
 		pieceMap = new HashMap<>();
 		Rotate rotateX = new Rotate(-60, 0, 0, 0, Rotate.X_AXIS);
 		Rotate rotateZ = new Rotate(160, 0, 0, 0, Rotate.Z_AXIS);
@@ -67,6 +73,7 @@ public class MeshGroup extends Group {
 	 */
 	public void setContent(Position position) {
 		this.position = position;
+		Map<Character, AbstractPiece> oldPieceMap = pieceMap;
 		pieceMap = new HashMap<>();
 		ObservableList<Node> children = getChildren();
 		// We cannot iterate over the list in a for-each loop and remove entries.
@@ -81,19 +88,9 @@ public class MeshGroup extends Group {
 		addOuterLayer(bottomPieces, true);
 		Character[] middlePieces = layerMap.get(Layer.MIDDLE);
 		addMiddleLayer(middlePieces);
+		pieceChangeSupport.firePropertyChange("PIECE_MAP", oldPieceMap, pieceMap);
 	}
 
-	/**
-	 * Sets the visibility of a piece.
-	 * @param pieceName the peace name.
-	 * @param visible the visibility (true or false).
-	 */
-	public void setPieceVisibility(char pieceName, boolean visible) {
-		AbstractPiece piece = pieceMap.get(pieceName);
-		if (piece != null)
-			piece.setVisible(visible);
-	}
-	
 	// https://www.youtube.com/watch?v=oaL8n1bmD78
 	/**
 	 * Performs an animated 360° rotation of the Square-1.
@@ -164,5 +161,16 @@ public class MeshGroup extends Group {
 	@Override
 	public String toString() {
 		return position.toString();
+	}
+
+	// interface PieceHolder
+	@Override
+	public void addPieceChangeListener(PropertyChangeListener listener) {
+		pieceChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePieceChangeListener(PropertyChangeListener listener) {
+		pieceChangeSupport.removePropertyChangeListener(listener);
 	}
 }
