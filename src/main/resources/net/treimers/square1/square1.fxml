@@ -13,19 +13,21 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.treimers.square1.controller.Square1Controller">
 	<top>
-		<MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+		<MenuBar fx:id="menuBar" useSystemMenuBar="true" BorderPane.alignment="CENTER">
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
-                  <MenuItem mnemonicParsing="false" onAction="#doLoadPosition" text="Load...">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="L" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doSavePosition" text="Save...">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-                  <SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" onAction="#doLoadPosition" text="Load...">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="L" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doSavePosition" text="Save...">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem mnemonicParsing="false" onAction="#doExit" text="Exit">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
@@ -33,23 +35,26 @@
 						</MenuItem>
 					</items>
 				</Menu>
-            <Menu mnemonicParsing="false" text="Square-1">
-              <items>
-                  <MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Colors...">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-                <MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Position...">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doSolvePosition" text="Solve">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="V" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                     </accelerator></MenuItem>
-              </items>
-            </Menu>
-				<Menu mnemonicParsing="false" text="View">
+				<Menu mnemonicParsing="false" text="Square-1">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Colors...">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Position...">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem disable="true" mnemonicParsing="false" onAction="#doSolvePosition" text="Solve">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="V" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+							</accelerator>
+						</MenuItem>
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Rotate">
 					<items>
 						<MenuItem mnemonicParsing="false" onAction="#doXClock" text="X Clockwise ↷">
 							<accelerator>
@@ -87,12 +92,12 @@
 								<KeyCodeCombination alt="UP" code="X" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</RadioMenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#doRotate" text="Rotate">
+						<MenuItem mnemonicParsing="false" onAction="#doRotate" text="Animate Rotation">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#doReset" text="Reset">
+						<MenuItem mnemonicParsing="false" onAction="#doReset" text="Reset Rotation">
 							<accelerator>
 								<KeyCodeCombination alt="DOWN" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
@@ -218,6 +223,11 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
 					<items>
+						<MenuItem mnemonicParsing="false" onAction="#doHelp" text="Help">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#doHotKeys" text="Keys...">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="K" control="UP" meta="UP" shift="UP" shortcut="DOWN" />

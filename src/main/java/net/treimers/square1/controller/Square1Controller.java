@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -26,6 +28,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -34,8 +37,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -131,6 +138,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private PositionDialogController positionDialogController;
 	private Map<Character, RadioMenuItem> menuMap;
 	private String lastFilename;
+	private Stage helpStage;
 
 	public Square1Controller() {
 		position = new Position();
@@ -143,6 +151,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// Colors
 		colorDialog = new ColorDialog(this);
+		createHelpStage();
 		// Piece Menu
 		ObservableList<MenuItem> menuItems = menuPieces.getItems();
 		for (MenuItem menuItem : menuItems) {
@@ -198,10 +207,10 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	/**
 	 * Sets the primary stage.
+	 * 
 	 * @param primaryStage the primary stage.
-	 * @throws IOException in case of load errors.
 	 */
-	public void setPrimaryStage(Stage primaryStage) throws IOException {
+	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		// Create Dialog
 		shortcutAlert = createShortcutStage();
@@ -251,31 +260,40 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	@FXML
-	void doLoadPosition() throws IOException {
-		FileChooser chooser = new FileChooser();
-		chooser.setTitle("Load Position");
-		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-		chooser.setInitialFileName(lastFilename);
-		File file = chooser.showOpenDialog(primaryStage);
-		if (file != null) {
-			byte[] pos = Files.readAllBytes(file.toPath());
-			String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
-			position = new Position(posString);
-			meshGroup.setContent(position);
+	void doLoadPosition() {
+		try {
+			FileChooser chooser = new FileChooser();
+			chooser.setTitle("Load Position");
+			chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+			chooser.setInitialFileName(lastFilename);
+			File file = chooser.showOpenDialog(primaryStage);
+			if (file != null) {
+				byte[] pos = Files.readAllBytes(file.toPath());
+				String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
+				position = new Position(posString);
+				meshGroup.setContent(position);
+			}
+		} catch (IOException e) {
+			alertException(e);
 		}
 	}
 
 	@FXML
-	void doSavePosition() throws IOException {
-		FileChooser chooser = new FileChooser();
-		chooser.setTitle("Save Position");
-		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-		chooser.setInitialFileName(lastFilename);
-		File file = chooser.showSaveDialog(primaryStage);
-		if (file != null) {
-			String text = position.toString();
-			Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
+	void doSavePosition() {
+		try {
+			FileChooser chooser = new FileChooser();
+			chooser.setTitle("Save Position");
+			chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+			chooser.setInitialFileName(lastFilename);
+			File file = chooser.showSaveDialog(primaryStage);
+			if (file != null) {
+				String text = position.toString();
+				Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
+			}
+		} catch (IOException e) {
+			alertException(e);
 		}
+
 	}
 
 	@FXML
@@ -382,6 +400,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		shortcutAlert.showAndWait();
 	}
 
+	@FXML
+	void doHelp() {
+		helpStage.show();
+		helpStage.toFront();
+	}
+
 	/**
 	 * Shows or hides all pieces via the radio menu items.
 	 * 
@@ -430,10 +454,38 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
-	 * Creates the stage with the key short cuts.
-	 * @throws IOException in case of load errors.
+	 * Creates the help screen without displaying it.
 	 */
-	private Alert createShortcutStage() throws IOException {
+	private void createHelpStage() {
+		try {
+			helpStage = new Stage();
+			helpStage.setWidth(1000);
+			helpStage.setHeight(800);
+			// set the stage title
+			helpStage.setTitle("Square-1 Help");
+			// load and set the stage icon
+			Image image = ImageLoader.getLogoImage();
+			helpStage.getIcons().add(image);
+			// load the view
+			URL resource = getClass().getResource("/net/treimers/square1/helpview.fxml");
+			FXMLLoader loader = new FXMLLoader(resource);
+			Parent root = loader.load();
+			// get view's controller and propagate stage to controller
+			HelpController controller = loader.getController();
+			controller.setMainController(this);
+			// create the scene
+			Scene scene = new Scene(root);
+			// apply the scene to the stage
+			helpStage.setScene(scene);
+		} catch (IOException e) {
+			alertException(e);
+		}
+	}
+
+	/**
+	 * Creates the stage with the key short cuts.
+	 */
+	private Alert createShortcutStage() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		// set properties
 		alert.setTitle("Keyboard Shortcuts");
@@ -445,36 +497,44 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.initStyle(StageStyle.UTILITY);
 		// load content
 		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyshortcuts.fxml");
-		FXMLLoader loader = new FXMLLoader(resource);
-		Parent root = loader.load();
-		// set view's controller
-		KeyboardShortcutController controller = loader.getController();
-		controller.setMenuBar(menuBar);
-		// add content to view
-		alert.getDialogPane().setContent(root);
-		alert.initOwner(primaryStage);
+		try {
+			FXMLLoader loader = new FXMLLoader(resource);
+			Parent root = loader.load();
+			// set view's controller
+			KeyboardShortcutController controller = loader.getController();
+			controller.setMenuBar(menuBar);
+			// add content to view
+			alert.getDialogPane().setContent(root);
+			alert.initOwner(primaryStage);
+		} catch (IOException e) {
+			alertException(e);
+		}
 		return alert;
 	}
 
 	/**
 	 * Creates a new position dialog allowing the user to define a position to be solved.
 	 * @return a new position dialog.
-	 * @throws IOException in case of load errors.
 	 */
-	private PositionDialog createPositionDialog() throws IOException {
-		// dialog content
-		URL resource = getClass().getResource("/net/treimers/square1/positiondialog.fxml");
-		FXMLLoader loader = new FXMLLoader(resource);
-		Parent root = loader.load();
-		// controller
-		positionDialogController = loader.getController();
-		positionDialogController.init(this);
-		// dialog
-		PositionDialog dialog = new PositionDialog(root, positionDialogController);
-		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(primaryStage.getIcons().get(0));
-		stage.initModality(Modality.APPLICATION_MODAL);
-		dialog.initOwner(primaryStage);
+	private PositionDialog createPositionDialog() {
+		PositionDialog dialog = null;
+		try {
+			// dialog content
+			URL resource = getClass().getResource("/net/treimers/square1/positiondialog.fxml");
+			FXMLLoader loader = new FXMLLoader(resource);
+			Parent root = loader.load();
+			// controller
+			positionDialogController = loader.getController();
+			positionDialogController.init(this);
+			// dialog
+			dialog = new PositionDialog(root, positionDialogController);
+			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(primaryStage.getIcons().get(0));
+			stage.initModality(Modality.APPLICATION_MODAL);
+			dialog.initOwner(primaryStage);
+		} catch (IOException e) {
+			alertException(e);
+		}
 		return dialog;
 	}
 
@@ -495,5 +555,38 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 				radioMenuItem.setDisable(true);
 			}
 		}
+	}
+
+	/**
+	 * Display an error dialog with optional exception stack trace.
+	 * 
+	 * @param ex the exception.
+	 */
+	public void alertException(Exception ex) {
+		// based on http://code.makery.ch/blog/javafx-dialogs-official
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("Unexpected error");
+		alert.setContentText(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+		// Create expandable Exception.
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = sw.toString();
+		Label label = new Label("Stacktrace:");
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+		alert.showAndWait();
 	}
 }

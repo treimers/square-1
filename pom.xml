@@ -60,6 +60,15 @@
 				<version>1.6.1</version>
 			</extension>
 		</extensions>
+		<!-- Maven resource plugin, used to copy resource to classpath -->
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -76,6 +85,29 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Maven markdown plugin: https://github.com/walokra/markdown-page-generator-plugin -->
+			<plugin>
+				<groupId>com.ruleoftech</groupId>
+				<artifactId>markdown-page-generator-plugin</artifactId>
+				<version>2.1.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<recursiveInput>true</recursiveInput>
+					<transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
+					<inputDirectory>${project.basedir}/src/main/markdown</inputDirectory>
+					<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+					<copyDirectories>net/treimers/square1/images</copyDirectories>
+					<inputEncoding>UTF-8</inputEncoding>
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.openjfx</groupId>
@@ -132,7 +164,7 @@
 					</execution>
 				</executions>
 			</plugin>
-<!-- https://stackoverflow.com/questions/51091539/maven-site-plugins-3-3-java-lang-classnotfoundexception-org-apache-maven-doxia -->
+			<!-- https://stackoverflow.com/questions/51091539/maven-site-plugins-3-3-java-lang-classnotfoundexception-org-apache-maven-doxia -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
