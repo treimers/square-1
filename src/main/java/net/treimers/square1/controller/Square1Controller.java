@@ -32,6 +32,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -248,6 +249,58 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		colorChangeSupport.removePropertyChangeListener(listener);
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		@SuppressWarnings("unchecked")
+		Map<Character, AbstractPiece> pieceMap = (Map<Character, AbstractPiece>) evt.getNewValue();
+		Set<Character> menuSet = menuMap.keySet();
+		for (Character c : menuSet) {
+			RadioMenuItem radioMenuItem = menuMap.get(c);
+			if (pieceMap.containsKey(c)) {
+				radioMenuItem.setDisable(false);
+				radioMenuItem.setSelected(true);
+				AbstractPiece piece = pieceMap.get(c);
+				piece.visibleProperty().bind(radioMenuItem.selectedProperty());
+			} else {
+				radioMenuItem.setSelected(false);
+				radioMenuItem.setDisable(true);
+			}
+		}
+	}
+
+	/**
+	 * Display an error dialog with optional exception stack trace.
+	 * 
+	 * @param ex the exception.
+	 */
+	public void alertException(Exception ex) {
+		// based on http://code.makery.ch/blog/javafx-dialogs-official
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("Unexpected error");
+		alert.setContentText(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+		// Create expandable Exception.
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = sw.toString();
+		Label label = new Label("Stacktrace:");
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+		alert.showAndWait();
+	}
+
 	@FXML
 	void doAbout() {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -328,7 +381,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	@FXML
 	void doSolvePosition() {
-		System.out.println("Solve");
 	}
 
 	@FXML
@@ -503,6 +555,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			// set view's controller
 			KeyboardShortcutController controller = loader.getController();
 			controller.setMenuBar(menuBar);
+			// register controller method called on showing event
+			alert.setOnShowing(new EventHandler<DialogEvent>() {
+				@Override
+				public void handle(DialogEvent e) {
+					controller.handleShowing();
+				}
+			});
 			// add content to view
 			alert.getDialogPane().setContent(root);
 			alert.initOwner(primaryStage);
@@ -536,57 +595,5 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			alertException(e);
 		}
 		return dialog;
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		@SuppressWarnings("unchecked")
-		Map<Character, AbstractPiece> pieceMap = (Map<Character, AbstractPiece>) evt.getNewValue();
-		Set<Character> menuSet = menuMap.keySet();
-		for (Character c : menuSet) {
-			RadioMenuItem radioMenuItem = menuMap.get(c);
-			if (pieceMap.containsKey(c)) {
-				radioMenuItem.setDisable(false);
-				radioMenuItem.setSelected(true);
-				AbstractPiece piece = pieceMap.get(c);
-				piece.visibleProperty().bind(radioMenuItem.selectedProperty());
-			} else {
-				radioMenuItem.setSelected(false);
-				radioMenuItem.setDisable(true);
-			}
-		}
-	}
-
-	/**
-	 * Display an error dialog with optional exception stack trace.
-	 * 
-	 * @param ex the exception.
-	 */
-	public void alertException(Exception ex) {
-		// based on http://code.makery.ch/blog/javafx-dialogs-official
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error");
-		alert.setHeaderText("Unexpected error");
-		alert.setContentText(ex.getClass().getSimpleName() + ": " + ex.getMessage());
-		// Create expandable Exception.
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		ex.printStackTrace(pw);
-		String exceptionText = sw.toString();
-		Label label = new Label("Stacktrace:");
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-		alert.showAndWait();
 	}
 }

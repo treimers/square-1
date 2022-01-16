@@ -35,6 +35,8 @@ public class KeyboardShortcutController {
 	private static final String DESCRIPTION = "Description";
 	/** The grid pane with the short cuts. */
 	@FXML private GridPane gridPane;
+	/** The menu bar with all menu and accelerator keys. */
+	private MenuBar menuBar;
 
 	/**
 	 * Sets the menu bar in order to scan all accelerator keys.
@@ -42,6 +44,13 @@ public class KeyboardShortcutController {
 	 * @param menuBar the menu bar with accelerator keys.
 	 */
 	public void setMenuBar(MenuBar menuBar) {
+		this.menuBar = menuBar;
+	}
+
+	/**
+	 * Creates content on dialog showing event.
+	 */
+	public void handleShowing() {
 		// set column width 15%, 35%, 15% and 35%
 		ColumnConstraints c1 = new ColumnConstraints();
 		c1.setPercentWidth(10);
@@ -60,6 +69,7 @@ public class KeyboardShortcutController {
 		columnConstraints.addAll(c1, c2, c3, c4, c5, c6);
 		// get grid pane children
 		ObservableList<Node> children = gridPane.getChildren();
+		children.clear();
 		int row = 0;
 		// add title
 		Label windowLabel = new Label("Shortcuts");
@@ -122,12 +132,12 @@ public class KeyboardShortcutController {
 		row++;
 		// add all menu shortcuts
 		ObservableList<Menu> menus = menuBar.getMenus();
-		List<MenuItem> menuItems = new ArrayList<>();
+		List<MenuItem> allMenuItems = new ArrayList<>();
 		for (Menu menu : menus)
-			addMenuItems(menuItems, menu);
+			addMenuItems(allMenuItems, menu);
 		int column = 0;
-		for (int i = 0; i < menuItems.size(); i++) {
-			MenuItem menuItem = menuItems.get(i);
+		for (int i = 0; i < allMenuItems.size(); i++) {
+			MenuItem menuItem = allMenuItems.get(i);
 			KeyCombination accelerator = menuItem.getAccelerator();
 			// ignore all disabled menu items
 			if (menuItem.isDisable() || accelerator == null)
@@ -153,24 +163,26 @@ public class KeyboardShortcutController {
 	}
 
 	/**
-	 * Adds all menu items from a menu that have an accelerator to a list of menus.
+	 * Adds all menu items from all visible menus that have an accelerator to a menu item list.
 	 * 
-	 * @param menuItems list of menus.
+	 * @param allMenuItems menu list.
 	 * @param menu start menu.
 	 */
-	private void addMenuItems(List<MenuItem> menuItems, Menu menu) {
+	private void addMenuItems(List<MenuItem> allMenuItems, Menu menu) {
+		if (!menu.isVisible())
+			return;
 		ObservableList<MenuItem> items = menu.getItems();
 		for (int j = 0; j < items.size(); j++) {
 			MenuItem menuItem = items.get(j);
 			if (menuItem instanceof Menu) {
 				Menu subMenu = (Menu) menuItem;
-				addMenuItems(menuItems, subMenu);
+				addMenuItems(allMenuItems, subMenu);
 			} else {
 				KeyCombination accelerator = menuItem.getAccelerator();
 				// ignore all disabled menu items
 				if (menuItem.isDisable() || accelerator == null)
 					continue;
-				menuItems.add(menuItem);
+				allMenuItems.add(menuItem);
 			}
 		}
 	}
