@@ -35,8 +35,10 @@ public class PositionDialogController {
 	@FXML private SubScene square1Scene;
 	/** The grid pane with all sub scenes for single pieces used as drag sources. */
 	@FXML private GridPane pieceGridPane;
-	/** The label reflecting the current position. */
-	@FXML private TextField positionNode;
+	/** The text field reflecting the current pieces. */
+	@FXML private TextField pieceNode;
+	/** The text field reflecting the middle piece. */
+	@FXML private TextField middleNode;
 	/** The current position. */
 	private Position position;
 	/** The last position used for reset. */
@@ -115,6 +117,7 @@ public class PositionDialogController {
 	/**
 	 * Performs an animated 360° rotation of the Square-1.
 	 */
+	@FXML
 		public void doRotate() {
 		meshGroup.animate();
 		Set<Character> pieceNames = pieceGroupMap.keySet();
@@ -126,6 +129,7 @@ public class PositionDialogController {
 	/**
 	 * Sets the position to empty position.
 	 */
+	@FXML
 	public void doSetEmptyPosition() {
 		this.position = new Position("");
 		displayPosition(this.position);
@@ -134,6 +138,7 @@ public class PositionDialogController {
 	/**
 	 * Sets the position to solved position.
 	 */
+	@FXML
 	public void doSetSolvedPosition() {
 		this.position = new Position();
 		displayPosition(this.position);
@@ -142,11 +147,21 @@ public class PositionDialogController {
 	/**
 	 * Resets the position to last position.
 	 */
+	@FXML
 	public void doResetPosition() {
 		this.position = new Position(this.lastPosition);
 		displayPosition(this.position);
 	}
 
+	@FXML
+    public void doEnter() {
+		String pieceText = pieceNode.getText().trim().toUpperCase();
+		String middleText = middleNode.getText();
+		String newPosition = pieceText + middleText;
+		this.position = new Position(newPosition);
+		displayPosition(this.position);
+    }
+		
 	/**
 	 * Gets the position.
 	 * @return the position.
@@ -163,19 +178,6 @@ public class PositionDialogController {
 		this.position = new Position(position);
 		this.lastPosition = position;
 		displayPosition(this.position);
-	}
-
-	/**
-	 * Displays the current position in Square-1 subscene of the position dialog.
-	 * 
-	 * @param position the current position.
-	 */
-	private void displayPosition(Position position) {
-		Set<Entry<Character, MeshGroup>> entrySet = this.pieceGroupMap.entrySet();
-		for (Entry<Character, MeshGroup> entry : entrySet)
-			entry.getValue().setVisible(position.isAvailable(entry.getKey()));
-		this.positionNode.setText(position.toString());
-		meshGroup.setContent(position);
 	}
 
 	// drag and drop
@@ -263,7 +265,7 @@ public class PositionDialogController {
 						pieceGroup.setVisible(false);
 					}
 					meshGroup.setContent(position);
-					positionNode.setText(position.toString());
+					displayPosition(position);
 				}
 				event.consume();
 			}
@@ -296,5 +298,21 @@ public class PositionDialogController {
 		pieceGroupMap.put(gridEntry.getName(), pieceMeshGroup);
 		// Drag And Drop
 		registerDragAndDrop(gridEntry.getName(), pieceScene);
+	}
+
+	/**
+	 * Displays the current position in Square-1 subscene of the position dialog.
+	 * 
+	 * @param position the current position.
+	 */
+	private void displayPosition(Position position) {
+		Set<Entry<Character, MeshGroup>> entrySet = this.pieceGroupMap.entrySet();
+		for (Entry<Character, MeshGroup> entry : entrySet)
+			entry.getValue().setVisible(position.isAvailable(entry.getKey()));
+		this.pieceNode.setText(position.getPieceString());
+		this.pieceNode.end();
+		this.middleNode.setText(position.getMiddlePiece());
+		this.middleNode.end();
+		meshGroup.setContent(position);
 	}
 }

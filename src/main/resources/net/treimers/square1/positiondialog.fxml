@@ -265,7 +265,7 @@
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
           <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
             <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
             <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
@@ -288,12 +288,20 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin></Button>
             <Button mnemonicParsing="false" onAction="#doResetPosition" text="Reset Position" GridPane.columnIndex="5" />
-            <Button mnemonicParsing="false" onAction="#doRotate" text="Rotate" GridPane.columnIndex="2">
+            <Button mnemonicParsing="false" onAction="#doRotate" text="Rotate">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </Button>
-            <TextField fx:id="positionNode" editable="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.columnIndex="1" />
+            <TextField fx:id="pieceNode" onKeyTyped="#doEnter" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="middleNode" maxWidth="40.0" onKeyTyped="#doEnter" prefWidth="40.0" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
    </bottom>

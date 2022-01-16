@@ -20,10 +20,6 @@ public class Position {
 	/** The position of the middle piece ('-' or '/'). */
 	private Character middlePiece;
 
-//	public static Position fromString(String positionString) {
-//		return new Position(positionString);
-//	}
-
 	/**
 	 * Creates a solved position.
 	 */
@@ -68,6 +64,8 @@ public class Position {
 		// allow middle pieces?
 		if (name == '-' || name == '/')
 			return middlePiece == null;
+		if (!SOLVED_POSITION_STRING.contains(name.toString()))
+			return false;
 		// disallow A-H pieces when only small slot left in top layer
 		if (getAngle(pieceString) == CIRCLE - 1 && Character.isAlphabetic(name))
 			return false;
@@ -119,6 +117,27 @@ public class Position {
 	}
 
 	/**
+	 * Gets the piece string with top and bottom layer pieces.
+	 * 
+	 * @return the piece string.
+	 */
+	public String getPieceString() {
+		return pieceString;
+	}
+
+	/**
+	 * Gets the middle piece string (empty, "-" or "/").
+	 * 
+	 * @return the middle piece string.
+	 */
+	public String getMiddlePiece() {
+		if (middlePiece == null)
+			return "";
+		else
+			return middlePiece.toString();
+	}
+
+	/**
 	 * Gets all pieces from this position.
 	 * @return the pieces from this position.
 	 */
@@ -148,10 +167,7 @@ public class Position {
 
 	@Override
 	public String toString() {
-		String retval = this.pieceString;
-		if (middlePiece != null)
-			retval += this.middlePiece;
-		return retval;
+		return getPieceString() + getMiddlePiece();
 	}
 
 	/**
