@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Constants;
+import net.treimers.square1.model.Side;
 
 /**
  * <p>Instances of this class represent a Square-1 middle piece.
@@ -44,21 +45,21 @@ public class MiddlePiece extends AbstractPiece {
 	private static final Map<Character, int[]> SIDE_MAP = Map.of(
 			// Piece A
 			'M', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.LEFT,
-				Constants.FRONT,
-				Constants.INNER_VERTICAL,
-				Constants.BACK,
-				Constants.INNER_HORIZONTAL,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_HORIZONTAL.ordinal(),
 			},
 			// Piece B
 			'N', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.RIGHT,
-				Constants.BACK,
-				Constants.INNER_VERTICAL,
-				Constants.FRONT,
-				Constants.INNER_HORIZONTAL,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_HORIZONTAL.ordinal(),
 			}
 			//
 			);

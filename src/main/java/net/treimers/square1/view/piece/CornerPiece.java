@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Constants;
+import net.treimers.square1.model.Side;
 
 /**
  * <p>Instances of this class represent a Square-1 corner piece.
@@ -46,75 +47,75 @@ public class CornerPiece extends AbstractPiece {
 	private static final Map<Character, int[]> SIDE_MAP = Map.of(
 			// Piece A
 			'A', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.LEFT,
-				Constants.FRONT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece B
 			'B', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.BACK,
-				Constants.LEFT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BACK.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece C
 			'C', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.RIGHT,
-				Constants.BACK,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece D
 			'D', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.FRONT,
-				Constants.RIGHT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece E
 			'E', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.RIGHT,
-				Constants.FRONT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			},
 			// Piece F
 			'F', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.BACK,
-				Constants.RIGHT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BACK.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal()
 			},
 			// Piece G
 			'G', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.LEFT,
-				Constants.BACK,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			},
 			// Piece H
 			'H', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.FRONT,
-				Constants.LEFT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			}
 	//
 	);

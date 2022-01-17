@@ -6,52 +6,33 @@ import java.util.Arrays;
  * Provides several constants for colors, angles and length.
  */
 public class Constants {
-	// Colors indices
-	/** The index for the top side color. */
-	public static final int TOP = 0;
-	/** The index for the left side color. */
-	public static final int LEFT = 1;
-	/** The index for the front side color. */
-	public static final int FRONT = 2;
-	/** The index for the right side color. */
-	public static final int RIGHT = 3;
-	/** The index for the back side color. */
-	public static final int BACK = 4;
-	/** The index for the bottom side color. */
-	public static final int BOTTOM = 5;
-	/** The index for the inner vertical side color. */
-	public static final int INNER_VERTICAL = 6;
-	/** The index for the inner horizontal side color. */
-	public static final int INNER_HORIZONTAL = 7;
-	/** The number for colors. */
-	public static final int NUM_COLORS = 8;
 	/** The vertical pick position of the colored squares (50%) */
 	public static final float COLOR_HEIGHT = 0.5f;
 	/** The index array used to pick the colors from the writable image. */
 	private static final float[] COLOR_ARRAY = {
 		// position of top color
-		(Constants.TOP + 0.5f) / Constants.NUM_COLORS,
+		(Side.TOP.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of left color
-		(Constants.LEFT + 0.5f) / Constants.NUM_COLORS,
+		(Side.LEFT.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of front color
-		(Constants.FRONT + 0.5f) / Constants.NUM_COLORS,
+		(Side.FRONT.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of right color
-		(Constants.RIGHT + 0.5f) / Constants.NUM_COLORS,
+		(Side.RIGHT.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of back color
-		(Constants.BACK + 0.5f) / Constants.NUM_COLORS,
+		(Side.BACK.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of bottom color
-		(Constants.BOTTOM + 0.5f) / Constants.NUM_COLORS,
+		(Side.BOTTOM.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of inner vertical color
-		(Constants.INNER_VERTICAL + 0.5f) / Constants.NUM_COLORS,
+		(Side.INNER_VERTICAL.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 		// position of inner horizontal color
-		(Constants.INNER_HORIZONTAL + 0.5f) / Constants.NUM_COLORS,
+		(Side.INNER_HORIZONTAL.ordinal() + 0.5f) / Side.values().length,
 		COLOR_HEIGHT,
 	};
 	// Some Angles
@@ -74,13 +55,13 @@ public class Constants {
 	public static final float CORNER_WIDTH = Constants.SIZE - EDGE_WIDTH / 2.0f;
 	/** Small delta used to create gaps between pieces. */
 	public static final float DELTA = 0.02f;
-	
+
 	/**
 	 * Don't let anyone instantiate this class.
 	 */
 	private Constants() {
 	}
-	
+
 	/**
 	 * Gets the color array.
 	 * @return the color array.

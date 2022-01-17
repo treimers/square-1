@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Constants;
+import net.treimers.square1.model.Side;
 
 /**
  * <p>Instances of this class represent a Square-1 edge piece.
@@ -41,67 +42,67 @@ public class EdgePiece extends AbstractPiece {
 	private static final Map<Character, int[]> SIDE_MAP = Map.of(
 			// Piece 1
 			'1', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.LEFT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece 2
 			'2', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.BACK,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece 3
 			'3', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.RIGHT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece 4
 			'4', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.FRONT,
-				Constants.INNER_VERTICAL,
-				Constants.TOP,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.TOP.ordinal(),
 			},
 			// Piece 5
 			'5', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.FRONT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.FRONT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			},
 			// Piece 6
 			'6', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.RIGHT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.RIGHT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			},
 			// Piece 7
 			'7', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.BACK,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BACK.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			},
 			// Piece 8
 			'8', new int[] {
-				Constants.INNER_HORIZONTAL,
-				Constants.INNER_VERTICAL,
-				Constants.LEFT,
-				Constants.INNER_VERTICAL,
-				Constants.BOTTOM,
+				Side.INNER_HORIZONTAL.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.LEFT.ordinal(),
+				Side.INNER_VERTICAL.ordinal(),
+				Side.BOTTOM.ordinal(),
 			}
 	//
 	);

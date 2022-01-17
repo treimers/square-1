@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -28,7 +29,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -53,9 +53,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import net.treimers.square1.Square1;
 import net.treimers.square1.Version;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
+import net.treimers.square1.model.Side;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.misc.ImageLoader;
@@ -91,6 +93,10 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
  * Instances of this class are used to control the flow of the Square-1 application.
  */
 public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener {
+	private static final String COLORS_NODE = "colors";
+	private static final String BLUE = ".blue";
+	private static final String GREEN = ".green";
+	private static final String RED = ".red";
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
 		Color.WHITE,
@@ -124,35 +130,37 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	/** The mesh group in the sub scene. */
 	private MeshGroup meshGroup;
 	/** The map with all radio menu items for piece visibility. */
-	/** The alert for key short cuts. */
-	private Alert shortcutAlert;
-	/** The dialog used to set the colors of the Square-1 sides. */
-	private ColorDialog colorDialog;
 	/** A color change support object used to send out change events. */
 	private PropertyChangeSupport colorChangeSupport;
 	/** The colors of the Square-1 sides. */
 	private Color[] colors;
 	/** The position that shall be solved. */
 	private Position position;
-	/** The dialog used to enter a new position. */
-	private PositionDialog positionDialog;
 	private PositionDialogController positionDialogController;
 	private Map<Character, RadioMenuItem> menuMap;
 	private String lastFilename;
-	private Stage helpStage;
+	private Alert helpDialog;
+	private Alert aboutDialog;
+	/** The dialog for key short cuts. */
+	private Alert shortcutDialog;
+	/** The dialog used to set the colors of the Square-1 sides. */
+	private ColorDialog colorDialog;
+	/** The dialog used to enter a new position. */
+	private PositionDialog positionDialog;
+	private FileChooser loadFileChooser;
+	private FileChooser saveFileChooser;
+	private File lastFile;
+	private File lastDir;
 
 	public Square1Controller() {
 		position = new Position();
 		menuMap = new HashMap<>();
-		colors = DEFAULT_COLORS;
+		colors = loadColors(Side.values());
 		colorChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		// Colors
-		colorDialog = new ColorDialog(this);
-		createHelpStage();
 		// Piece Menu
 		ObservableList<MenuItem> menuItems = menuPieces.getItems();
 		for (MenuItem menuItem : menuItems) {
@@ -196,6 +204,11 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		});
 	}
 
+	/**
+	 * Retrieve all radio menus.
+	 * 
+	 * @param menu start menu for searching.
+	 */
 	private void retrieveToggleMenues(Menu menu) {
 		ObservableList<MenuItem> items = menu.getItems();
 		for (MenuItem menuItem : items) {
@@ -213,9 +226,14 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		// Create Dialog
-		shortcutAlert = createShortcutStage();
-		positionDialog = createPositionDialog();
+		// Create Dialogs
+		aboutDialog = createAboutDialog(primaryStage);
+		colorDialog = createColorDialog(primaryStage);
+		helpDialog = createHelpDialog(primaryStage);
+		shortcutDialog = createShortcutDialog(primaryStage);
+		positionDialog = createPositionDialog(primaryStage);
+		loadFileChooser = createLoadFileChooser();
+		saveFileChooser = createSaveFileChooser();
 		// Key Event to enable Piece Menu
 		menuPieces.setVisible(false);
 		final EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>() {
@@ -303,24 +321,20 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	@FXML
 	void doAbout() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setGraphic(ImageLoader.getLogoImageView());
-		alert.setTitle("About");
-		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
-		alert.setContentText("Copyright © " + Version.getAppVendor());
-		alert.initOwner(primaryStage);
-		alert.showAndWait();
+		aboutDialog.showAndWait();
 	}
 
 	@FXML
 	void doLoadPosition() {
 		try {
-			FileChooser chooser = new FileChooser();
-			chooser.setTitle("Load Position");
-			chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-			chooser.setInitialFileName(lastFilename);
-			File file = chooser.showOpenDialog(primaryStage);
+			if (lastFile != null && lastDir != null) {
+				loadFileChooser.setInitialDirectory(lastDir);
+				loadFileChooser.setInitialFileName(lastFile.getName());
+			}
+			File file = loadFileChooser.showOpenDialog(primaryStage);
 			if (file != null) {
+				lastDir = file.getParentFile();
+				lastFile = file;
 				byte[] pos = Files.readAllBytes(file.toPath());
 				String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
 				position = new Position(posString);
@@ -334,12 +348,14 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	@FXML
 	void doSavePosition() {
 		try {
-			FileChooser chooser = new FileChooser();
-			chooser.setTitle("Save Position");
-			chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-			chooser.setInitialFileName(lastFilename);
-			File file = chooser.showSaveDialog(primaryStage);
+			if (lastFile != null && lastDir != null) {
+				saveFileChooser.setInitialDirectory(lastDir);
+				saveFileChooser.setInitialFileName(lastFile.getName());
+			}
+			File file = saveFileChooser.showSaveDialog(primaryStage);
 			if (file != null) {
+				lastDir = file.getParentFile();
+				lastFile = file;
 				String text = position.toString();
 				Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
 			}
@@ -365,7 +381,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		if (result.isPresent()) {
 			Color[] oldColors = colors;
 			colors = result.get();
-			colorChangeSupport.firePropertyChange("colors", oldColors, colors);
+			colorChangeSupport.firePropertyChange(COLORS_NODE, oldColors, colors);
+			Side[] sides = Side.values();
+			saveColors(sides, colors);
 		}
 	}
 
@@ -449,13 +467,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	@FXML
 	void doHotKeys() {
-		shortcutAlert.showAndWait();
+		shortcutDialog.showAndWait();
 	}
 
 	@FXML
 	void doHelp() {
-		helpStage.show();
-		helpStage.toFront();
+		helpDialog.showAndWait();
 	}
 
 	/**
@@ -506,18 +523,40 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
-	 * Creates the help screen without displaying it.
+	 * Creates a new about dialog.
+	 * 
+	 * @param primaryStage the primary stage.
+	 * @return the new about dialog.
 	 */
-	private void createHelpStage() {
+	private Alert createAboutDialog(Stage primaryStage) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setGraphic(ImageLoader.getLogoImageView());
+		alert.setTitle("About");
+		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
+		alert.setContentText("Copyright © " + Version.getAppVendor());
+		alert.initOwner(primaryStage);
+		return alert;
+	}
+
+	/**
+	 * Creates a new help dialog.
+	 * 
+	 * @param primaryStage the primary stage.
+	 * @return the new help dialog.
+	 */
+	private Alert createHelpDialog(Stage primaryStage) {
+		// create dialog
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Square-1 Help");
+		alert.setHeaderText("Square-1 user manual");
+		alert.getDialogPane().setMinWidth(1200);
+		alert.getDialogPane().setMinHeight(800);
+		alert.initOwner(primaryStage);
 		try {
-			helpStage = new Stage();
-			helpStage.setWidth(1000);
-			helpStage.setHeight(800);
-			// set the stage title
-			helpStage.setTitle("Square-1 Help");
 			// load and set the stage icon
 			Image image = ImageLoader.getLogoImage();
-			helpStage.getIcons().add(image);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(image);
 			// load the view
 			URL resource = getClass().getResource("/net/treimers/square1/helpview.fxml");
 			FXMLLoader loader = new FXMLLoader(resource);
@@ -525,19 +564,33 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			// get view's controller and propagate stage to controller
 			HelpController controller = loader.getController();
 			controller.setMainController(this);
-			// create the scene
-			Scene scene = new Scene(root);
-			// apply the scene to the stage
-			helpStage.setScene(scene);
+			// apply the scene to the dialog
+			alert.getDialogPane().setContent(root);
 		} catch (IOException e) {
 			alertException(e);
 		}
+		return alert;
 	}
 
 	/**
-	 * Creates the stage with the key short cuts.
+	 * Creates a new color dialog.
+	 * 
+	 * @param primaryStage the primary stage.
+	 * @return the new color dialog.
 	 */
-	private Alert createShortcutStage() {
+	private ColorDialog createColorDialog(Stage primaryStage) {
+		ColorDialog dialog = new ColorDialog(this);
+		dialog.initOwner(primaryStage);
+		return dialog;
+	}
+
+	/**
+	 * Creates a new key shortcuts dialog.
+	 * 
+	 * @param primaryStage the primary stage.
+	 * @return the new key shortcuts dialog.
+	 */
+	private Alert createShortcutDialog(Stage primaryStage) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		// set properties
 		alert.setTitle("Keyboard Shortcuts");
@@ -547,6 +600,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.setResizable(false);
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initStyle(StageStyle.UTILITY);
+		alert.initOwner(primaryStage);
 		// load content
 		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyshortcuts.fxml");
 		try {
@@ -564,7 +618,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			});
 			// add content to view
 			alert.getDialogPane().setContent(root);
-			alert.initOwner(primaryStage);
 		} catch (IOException e) {
 			alertException(e);
 		}
@@ -575,7 +628,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * Creates a new position dialog allowing the user to define a position to be solved.
 	 * @return a new position dialog.
 	 */
-	private PositionDialog createPositionDialog() {
+	private PositionDialog createPositionDialog(Stage primaryStage) {
 		PositionDialog dialog = null;
 		try {
 			// dialog content
@@ -595,5 +648,67 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			alertException(e);
 		}
 		return dialog;
+	}
+
+	/**
+	 * Creates a new file load dialog.
+	 * 
+	 * @return the file load dialog.
+	 */
+	private FileChooser createLoadFileChooser() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Load Position");
+		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+		return chooser;
+	}
+
+	/**
+	 * Creates a new file save dialog.
+	 * 
+	 * @return the file save dialog.
+	 */
+	private FileChooser createSaveFileChooser() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Save Position");
+		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+		chooser.setInitialFileName(lastFilename);
+		return chooser;
+	}
+
+	/**
+	 * Saves all colors to user preferences.
+	 * 
+	 * @param sides all Square-1 sides as enum array.
+	 * @param colors the color array.
+	 */
+	private void saveColors(Side[] sides, Color[] colors) {
+		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
+		Preferences colorNode = userNode.node(COLORS_NODE);
+		for (Side side : sides) {
+			Color color = colors[side.ordinal()];
+			colorNode.putDouble(side.name().toLowerCase() + RED, color.getRed());
+			colorNode.putDouble(side.name().toLowerCase() + GREEN, color.getGreen());
+			colorNode.putDouble(side.name().toLowerCase() + BLUE, color.getBlue());
+		}
+	}
+	
+	/**
+	 * Loads all colors from user preferences.
+	 * 
+	 * @param sides all Square-1 sides as enum array.
+	 * @return the color array loaded.
+	 */
+	private Color[] loadColors(Side[] sides) {
+		Color[] retval = new Color[Side.values().length];
+		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
+		Preferences colorNode = userNode.node(COLORS_NODE);
+		for (Side side : sides) {
+			Color defaultColor = DEFAULT_COLORS[side.ordinal()];
+			double red = colorNode.getDouble(side.name().toLowerCase() + RED, defaultColor.getRed());
+			double green = colorNode.getDouble(side.name().toLowerCase() + GREEN, defaultColor.getGreen());
+			double blue = colorNode.getDouble(side.name().toLowerCase() + BLUE, defaultColor.getBlue());
+			retval[side.ordinal()] = new Color(red, green, blue, 1.0);
+		}
+		return retval;
 	}
 }
