@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.treimers.square1.controller.Square1Controller">
 	<top>
-		<MenuBar fx:id="menuBar" useSystemMenuBar="true" BorderPane.alignment="CENTER">
+		<MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
