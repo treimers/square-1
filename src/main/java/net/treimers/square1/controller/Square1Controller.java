@@ -482,8 +482,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doToggleAxis(ActionEvent event) {
-		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
-		menuItem.setSelected(menuItem.isSelected());
 		ObservableList<Node> children = meshGroup.getChildren();
 		if (children.contains(axis))
 			children.remove(axis);
@@ -507,13 +505,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		rotateX.setAngle(0.0f);
 		rotateY.setAngle(0.0f);
 		rotateZ.setAngle(0.0f);
-	}
-
-	@FXML
-	void doToggle(ActionEvent event) {
-		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
-		menuItem.setSelected(menuItem.isSelected());
-		System.out.println("Toggle");
 	}
 
 	/**

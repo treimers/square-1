@@ -113,7 +113,7 @@
 					<items>
 						<Menu mnemonicParsing="false" text="Corner Pieces">
 							<items>
-								<CheckMenuItem id="A" mnemonicParsing="false" onAction="#doToggle" selected="true" text="Corner A">
+								<CheckMenuItem id="A" mnemonicParsing="false" selected="true" text="Corner A">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
