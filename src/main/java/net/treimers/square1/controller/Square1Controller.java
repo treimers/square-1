@@ -93,10 +93,16 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
  * Instances of this class are used to control the flow of the Square-1 application.
  */
 public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener {
+	/** The color node in the prefs tree. */
 	private static final String COLORS_NODE = "colors";
-	private static final String BLUE = ".blue";
-	private static final String GREEN = ".green";
+	/** The red key for user prefs. */
 	private static final String RED = ".red";
+	/** The green key for user prefs. */
+	private static final String GREEN = ".green";
+	/** The blue key for user prefs. */
+	private static final String BLUE = ".blue";
+	/** The opacity key for user prefs. */
+	private static final String OPACITY = ".opacity";
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
 		Color.WHITE,
@@ -116,15 +122,22 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	@FXML private MenuBar menuBar;
 	/** The menu with the piece visibility radio menu items. */
 	@FXML private Menu menuPieces;
-	private double mouseOldX;
-	private double mouseOldY;
-	private double mousePosX;
-	private double mousePosY;
-	private Rotate rotateX;
-	private Rotate rotateY;
-	private Rotate rotateZ;
 	/** The primary stage. */
 	private Stage primaryStage;
+	/** The help dialog. */
+	private Alert helpDialog;
+	/** The about dialog. */
+	private Alert aboutDialog;
+	/** The dialog for key short cuts. */
+	private Alert shortcutDialog;
+	/** The dialog used to set the colors of the Square-1 sides. */
+	private ColorDialog colorDialog;
+	/** The dialog used to enter a new position. */
+	private PositionDialog positionDialog;
+	/** The load file chooser. */
+	private FileChooser loadFileChooser;
+	/** The load file chooser. */
+	private FileChooser saveFileChooser;
 	/** The group with x-, y- and z-axis. */
 	private Group axis;
 	/** The mesh group in the sub scene. */
@@ -136,26 +149,36 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private Color[] colors;
 	/** The position that shall be solved. */
 	private Position position;
-	private PositionDialogController positionDialogController;
+	/** Map with all radio menu items used to bind to visibility of pieces. */
 	private Map<Character, RadioMenuItem> menuMap;
-	private String lastFilename;
-	private Alert helpDialog;
-	private Alert aboutDialog;
-	/** The dialog for key short cuts. */
-	private Alert shortcutDialog;
-	/** The dialog used to set the colors of the Square-1 sides. */
-	private ColorDialog colorDialog;
-	/** The dialog used to enter a new position. */
-	private PositionDialog positionDialog;
-	private FileChooser loadFileChooser;
-	private FileChooser saveFileChooser;
-	private File lastFile;
+	/** The controller for the position dialog. */
+	private PositionDialogController positionDialogController;
+	/** Last directory of load and save dialogs. */
 	private File lastDir;
+	/** Last file of load and save dialogs. */
+	private File lastFile;
+	/** The current x rotation of Square-1 mesh group. */
+	private Rotate rotateX;
+	/** The current y rotation of Square-1 mesh group. */
+	private Rotate rotateY;
+	/** The current z rotation of Square-1 mesh group. */
+	private Rotate rotateZ;
+	/** Old mouse x position (used for rotations of Square-1 mesh group with mouse.) */
+	private double mouseOldX;
+	/** Old mouse y position (used for rotations of Square-1 mesh group with mouse.) */
+	private double mouseOldY;
+	/** Mouse x position (used for rotations of Square-1 mesh group with mouse.) */
+	private double mousePosX;
+	/** Mouse y position (used for rotations of Square-1 mesh group with mouse.) */
+	private double mousePosY;
 
+	/**
+	 * Creates a new instance.
+	 */
 	public Square1Controller() {
-		position = new Position();
+		position = restorePosition();
 		menuMap = new HashMap<>();
-		colors = loadColors(Side.values());
+		colors = restoreColorScheme();
 		colorChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -205,21 +228,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
-	 * Retrieve all radio menus.
-	 * 
-	 * @param menu start menu for searching.
-	 */
-	private void retrieveToggleMenues(Menu menu) {
-		ObservableList<MenuItem> items = menu.getItems();
-		for (MenuItem menuItem : items) {
-			if (menuItem instanceof Menu)
-				retrieveToggleMenues((Menu) menuItem);
-			else if (menuItem instanceof RadioMenuItem)
-				menuMap.put(menuItem.getId().charAt(0), (RadioMenuItem) menuItem);
-		}
-	}
-
-	/**
 	 * Sets the primary stage.
 	 * 
 	 * @param primaryStage the primary stage.
@@ -247,6 +255,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, keyEventHandler);
 	}
 
+	// The ColorBean interface methods
 	@Override
 	public Color[] getColors() {
 		return Arrays.copyOf(colors, colors.length);
@@ -267,6 +276,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		colorChangeSupport.removePropertyChangeListener(listener);
 	}
 
+	// the PropertyChangeListener interface method
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		@SuppressWarnings("unchecked")
@@ -319,11 +329,17 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.showAndWait();
 	}
 
+	/**
+	 * Called when user requires about dialog.
+	 */
 	@FXML
 	void doAbout() {
 		aboutDialog.showAndWait();
 	}
 
+	/**
+	 * Called when user requires load position file dialog.
+	 */
 	@FXML
 	void doLoadPosition() {
 		try {
@@ -339,12 +355,16 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 				String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
 				position = new Position(posString);
 				meshGroup.setContent(position);
+				persistPosition(position);
 			}
 		} catch (IOException e) {
 			alertException(e);
 		}
 	}
 
+	/**
+	 * Called when user requires save position file dialog.
+	 */
 	@FXML
 	void doSavePosition() {
 		try {
@@ -365,15 +385,16 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	}
 
+	/**
+	 * Called when user requires application exit.
+	 */
 	@FXML
 	void doExit() {
 		primaryStage.hide();
 	}
 
 	/**
-	 * Opens color dialog and informs all listeners (pieces)
-	 * about color changes.
-	 * @param event the event fired by JavaFX.
+	 * Called when user requires change color dialog.
 	 */
 	@FXML
 	void doChangeColors() {
@@ -382,55 +403,82 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			Color[] oldColors = colors;
 			colors = result.get();
 			colorChangeSupport.firePropertyChange(COLORS_NODE, oldColors, colors);
-			Side[] sides = Side.values();
-			saveColors(sides, colors);
+			persistColorScheme(colors);
 		}
 	}
 
+	/**
+	 * Called when user requires change position dialog.
+	 */
 	@FXML
-	void doShowPosition() {
+	void doChangePosition() {
 		positionDialogController.setPosition(position);
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
 			position = result.get();
 			meshGroup.setContent(position);
+			persistPosition(position);
 		}
 	}
 
+	/**
+	 * Called when user requires solve position.
+	 */
 	@FXML
 	void doSolvePosition() {
 	}
 
+	/**
+	 * Called when user requires increase of x rotation.
+	 */
 	@FXML
 	void doXClock() {
 		rotateX.setAngle(rotateX.getAngle() + 10.0f);
 	}
 
+	/**
+	 * Called when user requires decrease of x rotation.
+	 */
 	@FXML
 	void doXAntiClock() {
 		rotateX.setAngle(rotateX.getAngle() - 10.0f);
 	}
 
+	/**
+	 * Called when user requires increase of y rotation.
+	 */
 	@FXML
 	void doYClock() {
 		rotateY.setAngle(rotateY.getAngle() + 10.0f);
 	}
 
+	/**
+	 * Called when user requires decrease of y rotation.
+	 */
 	@FXML
 	void doYAntiClock() {
 		rotateY.setAngle(rotateY.getAngle() - 10.0f);
 	}
 
+	/**
+	 * Called when user requires increase of z rotation.
+	 */
 	@FXML
 	void doZClock() {
 		rotateZ.setAngle(rotateZ.getAngle() + 10.0f);
 	}
 
+	/**
+	 * Called when user requires decrease of z rotation.
+	 */
 	@FXML
 	void doZAntiClock() {
 		rotateZ.setAngle(rotateZ.getAngle() - 10.0f);
 	}
 
+	/**
+	 * Called when user requires toggle of axis.
+	 */
 	@FXML
 	void doToggleAxis() {
 		ObservableList<Node> children = meshGroup.getChildren();
@@ -441,13 +489,16 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
-	 * Performs an animated 360° rotation of the Square-1.
+	 * Called when user requires an animated 360° rotation of the Square-1.
 	 */
 	@FXML
 	void doRotate() {
 		meshGroup.animate();
 	}
 
+	/**
+	 * Called when user requires reset of all Square-1 rotations.
+	 */
 	@FXML
 	void doReset() {
 		rotateX.setAngle(0.0f);
@@ -455,24 +506,51 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		rotateZ.setAngle(0.0f);
 	}
 
+	/**
+	 * Called when user requires hiding all Square-1 pieces.
+	 */
 	@FXML
 	void doHideAll() {
 		selectAllPieces(false);
 	}
 
+	/**
+	 * Called when user requires showing all Square-1 pieces.
+	 */
 	@FXML
 	void doShowAll() {
 		selectAllPieces(true);
 	}
 
+	/**
+	 * Called when user requires hot key dialog.
+	 */
 	@FXML
 	void doHotKeys() {
 		shortcutDialog.showAndWait();
 	}
 
+	/**
+	 * Called when user requires help dialog.
+	 */
 	@FXML
 	void doHelp() {
 		helpDialog.showAndWait();
+	}
+
+	/**
+	 * Retrieve all radio menus.
+	 * 
+	 * @param menu start menu for searching.
+	 */
+	private void retrieveToggleMenues(Menu menu) {
+		ObservableList<MenuItem> items = menu.getItems();
+		for (MenuItem menuItem : items) {
+			if (menuItem instanceof Menu)
+				retrieveToggleMenues((Menu) menuItem);
+			else if (menuItem instanceof RadioMenuItem)
+				menuMap.put(menuItem.getId().charAt(0), (RadioMenuItem) menuItem);
+		}
 	}
 
 	/**
@@ -671,43 +749,67 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Save Position");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-		chooser.setInitialFileName(lastFilename);
 		return chooser;
 	}
 
 	/**
-	 * Saves all colors to user preferences.
+ 	 * Persists a position to user preferences.
+ 	 * 
+	 * @param position the position.
+	 */
+	private void persistPosition(Position position) {
+		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
+		userNode.put("position", position.toString());
+	}
+
+	/**
+ 	 * Restores a position from user preferences.
+ 	 * 
+	 * @return the position.
+	 */
+	private Position restorePosition() {
+		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
+		String positonString = userNode.get("position", Position.SOLVED_POSITION_STRING);
+		return new Position(positonString);
+	}
+
+	/**
+	 * Persists all colors to user preferences.
 	 * 
 	 * @param sides all Square-1 sides as enum array.
 	 * @param colors the color array.
 	 */
-	private void saveColors(Side[] sides, Color[] colors) {
+	private void persistColorScheme(Color[] colors) {
+		Side[] allSides = Side.values();
 		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
 		Preferences colorNode = userNode.node(COLORS_NODE);
-		for (Side side : sides) {
+		for (Side side : allSides) {
 			Color color = colors[side.ordinal()];
 			colorNode.putDouble(side.name().toLowerCase() + RED, color.getRed());
 			colorNode.putDouble(side.name().toLowerCase() + GREEN, color.getGreen());
 			colorNode.putDouble(side.name().toLowerCase() + BLUE, color.getBlue());
+			colorNode.putDouble(side.name().toLowerCase() + OPACITY, color.getOpacity());
 		}
 	}
 	
 	/**
-	 * Loads all colors from user preferences.
+	 * Restores all colors from user preferences.
 	 * 
 	 * @param sides all Square-1 sides as enum array.
 	 * @return the color array loaded.
 	 */
-	private Color[] loadColors(Side[] sides) {
-		Color[] retval = new Color[Side.values().length];
+	private Color[] restoreColorScheme() {
+		Side[] allSides = Side.values();
+		Color[] retval = new Color[allSides.length];
 		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
 		Preferences colorNode = userNode.node(COLORS_NODE);
-		for (Side side : sides) {
+		for (Side side : allSides) {
 			Color defaultColor = DEFAULT_COLORS[side.ordinal()];
 			double red = colorNode.getDouble(side.name().toLowerCase() + RED, defaultColor.getRed());
 			double green = colorNode.getDouble(side.name().toLowerCase() + GREEN, defaultColor.getGreen());
 			double blue = colorNode.getDouble(side.name().toLowerCase() + BLUE, defaultColor.getBlue());
-			retval[side.ordinal()] = new Color(red, green, blue, 1.0);
+			double opacity = colorNode.getDouble(side.name().toLowerCase() + OPACITY, defaultColor.getOpacity());
+			retval[side.ordinal()] = new Color(red, green, blue, opacity);
 		}
 		return retval;
 	}

@@ -42,7 +42,7 @@
 								<KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#doShowPosition" text="Position...">
+						<MenuItem mnemonicParsing="false" onAction="#doChangePosition" text="Position...">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>

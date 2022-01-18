@@ -14,7 +14,7 @@ public class Position {
 	/** Number of 30° pieces that gives a full circle. */
 	private static final int CIRCLE = 12;
 	/** The solved position as string. */
-	private static final String SOLVED_POSITION_STRING = "A1B2C3D45E6F7G8H-";
+	public static final String SOLVED_POSITION_STRING = "A1B2C3D45E6F7G8H-";
 	/** The string with pieces (top and bottom layer). */
 	private String pieceString;
 	/** The position of the middle piece ('-' or '/'). */
