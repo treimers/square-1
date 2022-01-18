@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.SceneAntialiasing?>
 <?import javafx.scene.SubScene?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,7 +18,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.treimers.square1.controller.Square1Controller">
 	<top>
-		<MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+		<MenuBar fx:id="menuBar" useSystemMenuBar="true" BorderPane.alignment="CENTER">
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
@@ -87,11 +92,11 @@
 							</accelerator>
 						</MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<RadioMenuItem mnemonicParsing="false" onAction="#doToggleAxis" text="Axis">
+						<CheckMenuItem mnemonicParsing="false" onAction="#doToggleAxis" text="Axis">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="X" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
-						</RadioMenuItem>
+						</CheckMenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#doRotate" text="Animate Rotation">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
@@ -108,104 +113,104 @@
 					<items>
 						<Menu mnemonicParsing="false" text="Corner Pieces">
 							<items>
-								<RadioMenuItem id="A" mnemonicParsing="false" selected="true" text="Corner A">
+								<CheckMenuItem id="A" mnemonicParsing="false" onAction="#doToggle" selected="true" text="Corner A">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="B" mnemonicParsing="false" selected="true" text="Corner B">
+								</CheckMenuItem>
+								<CheckMenuItem id="B" mnemonicParsing="false" selected="true" text="Corner B">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="C" mnemonicParsing="false" selected="true" text="Corner C">
+								</CheckMenuItem>
+								<CheckMenuItem id="C" mnemonicParsing="false" selected="true" text="Corner C">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="D" mnemonicParsing="false" selected="true" text="Corner D">
+								</CheckMenuItem>
+								<CheckMenuItem id="D" mnemonicParsing="false" selected="true" text="Corner D">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="E" mnemonicParsing="false" selected="true" text="Corner E">
+								</CheckMenuItem>
+								<CheckMenuItem id="E" mnemonicParsing="false" selected="true" text="Corner E">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="F" mnemonicParsing="false" selected="true" text="Corner F">
+								</CheckMenuItem>
+								<CheckMenuItem id="F" mnemonicParsing="false" selected="true" text="Corner F">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="G" mnemonicParsing="false" selected="true" text="Corner G">
+								</CheckMenuItem>
+								<CheckMenuItem id="G" mnemonicParsing="false" selected="true" text="Corner G">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="H" mnemonicParsing="false" selected="true" text="Corner H">
+								</CheckMenuItem>
+								<CheckMenuItem id="H" mnemonicParsing="false" selected="true" text="Corner H">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
+								</CheckMenuItem>
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="Edge Pieces">
 							<items>
-								<RadioMenuItem id="1" mnemonicParsing="false" selected="true" text="Edge 1">
+								<CheckMenuItem id="1" mnemonicParsing="false" selected="true" text="Edge 1">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT1" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="2" mnemonicParsing="false" selected="true" text="Edge 2">
+								</CheckMenuItem>
+								<CheckMenuItem id="2" mnemonicParsing="false" selected="true" text="Edge 2">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT2" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="3" mnemonicParsing="false" selected="true" text="Edge 3">
+								</CheckMenuItem>
+								<CheckMenuItem id="3" mnemonicParsing="false" selected="true" text="Edge 3">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT3" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="4" mnemonicParsing="false" selected="true" text="Edge 4">
+								</CheckMenuItem>
+								<CheckMenuItem id="4" mnemonicParsing="false" selected="true" text="Edge 4">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT4" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="5" mnemonicParsing="false" selected="true" text="Edge 5">
+								</CheckMenuItem>
+								<CheckMenuItem id="5" mnemonicParsing="false" selected="true" text="Edge 5">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT5" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="6" mnemonicParsing="false" selected="true" text="Edge 6">
+								</CheckMenuItem>
+								<CheckMenuItem id="6" mnemonicParsing="false" selected="true" text="Edge 6">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT6" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="7" mnemonicParsing="false" selected="true" text="Edge 7">
+								</CheckMenuItem>
+								<CheckMenuItem id="7" mnemonicParsing="false" selected="true" text="Edge 7">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT7" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="8" mnemonicParsing="false" selected="true" text="Edge 8">
+								</CheckMenuItem>
+								<CheckMenuItem id="8" mnemonicParsing="false" selected="true" text="Edge 8">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="DIGIT8" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
+								</CheckMenuItem>
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="Middle Pieces">
 							<items>
-								<RadioMenuItem id="M" mnemonicParsing="false" selected="true" text="Middle M">
+								<CheckMenuItem id="M" mnemonicParsing="false" selected="true" text="Middle M">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
-								<RadioMenuItem id="N" mnemonicParsing="false" selected="true" text="Middle N">
+								</CheckMenuItem>
+								<CheckMenuItem id="N" mnemonicParsing="false" selected="true" text="Middle N">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
-								</RadioMenuItem>
+								</CheckMenuItem>
 							</items>
 						</Menu>
 						<SeparatorMenuItem mnemonicParsing="false" />
@@ -223,6 +228,7 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
 					<items>
+                  <CheckMenuItem mnemonicParsing="false" text="Unspecified Action" />
 						<MenuItem mnemonicParsing="false" onAction="#doHelp" text="Help">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />

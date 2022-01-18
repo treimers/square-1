@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -150,7 +151,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	/** The position that shall be solved. */
 	private Position position;
 	/** Map with all radio menu items used to bind to visibility of pieces. */
-	private Map<Character, RadioMenuItem> menuMap;
+	private Map<Character, CheckMenuItem> menuMap;
 	/** The controller for the position dialog. */
 	private PositionDialogController positionDialogController;
 	/** Last directory of load and save dialogs. */
@@ -283,15 +284,15 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Map<Character, AbstractPiece> pieceMap = (Map<Character, AbstractPiece>) evt.getNewValue();
 		Set<Character> menuSet = menuMap.keySet();
 		for (Character c : menuSet) {
-			RadioMenuItem radioMenuItem = menuMap.get(c);
+			CheckMenuItem checkMenuItem = menuMap.get(c);
 			if (pieceMap.containsKey(c)) {
-				radioMenuItem.setDisable(false);
-				radioMenuItem.setSelected(true);
+				checkMenuItem.setDisable(false);
+				checkMenuItem.setSelected(true);
 				AbstractPiece piece = pieceMap.get(c);
-				piece.visibleProperty().bind(radioMenuItem.selectedProperty());
+				piece.visibleProperty().bind(checkMenuItem.selectedProperty());
 			} else {
-				radioMenuItem.setSelected(false);
-				radioMenuItem.setDisable(true);
+				checkMenuItem.setSelected(false);
+				checkMenuItem.setDisable(true);
 			}
 		}
 	}
@@ -480,7 +481,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * Called when user requires toggle of axis.
 	 */
 	@FXML
-	void doToggleAxis() {
+	void doToggleAxis(ActionEvent event) {
+		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
+		menuItem.setSelected(menuItem.isSelected());
 		ObservableList<Node> children = meshGroup.getChildren();
 		if (children.contains(axis))
 			children.remove(axis);
@@ -504,6 +507,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		rotateX.setAngle(0.0f);
 		rotateY.setAngle(0.0f);
 		rotateZ.setAngle(0.0f);
+	}
+
+	@FXML
+	void doToggle(ActionEvent event) {
+		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
+		menuItem.setSelected(menuItem.isSelected());
+		System.out.println("Toggle");
 	}
 
 	/**
@@ -548,8 +558,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		for (MenuItem menuItem : items) {
 			if (menuItem instanceof Menu)
 				retrieveToggleMenues((Menu) menuItem);
-			else if (menuItem instanceof RadioMenuItem)
-				menuMap.put(menuItem.getId().charAt(0), (RadioMenuItem) menuItem);
+			else if (menuItem instanceof CheckMenuItem)
+				menuMap.put(menuItem.getId().charAt(0), (CheckMenuItem) menuItem);
 		}
 	}
 
@@ -561,8 +571,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private void selectAllPieces(boolean selected) {
 		Set<Character> menuSet = menuMap.keySet();
 		for (Character c : menuSet) {
-			RadioMenuItem radioMenuItem = menuMap.get(c);
-			radioMenuItem.setSelected(selected);
+			CheckMenuItem checkMenuItem = menuMap.get(c);
+			checkMenuItem.setSelected(selected);
 		}
 	}
 
