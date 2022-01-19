@@ -66,7 +66,7 @@ Releases can be found here for download
 
 # Usage
 
-Application supports viewing and position editing currently. Solving the Square-1 is coming next. 
+This application allows viewing and editing Square-1 positions currently. Solving the Square-1 is coming next. 
 
 You can use the mouse to rotate the Square-1 cube and see all sides. Keyboard keys can be used to control different rotations as well.
 
