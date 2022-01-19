@@ -45,6 +45,7 @@ public class HelpController implements Initializable {
 	// initialization methods
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		splitPane.setDividerPositions(0.2);
 		SplitPane.setResizableWithParent(treeView, false);
 		TreeItem<String> root = new TreeItem<>("Root");
 		addToMaps(root, "1__welcome");
@@ -55,15 +56,18 @@ public class HelpController implements Initializable {
 		TreeItem<String> intro = new TreeItem<>("Introduction");
 		first.getChildren().add(intro);
 		addToMaps(intro, "1_1_intro");
+		TreeItem<String> notation = new TreeItem<>("Notation");
+		first.getChildren().add(notation);
+		addToMaps(notation, "1_2_notation");
 		TreeItem<String> getstarted = new TreeItem<>("Getting started");
 		first.getChildren().add(getstarted);
-		addToMaps(getstarted, "1_2_start");
+		addToMaps(getstarted, "1_3_start");
 		TreeItem<String> colors = new TreeItem<>("Colors");
 		first.getChildren().add(colors);
-		addToMaps(colors, "1_3_colors");
+		addToMaps(colors, "1_4_colors");
 		TreeItem<String> rotate = new TreeItem<>("Rotation");
 		first.getChildren().add(rotate);
-		addToMaps(rotate, "1_4_rotate");
+		addToMaps(rotate, "1_5_rotate");
 		// positions
 		TreeItem<String> positions = new TreeItem<>("Positions");
 		positions.setExpanded(true);
@@ -78,15 +82,6 @@ public class HelpController implements Initializable {
 		TreeItem<String> file = new TreeItem<>("File Operations");
 		file.setExpanded(true);
 		addToMaps(file, "3__file");
-		TreeItem<String> load = new TreeItem<>("Load File");
-		file.getChildren().add(load);
-		addToMaps(load, "3_1_load");
-		TreeItem<String> save = new TreeItem<>("Save File");
-		file.getChildren().add(save);
-		addToMaps(save, "3_2_save");
-		TreeItem<String> format = new TreeItem<>("File Format");
-		file.getChildren().add(format);
-		addToMaps(format, "3_3_format");
 		// root
 		root.getChildren().add(first);
 		root.getChildren().add(positions);
