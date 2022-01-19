@@ -70,30 +70,6 @@ Application supports viewing and position editing currently. Solving the Square-
 
 You can use the mouse to rotate the Square-1 cube and see all sides. Keyboard keys can be used to control different rotations as well.
 
-**File Menu**
+User help is available from menu or by hot key.
 
-+ **ShortCut L**: load position from file
-+ **ShortCut S**: save position to file
-+ **ShortCut Q**: quit application
-
-**Square-1 Menu**
-
-+ **ShortCut C**: change colors of Square-1 sides
-+ **ShortCut P**: enter a position
-+ **ShortCut V**: solve current position
-
-**View Menu**
-
-+ **ShortCut B**: rotate in positive direction along x-axis
-+ **Alt ShortCut B**: rotate in negative direction along x-axis
-+ **ShortCut N**: rotate in positive direction along y-axis
-+ **Alt ShortCut N**: rotate in negative direction along y-axis
-+ **ShortCut M**: rotate in positive direction along z-axis
-+ **Alt ShortCut M**: rotate in negative direction along z-axis
-+ **ShortCut X**: toggle visibility of x-axis, y-axis and z-axis
-+ **ShortCut R**: run an animated rotation (360 degrees) once
-+ **Alt ShortCut R**: reset all rotations (x, y and z) to 0
-
-**Help Menu**
-+ **ShortCut K**: show hot keys
-+ **ShortCut A**: show about screen
+Enjoy ...
