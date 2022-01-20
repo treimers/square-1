@@ -16,6 +16,6 @@ You can consecutively add all pieces using drag and drop until the scrambled Squ
 
 The middle position can be selected and added at any time during this process.
 
-Note that there are position text fields available in the bottom of this dialog. You can also enter pieces using the character and remove them as well.
+Note that there are text fields available in the bottom left of this dialog for the position. You can also enter pieces using their name by hitting the corresponding character on your keyboard. Also you can remove pieces via these fields with the delete key.
 
-Helper buttons to rotate the Square-1 and all pieces or to return to solved, empty or last position are available as well.
+Helper buttons to rotate the Square-1 and all pieces or to return to the solved position, the empty position or the last position are available as well.
