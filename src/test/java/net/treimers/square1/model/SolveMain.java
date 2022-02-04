@@ -1,5 +1,7 @@
 package net.treimers.square1.model;
 
+import java.util.List;
+
 import net.treimers.square1.exception.Square1Exception;
 
 public class SolveMain {
@@ -13,7 +15,7 @@ public class SolveMain {
 		String moveString = args[1];
 		Position position = new Position(positionString);
 		MoveSequence sequence = MoveSequence.fromString(moveString);
-		position.move(sequence);
-		System.out.println(String.format("%s [%s] -> %s", positionString, sequence, position.toString()));
+		List<Position> positions = position.move(sequence);
+		System.out.println(String.format("%s [%s] -> %s", positionString, sequence, positions.toString()));
 	}
 }

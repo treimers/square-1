@@ -179,44 +179,51 @@ public class Position {
 			return middleLayer.toString();
 	}
 
-	public void move(Move move) throws Square1Exception {
+	public Position move(Move move) throws Square1Exception {
+		Position position = new Position(this);
 		int topRotation = move.getTopRotation();
 		int[] newTop = new int[MAX_PIECES / 2];
 		for (int i = 0; i < newTop.length; i++) {
 			int floorMod = Math.floorMod(i - topRotation, MAX_PIECES / 2);
-			newTop[i] = pieces[floorMod];
+			newTop[i] = position.pieces[floorMod];
 		}
 		if (newTop[0] == newTop[newTop.length - 1] || newTop[MAX_PIECES / 4] == newTop[MAX_PIECES / 4 - 1])
-			throw new Square1Exception(String.format("Illegal move %s for position %s", move, toString()));
-		System.arraycopy(newTop, 0, pieces, 0, MAX_PIECES / 2);
+			throw new Square1Exception(String.format("Illegal move %s for position %s", move, position.toString()));
+		System.arraycopy(newTop, 0, position.pieces, 0, MAX_PIECES / 2);
 		int bottomRotation = move.getBottomRotation();
 		int[] newBottom = new int[MAX_PIECES / 2];
 		for (int i = 0; i < newBottom.length; i++)
-			newBottom[i] = pieces[Math.floorMod(i - bottomRotation, MAX_PIECES / 2) + MAX_PIECES / 2];
+			newBottom[i] = position.pieces[Math.floorMod(i - bottomRotation, MAX_PIECES / 2) + MAX_PIECES / 2];
 		if (newBottom[0] == newBottom[newBottom.length - 1] || newBottom[MAX_PIECES / 4] == newBottom[MAX_PIECES / 4 - 1])
-			throw new Square1Exception(String.format("Illegal move %s for position %s", move, toString()));
-		System.arraycopy(newBottom, 0, pieces, MAX_PIECES / 2, MAX_PIECES / 2);
+			throw new Square1Exception(String.format("Illegal move %s for position %s", move, position.toString()));
+		System.arraycopy(newBottom, 0, position.pieces, MAX_PIECES / 2, MAX_PIECES / 2);
 		if (move.isTwisted()) {
 			// 0..5 -> 0..5
 			// 6..11 -> 12..17
 			// 12..17 -> 6..11
 			// 18..23 -> 18..23
 			for (int i = MAX_PIECES / 4; i < MAX_PIECES * 2 / 4; i++) {
-				int help = pieces[i];
-				pieces[i] = pieces[i + MAX_PIECES / 4];
-				pieces[i + MAX_PIECES / 4] = help;
+				int help = position.pieces[i];
+				position.pieces[i] = position.pieces[i + MAX_PIECES / 4];
+				position.pieces[i + MAX_PIECES / 4] = help;
 			}
-			int twistIndex = (middleLayer == null || middleLayer.equals("-")) ? 0 : 1; 
-			middleLayer = "/-".charAt(twistIndex);
+			int twistIndex = (position.middleLayer == null || position.middleLayer.equals("-")) ? 0 : 1; 
+			position.middleLayer = "/-".charAt(twistIndex);
 		}
+		return position;
 	}
 
-	public void move(MoveSequence sequence) throws Square1Exception {
-		Move[] moves = sequence.getMoves();
-		for (int j = 0; j < moves.length; j++) {
-			Move move = moves[j];
-			move(move);
+	public List<Position> move(MoveSequence sequence) throws Square1Exception {
+		List<Position> positionList = new ArrayList<>();
+		Position position = new Position(this);
+		positionList.add(position);
+		List<Move> moves = sequence.getMoves();
+		for (int j = 0; j < moves.size(); j++) {
+			Move move = moves.get(j);
+			position = position.move(move);
+			positionList.add(position);
 		}
+		return positionList;
 	}
 
 	@Override

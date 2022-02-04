@@ -1,14 +1,13 @@
 package net.treimers.square1.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
 public class MoveSequence {
-	private Move[] moves;
+	private List<Move> moves;
 
-	private MoveSequence(Move[] moves) {
+	private MoveSequence(List<Move> moves) {
 		this.moves = moves;
 	}
 
@@ -31,16 +30,19 @@ public class MoveSequence {
 			Move move = new Move(top, bottom, twist);
 			list.add(move);
 		}
-		Move[] moves = list.toArray(new Move[list.size()]);
-		return new MoveSequence(moves);
+		return new MoveSequence(list);
 	}
 
-	public Move[] getMoves() {
+	public List<Move> getMoves() {
 		return moves;
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(moves);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < moves.size(); i++) {
+			sb.append(moves.get(i));
+		}
+		return sb.toString();
 	}
 }

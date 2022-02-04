@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane minWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.treimers.square1.controller.SolveDialogController">
+	<bottom>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+				<ColumnConstraints hgrow="SOMETIMES" />
+				<ColumnConstraints hgrow="NEVER" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints vgrow="SOMETIMES" />
+				<RowConstraints vgrow="SOMETIMES" />
+				<RowConstraints vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Label text="Position">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Label>
+				<Label text="Move Sequence" GridPane.rowIndex="1">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Label>
+				<Button mnemonicParsing="false" onAction="#handleEnterMove" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Button>
+				<Slider fx:id="slider" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+					</GridPane.margin>
+				</Slider>
+				<Button mnemonicParsing="false" onAction="#handleLeft" text="◀" GridPane.rowIndex="2">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Button>
+				<Button mnemonicParsing="false" onAction="#handleRight" text="▶" GridPane.columnIndex="2" GridPane.rowIndex="2">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Button>
+				<Button disable="true" mnemonicParsing="false" onAction="#handleSolve" text="Solve" GridPane.columnIndex="2">
+					<GridPane.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</GridPane.margin>
+				</Button>
+            <TextFlow fx:id="sequenceTextflow" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </TextFlow>
+            <Label fx:id="positionLabel" text="Position Label" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </Label>
+			</children>
+			<BorderPane.margin>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</BorderPane.margin>
+		</GridPane>
+	</bottom>
+	<top>
+		<Label text="Solve Square-1" BorderPane.alignment="CENTER">
+			<font>
+				<Font size="33.0" />
+			</font>
+			<BorderPane.margin>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</BorderPane.margin>
+		</Label>
+	</top>
+	<center>
+		<SubScene fx:id="subScene" depthBuffer="true" height="400.0" width="400.0" BorderPane.alignment="CENTER">
+			<antiAliasing>
+				<SceneAntialiasing fx:constant="BALANCED" />
+			</antiAliasing>
+			<root>
+				<Region />
+			</root>
+			<BorderPane.margin>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</BorderPane.margin>
+		</SubScene>
+	</center>
+</BorderPane>

@@ -61,6 +61,7 @@ import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Side;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
+import net.treimers.square1.view.dialog.SolveDialog;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
@@ -135,6 +136,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private ColorDialog colorDialog;
 	/** The dialog used to enter a new position. */
 	private PositionDialog positionDialog;
+	private SolveDialog solveDialog;
 	/** The load file chooser. */
 	private FileChooser loadFileChooser;
 	/** The load file chooser. */
@@ -154,6 +156,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private Map<Character, CheckMenuItem> menuMap;
 	/** The controller for the position dialog. */
 	private PositionDialogController positionDialogController;
+	private SolveDialogController solveDialogController;
 	/** Last directory of load and save dialogs. */
 	private File lastDir;
 	/** Last file of load and save dialogs. */
@@ -172,7 +175,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private double mousePosX;
 	/** Mouse y position (used for rotations of Square-1 mesh group with mouse.) */
 	private double mousePosY;
-
 	/**
 	 * Creates a new instance.
 	 */
@@ -241,6 +243,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		helpDialog = createHelpDialog(primaryStage);
 		shortcutDialog = createShortcutDialog(primaryStage);
 		positionDialog = createPositionDialog(primaryStage);
+		solveDialog = createSolveDialog(primaryStage);
 		loadFileChooser = createLoadFileChooser();
 		saveFileChooser = createSaveFileChooser();
 		// Key Event to enable Piece Menu
@@ -427,6 +430,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doSolvePosition() {
+		solveDialogController.setPosition(position);
+		Optional<Position> result = solveDialog.showAndWait();
+		if (result.isPresent()) {
+			position = result.get();
+			meshGroup.setContent(position);
+			persistPosition(position);
+		}
 	}
 
 	/**
@@ -637,7 +647,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(image);
 			// load the view
-			URL resource = getClass().getResource("/net/treimers/square1/helpview.fxml");
+			URL resource = getClass().getResource("/net/treimers/square1/helppanel.fxml");
 			FXMLLoader loader = new FXMLLoader(resource);
 			Parent root = loader.load();
 			// get view's controller and propagate stage to controller
@@ -681,7 +691,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.initStyle(StageStyle.UTILITY);
 		alert.initOwner(primaryStage);
 		// load content
-		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyshortcuts.fxml");
+		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keypanel.fxml");
 		try {
 			FXMLLoader loader = new FXMLLoader(resource);
 			Parent root = loader.load();
@@ -711,7 +721,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		PositionDialog dialog = null;
 		try {
 			// dialog content
-			URL resource = getClass().getResource("/net/treimers/square1/positiondialog.fxml");
+			URL resource = getClass().getResource("/net/treimers/square1/positionpanel.fxml");
 			FXMLLoader loader = new FXMLLoader(resource);
 			Parent root = loader.load();
 			// controller
@@ -719,6 +729,28 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			positionDialogController.init(this);
 			// dialog
 			dialog = new PositionDialog(root, positionDialogController);
+			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(primaryStage.getIcons().get(0));
+			stage.initModality(Modality.APPLICATION_MODAL);
+			dialog.initOwner(primaryStage);
+		} catch (IOException e) {
+			alertException(e);
+		}
+		return dialog;
+	}
+
+	private SolveDialog createSolveDialog(Stage primaryStage) {
+		SolveDialog dialog = null;
+		try {
+			// dialog content
+			URL resource = getClass().getResource("/net/treimers/square1/solvepanel.fxml");
+			FXMLLoader loader = new FXMLLoader(resource);
+			Parent root = loader.load();
+			// controller
+			solveDialogController = loader.getController();
+			solveDialogController.init(this);
+			// dialog
+			dialog = new SolveDialog(root, solveDialogController);
 			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(primaryStage.getIcons().get(0));
 			stage.initModality(Modality.APPLICATION_MODAL);

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import net.treimers.square1.exception.Square1Exception;
@@ -99,13 +101,13 @@ public class MovePositionTest {
 			String moveString = testCase.getMoveString();
 			MoveSequence sequence = MoveSequence.fromString(moveString);
 			try {
-				position.move(sequence);
-				String result = position.toString();
+				List<Position> positions = position.move(sequence);
+				String result = positions.get(positions.size() - 1).toString();
 				assertFalse(String.format("Expected exception missing position: %-18s move: %-6s", beforePosition,
 						moveString), testCase.isException());
 				assertEquals(testCase.getAfterPosition(), result);
 				System.out.println(String.format("Position: %-18s, Move: %-6s -> Result: %-18s", beforePosition,
-						moveString, result));
+						moveString, positions.toString()));
 			} catch (Square1Exception e) {
 				assertTrue(String.format("Unexpected exception thrown position: %-18s move: %-6s", beforePosition,
 						moveString), testCase.isException());
@@ -123,7 +125,7 @@ public class MovePositionTest {
 			String moveString = testCase.getMoveString();
 			try {
 				Move move = new Move(moveString);
-				position.move(move);
+				position = position.move(move);
 				String result = position.toString();
 				assertFalse(String.format("Expected exception missing position: %-18s move: %-6s", beforePosition,
 						moveString), testCase.isException());

@@ -52,7 +52,7 @@
 								<KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem disable="true" mnemonicParsing="false" onAction="#doSolvePosition" text="Solve">
+						<MenuItem mnemonicParsing="false" onAction="#doSolvePosition" text="Solve">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="V" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
