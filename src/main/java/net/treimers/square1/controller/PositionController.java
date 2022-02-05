@@ -153,6 +153,9 @@ public class PositionController {
 		displayPosition(this.position);
 	}
 
+	/**
+	 * Displays new position after user entered a new position in text field.
+	 */
 	@FXML
     public void doEnter() {
 		String pieceText = pieceNode.getText().trim().toUpperCase();

@@ -7,7 +7,17 @@ import javafx.util.Callback;
 import net.treimers.square1.controller.SolveController;
 import net.treimers.square1.model.Position;
 
+/**
+ * Instances of this class are used as solve dialog.
+ * 
+ */
 public class SolveDialog extends Dialog<Position> {
+	/**
+	 * Creates a new instance.
+	 * 
+	 * @param root the parent JavaFX node.
+	 * @param solveDialogController the dialog controller.
+	 */
 	public SolveDialog(Parent root, SolveController solveDialogController) {
 		setTitle("Solve");
 		// dialog content

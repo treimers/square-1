@@ -2,6 +2,10 @@ package net.treimers.square1.model;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * Instances of this interface are used to register any observers that will be notified
+ * on any changes to Square-1 pieces.
+ */
 public interface PieceHolder {
 	/**
 	 * Add a PropertyChangeListener to the listener list.

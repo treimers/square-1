@@ -27,15 +27,26 @@ import net.treimers.square1.model.Position;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
 
+/**
+ * Instance of this class are used as controller for Square-1 solve dialog.
+ */
 public class SolveController {
-	@FXML private Slider slider;
-	@FXML private Label positionLabel;
-	@FXML private TextFlow sequenceTextflow;
+	/** The sub scene showing the Square-1. */
 	@FXML private SubScene subScene;
+	/** The Square-1 position in standard notation. */
+	@FXML private Label positionLabel;
+	/** The move sequence in standard notation. */
+	@FXML private TextFlow sequenceTextflow;
+	/** The slider to move through the sequence. */
+	@FXML private Slider slider;
+	/** The current position. */
 	private Position position;
-	private List<Position> positionList;
-	private MeshGroup meshGroup;
+	/** The sequence of moves. */
 	private MoveSequence moveSequence;
+	/** The list of positions. */
+	private List<Position> positionList;
+	/** The meshgroup showing the Square-1. */
+	private MeshGroup meshGroup;
 	
 	/**
 	 * Initializes this instance.
@@ -44,6 +55,8 @@ public class SolveController {
 	 */
 	public void init(ColorBean colorBean) {
 		positionList = Collections.emptyList();
+		sequenceTextflow.setMaxWidth(600);
+		sequenceTextflow.setMaxHeight(200);
 		sequenceTextflow.getChildren().clear();
 		slider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -52,7 +65,7 @@ public class SolveController {
 				selectSliderPosition(intValue);
 			}
 		});
-		moveSequence = MoveSequence.fromString("");
+		moveSequence = new MoveSequence("");
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		meshGroup = new MeshGroup(colorBean);
@@ -67,10 +80,20 @@ public class SolveController {
 		subScene.setCamera(camera);
 	}
 	
+	/**
+	 * Gets the position.
+	 * 
+	 * @return the position.
+	 */
 	public Position getPosition() {
 		return position;
 	}
 
+	/**
+	 * Sets the position.
+	 * 
+	 * @param position the position.
+	 */
 	public void setPosition(Position position) {
 		this.position = position;
 		sequenceTextflow.getChildren().clear();
@@ -80,8 +103,11 @@ public class SolveController {
 		meshGroup.setContent(position);
 	}
 
+	/**
+	 * Handle user click on enter move button.
+	 */
 	@FXML
-	void handleEnterMove(ActionEvent event) {
+	void handleEnterMove() {
 		TextInputDialog dialog = new TextInputDialog(moveSequence.toString());
 		dialog.setTitle("Move");
 		dialog.setHeaderText("Please enter a move sequence");
@@ -90,11 +116,11 @@ public class SolveController {
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			String moveString = result.get();
-			moveSequence = MoveSequence.fromString(moveString);
+			moveSequence = new MoveSequence(moveString);
 			sequenceTextflow.getChildren().setAll(new Text(moveSequence.toString()));
 			try {
 				positionList = position.move(moveSequence);
-				slider.setMax(positionList.size() - 1);
+				slider.setMax(positionList.size() - 1.0);
 			} catch (Square1Exception e) {
 				positionList = Arrays.asList(position);
 				slider.setMax(0);
@@ -103,14 +129,20 @@ public class SolveController {
 		}
 	}
 
+	/**
+	 * Handle user click on left button.
+	 */
 	@FXML
-	void handleLeft(ActionEvent event) {
+	void handleLeft() {
 		Double doubleValue = slider.getValue();
 		int sliderPos = doubleValue.intValue();
 		if (sliderPos > 0)
 			selectSliderPosition(sliderPos - 1);
 	}
 
+	/**
+	 * Handle user click on right button.
+	 */
 	@FXML
 	void handleRight(ActionEvent event) {
 		Double doubleValue = slider.getValue();
@@ -119,17 +151,33 @@ public class SolveController {
 			selectSliderPosition(sliderPos + 1);
 	}
 
+	/**
+	 * Handle user click on solve button.
+	 */
 	@FXML
 	void handleSolve(ActionEvent event) {
+		// future implementation
 	}
 
+	/**
+	 * Selects the slider position.
+	 * 
+	 * 1. adjusts the slider
+	 * 2. selects the new position from position list
+	 * 3. displays the new position in the sub scene
+	 * 4. high lights the current move
+	 * 
+	 * @param sliderPosition the new slider position.
+	 */
 	private void selectSliderPosition(int sliderPosition) {
 		slider.setValue(sliderPosition);
 		position = positionList.get(sliderPosition);
 		meshGroup.setContent(position);
 		List<Move> moves = moveSequence.getMoves();
 		int i = 0;
-		String beforeMove = "", currentMove = "", afterMove = "";
+		String beforeMove = "";
+		String currentMove = "";
+		String afterMove = "";
 		for (; i < sliderPosition - 1; i++)
 			beforeMove += moves.get(i);
 		if (sliderPosition > 0)

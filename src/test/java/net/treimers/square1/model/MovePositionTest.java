@@ -87,19 +87,20 @@ public class MovePositionTest {
 		System.out.println("sequenceTests");
 		TestCase[] testCases = {
 			new TestCase("A1B2C3D45E6F7G8H", "6,6/6,6/-1,1", false, "G8H5E6F72C3D4A1B-"),
+			new TestCase("A1B2C3D45E6F7G8H-", "6,6/6,6/-1,1", false, "G8H5E6F72C3D4A1B-"),
 			new TestCase("A1B2C3D45E6F7G8H", "1,0/6,6/-1,0", false, "E6F7G8H54A1B2C3D-"),
 			new TestCase("A1B2C3D45E6F7G8H", "-1,0/", true, ""),
 			new TestCase("A1B2C3D45E6F7G8H", "/7,0/", true, ""),
 			new TestCase("A1B2C3D45E6F7G8H", "0,1/", true, ""),
 			new TestCase("A1B2C3D45E6F7G8H", "/0,2/", true, ""),
-			new TestCase("8HE6A1B52C3DF47G/", "6,0/0,9/1,0/11,0/", false, "A1B25E6FC3D47G8H-"),
+			new TestCase("8HE6A1B52C3DF47G/", "6,0/0,9/1,0/11,0/", false, "A1B25E6FC3D47G8H/"),
 		};
 		for (int i = 0; i < testCases.length; i++) {
 			TestCase testCase = testCases[i];
 			String beforePosition = testCase.getBeforePosition();
 			Position position = new Position(beforePosition);
 			String moveString = testCase.getMoveString();
-			MoveSequence sequence = MoveSequence.fromString(moveString);
+			MoveSequence sequence = new MoveSequence(moveString);
 			try {
 				List<Position> positions = position.move(sequence);
 				String result = positions.get(positions.size() - 1).toString();

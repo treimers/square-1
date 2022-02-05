@@ -55,7 +55,7 @@ public class MoveSequenceTest {
 		for (int i = 0; i < testCases.length; i++) {
 			Case testCase = testCases[i];
 			String moveString = testCase.getMoveString();
-			MoveSequence sequence = MoveSequence.fromString(moveString);
+			MoveSequence sequence = new MoveSequence(moveString);
 			List<Move> moves = sequence.getMoves();
 			System.out.println(String.format("%s: %s", moveString, moves.toString()));
 			assertEquals(testCase.getResult(), moves);

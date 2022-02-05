@@ -14,7 +14,7 @@ public class SolveMain {
 		String positionString = args[0];
 		String moveString = args[1];
 		Position position = new Position(positionString);
-		MoveSequence sequence = MoveSequence.fromString(moveString);
+		MoveSequence sequence = new MoveSequence(moveString);
 		List<Position> positions = position.move(sequence);
 		System.out.println(String.format("%s [%s] -> %s", positionString, sequence, positions.toString()));
 	}

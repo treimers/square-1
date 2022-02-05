@@ -15,6 +15,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.web.WebView;
 
+/**
+ * Instance of this class are used as controller for Square-1 help dialog.
+ */
 public class HelpController implements Initializable {
 	/** The help navigation tree. */
 	@FXML private TreeView<String> treeView;
@@ -27,7 +30,7 @@ public class HelpController implements Initializable {
 	/** Map used to convert tree items to resource links. */
 	Map<String, TreeItem<String>> linkTreeMap = new HashMap<>();
 	/** The main controller. */
-	private Square1Controller mainController;
+	private Square1Controller square1Controller;
 	// The next variable has been added according to a bug in web engine of
 	// Java FX web view control
 	// http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8117161
@@ -35,13 +38,13 @@ public class HelpController implements Initializable {
 	private boolean isAdjusting;
 
 	/**
-	 * Sets the JPrefs controller.
-	 * @param prefsController the JPrefs controller.
+	 * Sets the help controller.
+	 * @param square1Controller the main controller.
 	 */
-	public void setMainController(Square1Controller mainController) {
-		this.mainController = mainController;
+	public void setMainController(Square1Controller square1Controller) {
+		this.square1Controller = square1Controller;
 	}
-	
+
 	// initialization methods
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -88,11 +91,12 @@ public class HelpController implements Initializable {
 		root.getChildren().add(file);
 		treeView.setRoot(root);
 		treeView.setShowRoot(false);
-		treeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> handleTreeEvent(oldValue, newValue));
+		treeView.getSelectionModel().selectedItemProperty()
+				.addListener((v, oldValue, newValue) -> handleTreeEvent(newValue));
 		loadWebView(root);
 		webView.getEngine().locationProperty().addListener(e -> handleLinkEvent(e));
 	}
-	
+
 	/**
 	 * Adds a tree item and a resource link to both maps.
 	 * @param treeItem the tree item.
@@ -124,9 +128,9 @@ public class HelpController implements Initializable {
 			TreeItem<String> treeItem = linkTreeMap.get(url.toExternalForm());
 			if (treeItem == null)
 				return;
-    		treeView.getSelectionModel().select(treeItem);
+			treeView.getSelectionModel().select(treeItem);
 		} catch (MalformedURLException e) {
-			mainController.alertException(e);
+			square1Controller.alertException(e);
 		} finally {
 			isAdjusting = false;
 		}
@@ -143,12 +147,12 @@ public class HelpController implements Initializable {
 
 	/**
 	 * Handles selection events on the help navigation tree.
+	 * 
 	 * @param v the tree item observable.
 	 * @param oldValue the last selected tree item.
 	 * @param newValue the currently selected tree item.
 	 */
-	private void handleTreeEvent(TreeItem<String> oldValue,
-			TreeItem<String> newValue) {
+	private void handleTreeEvent(TreeItem<String> newValue) {
 		// avoid circular invocations
 		if (isAdjusting)
 			return;

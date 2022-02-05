@@ -715,6 +715,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	/**
 	 * Creates a new position dialog allowing the user to define a position to be solved.
+	 * 
+	 * @param primaryStage the primary stage of the app.
 	 * @return a new position dialog.
 	 */
 	private PositionDialog createPositionDialog(Stage primaryStage) {
@@ -739,6 +741,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		return dialog;
 	}
 
+	/**
+	 * Creates a new solve dialog allowing the user to solve a scramble Square-1.
+	 * 
+	 * @param primaryStage the primary stage of the app.
+	 * @return a new solve dialog.
+	 */
 	private SolveDialog createSolveDialog(Stage primaryStage) {
 		SolveDialog dialog = null;
 		try {

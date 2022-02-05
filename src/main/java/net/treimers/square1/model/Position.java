@@ -179,6 +179,13 @@ public class Position {
 			return middleLayer.toString();
 	}
 
+	/**
+	 * Makes a move from this position to a new position.
+	 * 
+	 * @param move the move.
+	 * @return the new position.
+	 * @throws Square1Exception if move cannot be applied to this position.
+	 */
 	public Position move(Move move) throws Square1Exception {
 		Position position = new Position(this);
 		int topRotation = move.getTopRotation();
@@ -207,12 +214,19 @@ public class Position {
 				position.pieces[i] = position.pieces[i + MAX_PIECES / 4];
 				position.pieces[i + MAX_PIECES / 4] = help;
 			}
-			int twistIndex = (position.middleLayer == null || position.middleLayer.equals("-")) ? 0 : 1; 
+			int twistIndex = (position.middleLayer == null || position.middleLayer == '-') ? 0 : 1; 
 			position.middleLayer = "/-".charAt(twistIndex);
 		}
 		return position;
 	}
 
+	/**
+	 * Applies a sequence of moves to this position.
+	 * 
+	 * @param sequence the sequence of moves.
+	 * @return a list of new positions.
+	 * @throws Square1Exception if sequence cannot be applied to this position.
+	 */
 	public List<Position> move(MoveSequence sequence) throws Square1Exception {
 		List<Position> positionList = new ArrayList<>();
 		Position position = new Position(this);

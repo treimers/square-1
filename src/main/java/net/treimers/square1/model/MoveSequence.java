@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+/**
+ * Instances of this class are used to model a sequence of moves.
+ */
 public class MoveSequence {
+	/** The moves in this sequence. */
 	private List<Move> moves;
 
-	private MoveSequence(List<Move> moves) {
-		this.moves = moves;
-	}
-
-	public static MoveSequence fromString(String moveString) {
-		List<Move> list = new ArrayList<>();
+	/**
+	 * Creates a new instance from a string representation.
+	 * 
+	 * @param moveString the string representation.
+	 */
+	public MoveSequence(String moveString) {
+		moves = new ArrayList<>();
 		Matcher m = Move.PATTERN.matcher(moveString);
 		while (m.find()) {
 			int top;
@@ -28,11 +33,15 @@ public class MoveSequence {
 				twist = m.group(3) != null && m.group(3).equals("/");
 			}
 			Move move = new Move(top, bottom, twist);
-			list.add(move);
+			moves.add(move);
 		}
-		return new MoveSequence(list);
 	}
 
+	/**
+	 * Gets the move list in this sequence.
+	 * 
+	 * @return the move list.
+	 */
 	public List<Move> getMoves() {
 		return moves;
 	}
