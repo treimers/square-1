@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import net.treimers.square1.exception.Square1Exception;
 
+@SuppressWarnings("all")
 public class MovePositionTest {
 	private static class TestCase {
 		private String beforePosition;

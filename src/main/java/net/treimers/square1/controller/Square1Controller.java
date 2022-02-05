@@ -18,12 +18,14 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
@@ -33,12 +35,12 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -52,10 +54,13 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import net.treimers.square1.Square1;
 import net.treimers.square1.Version;
+import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Side;
@@ -234,8 +239,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * Sets the primary stage.
 	 * 
 	 * @param primaryStage the primary stage.
+	 * @throws Square1Exception in case of any errors.
 	 */
-	public void setPrimaryStage(Stage primaryStage) {
+	public void setPrimaryStage(Stage primaryStage) throws Square1Exception {
 		this.primaryStage = primaryStage;
 		// Create Dialogs
 		aboutDialog = createAboutDialog(primaryStage);
@@ -430,6 +436,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doSolvePosition() {
+		Platform.runLater(() -> {
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            Window window = solveDialog.getDialogPane().getScene().getWindow();
+            window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
+            window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
+        });
 		solveDialogController.setPosition(position);
 		Optional<Position> result = solveDialog.showAndWait();
 		if (result.isPresent()) {
@@ -546,6 +558,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doHelp() {
+		Platform.runLater(() -> {
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            Window window = helpDialog.getDialogPane().getScene().getWindow();
+            window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
+            window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
+        });
 		helpDialog.showAndWait();
 	}
 
@@ -624,6 +642,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
 		alert.setContentText("Copyright © " + Version.getAppVendor());
 		alert.initOwner(primaryStage);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.centerOnScreen();
 		return alert;
 	}
 
@@ -646,6 +666,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			Image image = ImageLoader.getLogoImage();
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(image);
+			stage.centerOnScreen();
 			// load the view
 			URL resource = getClass().getResource("/net/treimers/square1/helppanel.fxml");
 			FXMLLoader loader = new FXMLLoader(resource);
@@ -670,6 +691,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private ColorDialog createColorDialog(Stage primaryStage) {
 		ColorDialog dialog = new ColorDialog(this);
 		dialog.initOwner(primaryStage);
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.centerOnScreen();
 		return dialog;
 	}
 
@@ -686,6 +709,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.setHeaderText("Keyboard shortcut overview");
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(primaryStage.getIcons().get(0));
+		stage.centerOnScreen();
 		alert.setResizable(false);
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initStyle(StageStyle.UTILITY);
@@ -718,9 +742,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * 
 	 * @param primaryStage the primary stage of the app.
 	 * @return a new position dialog.
+	 * @throws Square1Exception in case of any errors.
 	 */
-	private PositionDialog createPositionDialog(Stage primaryStage) {
-		PositionDialog dialog = null;
+	private PositionDialog createPositionDialog(Stage primaryStage) throws Square1Exception {
 		try {
 			// dialog content
 			URL resource = getClass().getResource("/net/treimers/square1/positionpanel.fxml");
@@ -730,15 +754,17 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			positionDialogController = loader.getController();
 			positionDialogController.init(this);
 			// dialog
+			PositionDialog dialog = null;
 			dialog = new PositionDialog(root, positionDialogController);
 			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(primaryStage.getIcons().get(0));
 			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.centerOnScreen();
 			dialog.initOwner(primaryStage);
+			return dialog;
 		} catch (IOException e) {
-			alertException(e);
+			throw new Square1Exception(e);
 		}
-		return dialog;
 	}
 
 	/**
@@ -746,9 +772,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * 
 	 * @param primaryStage the primary stage of the app.
 	 * @return a new solve dialog.
+	 * @throws Square1Exception in case of any errors.
 	 */
-	private SolveDialog createSolveDialog(Stage primaryStage) {
-		SolveDialog dialog = null;
+	private SolveDialog createSolveDialog(Stage primaryStage) throws Square1Exception {
 		try {
 			// dialog content
 			URL resource = getClass().getResource("/net/treimers/square1/solvepanel.fxml");
@@ -758,15 +784,16 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			solveDialogController = loader.getController();
 			solveDialogController.init(this);
 			// dialog
-			dialog = new SolveDialog(root, solveDialogController);
+			SolveDialog dialog = new SolveDialog(root, solveDialogController);
 			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(primaryStage.getIcons().get(0));
 			stage.initModality(Modality.APPLICATION_MODAL);
 			dialog.initOwner(primaryStage);
+			stage.centerOnScreen();
+			return dialog;
 		} catch (IOException e) {
-			alertException(e);
+			throw new Square1Exception(e);
 		}
-		return dialog;
 	}
 
 	/**

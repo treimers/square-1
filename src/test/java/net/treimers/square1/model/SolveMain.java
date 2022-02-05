@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.treimers.square1.exception.Square1Exception;
 
+@SuppressWarnings("all")
 public class SolveMain {
 	public static void main(String[] args) throws Square1Exception {
 		if (args.length != 2)

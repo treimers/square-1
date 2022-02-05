@@ -1,5 +1,7 @@
 package net.treimers.square1;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.treimers.square1.controller.Square1Controller;
+import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.view.misc.ImageLoader;
 
 /**
@@ -16,7 +19,7 @@ import net.treimers.square1.view.misc.ImageLoader;
  */
 public class Square1App extends Application {	
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) throws IOException, Square1Exception {
 		// set the stage title
 		primaryStage.setTitle("Square-1");
 		// load and set the stage icon

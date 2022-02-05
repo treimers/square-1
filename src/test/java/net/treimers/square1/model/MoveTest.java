@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import net.treimers.square1.exception.Square1Exception;
 
+@SuppressWarnings("all")
 public class MoveTest {
 	private static class Case {
 		private String moveString;
