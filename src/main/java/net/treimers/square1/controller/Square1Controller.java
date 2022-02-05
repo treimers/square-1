@@ -155,8 +155,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	/** Map with all radio menu items used to bind to visibility of pieces. */
 	private Map<Character, CheckMenuItem> menuMap;
 	/** The controller for the position dialog. */
-	private PositionDialogController positionDialogController;
-	private SolveDialogController solveDialogController;
+	private PositionController positionDialogController;
+	private SolveController solveDialogController;
 	/** Last directory of load and save dialogs. */
 	private File lastDir;
 	/** Last file of load and save dialogs. */
@@ -691,7 +691,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.initStyle(StageStyle.UTILITY);
 		alert.initOwner(primaryStage);
 		// load content
-		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keypanel.fxml");
+		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyboardshortcutpanel.fxml");
 		try {
 			FXMLLoader loader = new FXMLLoader(resource);
 			Parent root = loader.load();

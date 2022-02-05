@@ -4,11 +4,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.util.Callback;
-import net.treimers.square1.controller.SolveDialogController;
+import net.treimers.square1.controller.SolveController;
 import net.treimers.square1.model.Position;
 
 public class SolveDialog extends Dialog<Position> {
-	public SolveDialog(Parent root, SolveDialogController solveDialogController) {
+	public SolveDialog(Parent root, SolveController solveDialogController) {
 		setTitle("Solve");
 		// dialog content
 		getDialogPane().setContent(root);

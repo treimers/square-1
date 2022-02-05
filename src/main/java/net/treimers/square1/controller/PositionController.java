@@ -30,7 +30,7 @@ import net.treimers.square1.view.misc.SmartGroup;
 /**
  * Instances of this class are used as controller for Square-1 position dialog.
  */
-public class PositionDialogController {
+public class PositionController {
 	/** The main sub scene with Square-1 cube in the position dialog. */
 	@FXML private SubScene square1Scene;
 	/** The grid pane with all sub scenes for single pieces used as drag sources. */

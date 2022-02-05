@@ -27,7 +27,7 @@ import net.treimers.square1.model.Position;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
 
-public class SolveDialogController {
+public class SolveController {
 	@FXML private Slider slider;
 	@FXML private Label positionLabel;
 	@FXML private TextFlow sequenceTextflow;

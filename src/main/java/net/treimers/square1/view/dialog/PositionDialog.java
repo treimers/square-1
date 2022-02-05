@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.util.Callback;
-import net.treimers.square1.controller.PositionDialogController;
+import net.treimers.square1.controller.PositionController;
 import net.treimers.square1.model.Position;
 
 /**
@@ -16,7 +16,7 @@ public class PositionDialog extends Dialog<Position> {
 	 * @param root the parent JavaFX node.
 	 * @param positionDialogController the dialog controller.
 	 */
-	public PositionDialog(Parent root, PositionDialogController positionDialogController) {
+	public PositionDialog(Parent root, PositionController positionDialogController) {
 		setTitle("Position");
 		// dialog content
 		getDialogPane().setContent(root);
