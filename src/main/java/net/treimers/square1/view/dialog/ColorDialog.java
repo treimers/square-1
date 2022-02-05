@@ -8,18 +8,18 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import net.treimers.square1.controller.MenuHandler;
 import net.treimers.square1.model.ColorBean;
 
 /**
  * Instances of this class are used to display a color choosing dialog
  * allowing the user to changes the colored sides of the Square-1.
  */
-public class ColorDialog extends Dialog<Color[]> {
+public class ColorDialog extends Square1Dialog<Color[]> {
 	/** Array of color pickers to change the colored sides of the Square-1. */
 	private ColorPicker[] colorPicker;
 	/** Array with colored sides of the Square-1. */
@@ -27,9 +27,11 @@ public class ColorDialog extends Dialog<Color[]> {
 
 	/**
 	 * Creates a new instance.
+	 * @param menuHandler
 	 * @param colorBean the color bean to inform listeners.
 	 */
-	public ColorDialog(ColorBean colorBean) {
+	public ColorDialog(MenuHandler menuHandler, ColorBean colorBean) {
+		super(menuHandler);
 		setTitle("Colors");
 		setHeaderText("Set the colors of the Square-1 sides");
 		colors = colorBean.getColors();
@@ -81,10 +83,10 @@ public class ColorDialog extends Dialog<Color[]> {
 		});
 		getDialogPane().setContent(grid);
 		getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		setResultConverter(new Callback<ButtonType, Color[]>() {
+		Callback<ButtonType, Color[]> callback = new Callback<ButtonType, Color[]>() {
 			@Override
-			public Color[] call(ButtonType button) {
-				if (button == ButtonType.OK) {
+			public Color[] call(ButtonType buttonType) {
+				if (buttonType == ButtonType.OK) {
 					// return the color picker values on ok
 					colors = new Color[colorPicker.length];
 					for (int i = 0; i < colors.length; i++) {
@@ -97,6 +99,7 @@ public class ColorDialog extends Dialog<Color[]> {
 				}
 				return colors;
 			}
-		});
+		};
+		setResultConverter(callback);
 	}
 }

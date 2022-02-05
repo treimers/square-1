@@ -67,6 +67,7 @@ import net.treimers.square1.model.Side;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.dialog.SolveDialog;
+import net.treimers.square1.view.dialog.Square1Alert;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
@@ -99,7 +100,7 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
 /**
  * Instances of this class are used to control the flow of the Square-1 application.
  */
-public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener {
+public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener, MenuHandler {
 	/** The color node in the prefs tree. */
 	private static final String COLORS_NODE = "colors";
 	/** The red key for user prefs. */
@@ -180,6 +181,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private double mousePosX;
 	/** Mouse y position (used for rotations of Square-1 mesh group with mouse.) */
 	private double mousePosY;
+
 	/**
 	 * Creates a new instance.
 	 */
@@ -436,12 +438,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doSolvePosition() {
+		// center solve dialog on screen
 		Platform.runLater(() -> {
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            Window window = solveDialog.getDialogPane().getScene().getWindow();
-            window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
-            window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
-        });
+			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+			Window window = solveDialog.getDialogPane().getScene().getWindow();
+			window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
+			window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
+		});
 		solveDialogController.setPosition(position);
 		Optional<Position> result = solveDialog.showAndWait();
 		if (result.isPresent()) {
@@ -558,12 +561,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doHelp() {
+		// center help dialog on screen
 		Platform.runLater(() -> {
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            Window window = helpDialog.getDialogPane().getScene().getWindow();
-            window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
-            window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
-        });
+			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+			Window window = helpDialog.getDialogPane().getScene().getWindow();
+			window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
+			window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
+		});
 		helpDialog.showAndWait();
 	}
 
@@ -636,7 +640,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * @return the new about dialog.
 	 */
 	private Alert createAboutDialog(Stage primaryStage) {
-		Alert alert = new Alert(AlertType.INFORMATION);
+		Alert alert = new Square1Alert(AlertType.INFORMATION, this);
 		alert.setGraphic(ImageLoader.getLogoImageView());
 		alert.setTitle("About");
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
@@ -655,7 +659,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	private Alert createHelpDialog(Stage primaryStage) {
 		// create dialog
-		Alert alert = new Alert(AlertType.INFORMATION);
+		Alert alert = new Square1Alert(AlertType.INFORMATION, this);
 		alert.setTitle("Square-1 Help");
 		alert.setHeaderText("Square-1 user manual");
 		alert.getDialogPane().setMinWidth(1200);
@@ -689,7 +693,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * @return the new color dialog.
 	 */
 	private ColorDialog createColorDialog(Stage primaryStage) {
-		ColorDialog dialog = new ColorDialog(this);
+		ColorDialog dialog = new ColorDialog(this, this);
 		dialog.initOwner(primaryStage);
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 		stage.centerOnScreen();
@@ -755,7 +759,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			positionDialogController.init(this);
 			// dialog
 			PositionDialog dialog = null;
-			dialog = new PositionDialog(root, positionDialogController);
+			dialog = new PositionDialog(this, root, positionDialogController);
 			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(primaryStage.getIcons().get(0));
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -784,7 +788,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			solveDialogController = loader.getController();
 			solveDialogController.init(this);
 			// dialog
-			SolveDialog dialog = new SolveDialog(root, solveDialogController);
+			SolveDialog dialog = new SolveDialog(this, root, solveDialogController);
 			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(primaryStage.getIcons().get(0));
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -821,8 +825,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
- 	 * Persists a position to user preferences.
- 	 * 
+	 * Persists a position to user preferences.
+	 * 
 	 * @param position the position.
 	 */
 	private void persistPosition(Position position) {
@@ -831,8 +835,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
- 	 * Restores a position from user preferences.
- 	 * 
+	 * Restores a position from user preferences.
+	 * 
 	 * @return the position.
 	 */
 	private Position restorePosition() {
@@ -859,7 +863,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			colorNode.putDouble(side.name().toLowerCase() + OPACITY, color.getOpacity());
 		}
 	}
-	
+
 	/**
 	 * Restores all colors from user preferences.
 	 * 
@@ -880,5 +884,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			retval[side.ordinal()] = new Color(red, green, blue, opacity);
 		}
 		return retval;
+	}
+
+	@Override
+	public void setMenusEnabled(boolean enable) {
+		ObservableList<Menu> menus = menuBar.getMenus();
+		for (Menu menu : menus)
+			menu.setVisible(enable);
 	}
 }
