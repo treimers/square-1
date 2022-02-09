@@ -102,4 +102,15 @@ public class ColorDialog extends Square1Dialog<Color[]> {
 		};
 		setResultConverter(callback);
 	}
+
+	/**
+	 * Sets the initial colors for this color dialog.
+	 * 
+	 * @param colors the initial colors.
+	 */
+	public void setColors(Color[] colors) {
+		this.colors = colors;
+		for (int i = 0; i < colors.length; i++)
+			colorPicker[i].setValue(colors[i]);
+	}
 }

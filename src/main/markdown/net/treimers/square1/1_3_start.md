@@ -1,6 +1,6 @@
 # Getting started
 
-After application start a solved Square-1 is presented.
+After first application start a solved Square-1 is presented.
 
 <img src="images/app.png" alt="Square 1" width="404" height="431">
 

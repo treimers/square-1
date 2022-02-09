@@ -1,6 +1,7 @@
 package net.treimers.square1.view.dialog;
 
 import javafx.scene.Parent;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.util.Callback;
 import net.treimers.square1.controller.MenuHandler;
@@ -25,14 +26,18 @@ public class SolveDialog extends Square1Dialog<Position> {
 		// dialog content
 		getDialogPane().setContent(root);
 		// buttons
-		getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		ButtonType current = new ButtonType("Choose Current Position", ButtonData.OK_DONE);
+		ButtonType last = new ButtonType("Choose Last Position", ButtonData.OK_DONE);
+		getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, current, last);
 		// result converter
 		Callback<ButtonType, Position> callback = new Callback<ButtonType, Position>() {
 			@Override
-			public Position call(ButtonType button) {
-				if (button == ButtonType.OK) {
+			public Position call(ButtonType buttonType) {
+				if (buttonType == current)
 					return solveDialogController.getPosition();
-				} else
+				else if (buttonType == last)
+					return solveDialogController.getLastPosition();
+				else
 					return null;
 			}
 		};

@@ -7,12 +7,13 @@ import java.util.Optional;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextInputDialog;
@@ -21,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
-import net.treimers.square1.model.Move;
 import net.treimers.square1.model.MoveSequence;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.view.misc.MeshGroup;
@@ -39,15 +39,17 @@ public class SolveController {
 	@FXML private TextFlow sequenceTextflow;
 	/** The slider to move through the sequence. */
 	@FXML private Slider slider;
-	/** The current position. */
+	/** The original position. */
+	private Position originalPosition;
+	/** The current positon. */
 	private Position position;
 	/** The sequence of moves. */
-	private MoveSequence moveSequence;
+	private MoveSequence sequence;
 	/** The list of positions. */
 	private List<Position> positionList;
 	/** The meshgroup showing the Square-1. */
 	private MeshGroup meshGroup;
-	
+
 	/**
 	 * Initializes this instance.
 	 * 
@@ -58,14 +60,15 @@ public class SolveController {
 		sequenceTextflow.setMaxWidth(600);
 		sequenceTextflow.setMaxHeight(200);
 		sequenceTextflow.getChildren().clear();
-		slider.valueProperty().addListener(new ChangeListener<Number>() {
+		ChangeListener<Number> changeListener = new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				int intValue = newValue.intValue();
 				selectSliderPosition(intValue);
 			}
-		});
-		moveSequence = new MoveSequence("");
+		};
+		slider.valueProperty().addListener(changeListener);
+		sequence = new MoveSequence("");
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		meshGroup = new MeshGroup(colorBean);
@@ -79,15 +82,6 @@ public class SolveController {
 		camera.setTranslateZ(-7);
 		subScene.setCamera(camera);
 	}
-	
-	/**
-	 * Gets the position.
-	 * 
-	 * @return the position.
-	 */
-	public Position getPosition() {
-		return position;
-	}
 
 	/**
 	 * Sets the position.
@@ -95,12 +89,13 @@ public class SolveController {
 	 * @param position the position.
 	 */
 	public void setPosition(Position position) {
-		this.position = position;
-		sequenceTextflow.getChildren().clear();
+		this.originalPosition = position;
 		positionLabel.setText(position.toString());
 		positionList = Arrays.asList(position);
 		slider.setMax(0);
 		meshGroup.setContent(position);
+		sequence = new MoveSequence("");
+		sequenceTextflow.getChildren().clear();
 	}
 
 	/**
@@ -108,25 +103,34 @@ public class SolveController {
 	 */
 	@FXML
 	void handleEnterMove() {
-		TextInputDialog dialog = new TextInputDialog(moveSequence.toString());
+		TextInputDialog dialog = new TextInputDialog(sequence.toString());
 		dialog.setTitle("Move");
 		dialog.setHeaderText("Please enter a move sequence");
 		dialog.setContentText("Move Sequence:");
-		// Traditional way to get the response value.
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) {
-			String moveString = result.get();
-			moveSequence = new MoveSequence(moveString);
-			sequenceTextflow.getChildren().setAll(new Text(moveSequence.toString()));
-			try {
-				positionList = position.move(moveSequence);
-				slider.setMax(positionList.size() - 1.0);
-			} catch (Square1Exception e) {
-				positionList = Arrays.asList(position);
-				slider.setMax(0);
-				e.printStackTrace();
-			}
-		}
+		boolean success = false;
+		do {
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				String moveString = result.get();
+				MoveSequence seq = new MoveSequence(moveString);
+				try {
+					List<Position> list = originalPosition.move(seq);
+					this.sequence = seq;
+					positionList = list;
+					sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
+					slider.setMax(positionList.size() - 1.0);
+					selectSliderPosition(0);
+					success = true;
+				} catch (Square1Exception e) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Illegal Move");
+					alert.setContentText(e.getMessage());
+					alert.showAndWait();
+				}
+			} else
+				success = true;
+		} while (!success);
 	}
 
 	/**
@@ -144,10 +148,10 @@ public class SolveController {
 	 * Handle user click on right button.
 	 */
 	@FXML
-	void handleRight(ActionEvent event) {
+	void handleRight() {
 		Double doubleValue = slider.getValue();
 		int sliderPos = doubleValue.intValue();
-		if (sliderPos < positionList.size() - 1)
+		if (sliderPos < slider.getMax())
 			selectSliderPosition(sliderPos + 1);
 	}
 
@@ -155,7 +159,7 @@ public class SolveController {
 	 * Handle user click on solve button.
 	 */
 	@FXML
-	void handleSolve(ActionEvent event) {
+	void handleSolve() {
 		// future implementation
 	}
 
@@ -173,6 +177,7 @@ public class SolveController {
 		slider.setValue(sliderPosition);
 		position = positionList.get(sliderPosition);
 		meshGroup.setContent(position);
+		/*
 		List<Move> moves = moveSequence.getMoves();
 		int i = 0;
 		String beforeMove = "";
@@ -197,5 +202,24 @@ public class SolveController {
 			sequenceTextflow.getChildren().add(currentText);
 		if (afterMove.length() > 0)
 			sequenceTextflow.getChildren().add(afterText);
+			*/
+	}
+
+	/**
+	 * Get the current position under the slider.
+	 * 
+	 * @return the current position under the slider.
+	 */
+	public Position getPosition() {
+		return position;
+	}
+
+	/**
+	 * Get the last position under the slider.
+	 * 
+	 * @return the last position under the slider.
+	 */
+	public Position getLastPosition() {
+		return positionList.get(positionList.size() - 1);
 	}
 }

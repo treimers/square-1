@@ -8,15 +8,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -58,12 +55,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import net.treimers.square1.Square1;
 import net.treimers.square1.Version;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
-import net.treimers.square1.model.Side;
+import net.treimers.square1.model.StoreData;
+import net.treimers.square1.model.persistence.FileStore;
+import net.treimers.square1.model.persistence.PreferencesStore;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.dialog.SolveDialog;
@@ -101,16 +99,6 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
  * Instances of this class are used to control the flow of the Square-1 application.
  */
 public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener, MenuHandler {
-	/** The color node in the prefs tree. */
-	private static final String COLORS_NODE = "colors";
-	/** The red key for user prefs. */
-	private static final String RED = ".red";
-	/** The green key for user prefs. */
-	private static final String GREEN = ".green";
-	/** The blue key for user prefs. */
-	private static final String BLUE = ".blue";
-	/** The opacity key for user prefs. */
-	private static final String OPACITY = ".opacity";
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
 		Color.WHITE,
@@ -122,6 +110,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Color.GRAY,
 		Color.BLACK,
 	};
+	private static final String COLOR = null;
 	/** The label with the moves to solve a Square-1 position. */
 	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
@@ -181,14 +170,21 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private double mousePosX;
 	/** Mouse y position (used for rotations of Square-1 mesh group with mouse.) */
 	private double mousePosY;
+	private FileStore fileStore;
+	private PreferencesStore preferencesStore;
 
 	/**
 	 * Creates a new instance.
+	 * 
+	 * @throws Square1Exception in case of any errors.
 	 */
-	public Square1Controller() {
-		position = restorePosition();
+	public Square1Controller() throws Square1Exception {
 		menuMap = new HashMap<>();
-		colors = restoreColorScheme();
+		fileStore = new FileStore();
+		preferencesStore = new PreferencesStore(this);
+		StoreData data = preferencesStore.restore();
+		position = data.buildPosition();
+		colors = data.buildColors();
 		colorChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -353,7 +349,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * Called when user requires load position file dialog.
 	 */
 	@FXML
-	void doLoadPosition() {
+	void doLoad() {
 		try {
 			if (lastFile != null && lastDir != null) {
 				loadFileChooser.setInitialDirectory(lastDir);
@@ -363,13 +359,18 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			if (file != null) {
 				lastDir = file.getParentFile();
 				lastFile = file;
-				byte[] pos = Files.readAllBytes(file.toPath());
-				String posString = new String(pos, StandardCharsets.UTF_8).replaceAll("\\s", "");
-				position = new Position(posString);
+				fileStore.setFile(file);
+				StoreData data = fileStore.restore();
+				// get position
+				position = new Position(data.getPositionString());
 				meshGroup.setContent(position);
-				persistPosition(position);
+				// get colors
+				Color[] oldColors = colors;
+				colors = data.buildColors();
+				colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
 			}
-		} catch (IOException e) {
+			preferencesStore.store(new StoreData(colors, position));
+		} catch (Square1Exception e) {
 			alertException(e);
 		}
 	}
@@ -378,7 +379,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * Called when user requires save position file dialog.
 	 */
 	@FXML
-	void doSavePosition() {
+	void doSave() {
 		try {
 			if (lastFile != null && lastDir != null) {
 				saveFileChooser.setInitialDirectory(lastDir);
@@ -388,10 +389,11 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			if (file != null) {
 				lastDir = file.getParentFile();
 				lastFile = file;
-				String text = position.toString();
-				Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
+				StoreData data = new StoreData(colors, position);
+				fileStore.setFile(file);
+				fileStore.store(data);
 			}
-		} catch (IOException e) {
+		} catch (Square1Exception e) {
 			alertException(e);
 		}
 
@@ -402,6 +404,11 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doExit() {
+		try {
+			preferencesStore.store(new StoreData(colors, position));
+		} catch (Square1Exception e) {
+			alertException(e);
+		}
 		primaryStage.hide();
 	}
 
@@ -410,12 +417,17 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doChangeColors() {
+		colorDialog.setColors(colors);
 		Optional<Color[]> result = colorDialog.showAndWait();
 		if (result.isPresent()) {
 			Color[] oldColors = colors;
 			colors = result.get();
-			colorChangeSupport.firePropertyChange(COLORS_NODE, oldColors, colors);
-			persistColorScheme(colors);
+			colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
+		}
+		try {
+			preferencesStore.store(new StoreData(colors, position));
+		} catch (Square1Exception e) {
+			alertException(e);
 		}
 	}
 
@@ -429,7 +441,11 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		if (result.isPresent()) {
 			position = result.get();
 			meshGroup.setContent(position);
-			persistPosition(position);
+			try {
+				preferencesStore.store(new StoreData(colors, position));
+			} catch (Square1Exception e) {
+				alertException(e);
+			}
 		}
 	}
 
@@ -450,7 +466,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		if (result.isPresent()) {
 			position = result.get();
 			meshGroup.setContent(position);
-			persistPosition(position);
 		}
 	}
 
@@ -727,12 +742,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			KeyboardShortcutController controller = loader.getController();
 			controller.setMenuBar(menuBar);
 			// register controller method called on showing event
-			alert.setOnShowing(new EventHandler<DialogEvent>() {
+			EventHandler<DialogEvent> eventHandler = new EventHandler<DialogEvent>() {
 				@Override
 				public void handle(DialogEvent e) {
 					controller.handleShowing();
 				}
-			});
+			};
+			alert.setOnShowing(eventHandler);
 			// add content to view
 			alert.getDialogPane().setContent(root);
 		} catch (IOException e) {
@@ -822,68 +838,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		chooser.setTitle("Save Position");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 		return chooser;
-	}
-
-	/**
-	 * Persists a position to user preferences.
-	 * 
-	 * @param position the position.
-	 */
-	private void persistPosition(Position position) {
-		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
-		userNode.put("position", position.toString());
-	}
-
-	/**
-	 * Restores a position from user preferences.
-	 * 
-	 * @return the position.
-	 */
-	private Position restorePosition() {
-		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
-		String positonString = userNode.get("position", Position.SOLVED_POSITION_STRING);
-		return new Position(positonString);
-	}
-
-	/**
-	 * Persists all colors to user preferences.
-	 * 
-	 * @param sides all Square-1 sides as enum array.
-	 * @param colors the color array.
-	 */
-	private void persistColorScheme(Color[] colors) {
-		Side[] allSides = Side.values();
-		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
-		Preferences colorNode = userNode.node(COLORS_NODE);
-		for (Side side : allSides) {
-			Color color = colors[side.ordinal()];
-			colorNode.putDouble(side.name().toLowerCase() + RED, color.getRed());
-			colorNode.putDouble(side.name().toLowerCase() + GREEN, color.getGreen());
-			colorNode.putDouble(side.name().toLowerCase() + BLUE, color.getBlue());
-			colorNode.putDouble(side.name().toLowerCase() + OPACITY, color.getOpacity());
-		}
-	}
-
-	/**
-	 * Restores all colors from user preferences.
-	 * 
-	 * @param sides all Square-1 sides as enum array.
-	 * @return the color array loaded.
-	 */
-	private Color[] restoreColorScheme() {
-		Side[] allSides = Side.values();
-		Color[] retval = new Color[allSides.length];
-		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
-		Preferences colorNode = userNode.node(COLORS_NODE);
-		for (Side side : allSides) {
-			Color defaultColor = DEFAULT_COLORS[side.ordinal()];
-			double red = colorNode.getDouble(side.name().toLowerCase() + RED, defaultColor.getRed());
-			double green = colorNode.getDouble(side.name().toLowerCase() + GREEN, defaultColor.getGreen());
-			double blue = colorNode.getDouble(side.name().toLowerCase() + BLUE, defaultColor.getBlue());
-			double opacity = colorNode.getDouble(side.name().toLowerCase() + OPACITY, defaultColor.getOpacity());
-			retval[side.ordinal()] = new Color(red, green, blue, opacity);
-		}
-		return retval;
 	}
 
 	@Override
