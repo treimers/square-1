@@ -7,7 +7,7 @@ import net.treimers.square1.util.Utils;
  * Instances of this class are used to persist and restore
  * Square-1 data (color scheme and position).
  */
-public class StoreData {
+public class Square1Data {
 	/** The Strings with color scheme. */
 	private String[] colorStrings;
 	/** The position String. */
@@ -16,7 +16,7 @@ public class StoreData {
 	/**
 	 * Creates a new empty data object.
 	 */
-	public StoreData() {
+	public Square1Data() {
 	}
 
 	/**
@@ -25,7 +25,7 @@ public class StoreData {
 	 * @param colorStrings the color scheme.
 	 * @param positionString the position String.
 	 */
-	public StoreData(String[] colorStrings, String positionString) {
+	public Square1Data(String[] colorStrings, String positionString) {
 		this.colorStrings = colorStrings;
 		this.positionString = positionString;
 	}
@@ -36,7 +36,7 @@ public class StoreData {
 	 * @param color the color scheme.
 	 * @param position the position.
 	 */
-	public StoreData(Color[] color, Position position) {
+	public Square1Data(Color[] color, Position position) {
 		colorStrings = new String[color.length];
 		for (int i = 0; i < color.length; i++) {
 			colorStrings[i] = Utils.colorToString(color[i]);

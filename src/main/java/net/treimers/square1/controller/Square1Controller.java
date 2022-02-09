@@ -59,7 +59,7 @@ import net.treimers.square1.Version;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
-import net.treimers.square1.model.StoreData;
+import net.treimers.square1.model.Square1Data;
 import net.treimers.square1.model.persistence.FileStore;
 import net.treimers.square1.model.persistence.PreferencesStore;
 import net.treimers.square1.view.dialog.ColorDialog;
@@ -182,7 +182,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		menuMap = new HashMap<>();
 		fileStore = new FileStore();
 		preferencesStore = new PreferencesStore(this);
-		StoreData data = preferencesStore.restore();
+		Square1Data data = preferencesStore.restore();
 		position = data.buildPosition();
 		colors = data.buildColors();
 		colorChangeSupport = new PropertyChangeSupport(this);
@@ -360,7 +360,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 				lastDir = file.getParentFile();
 				lastFile = file;
 				fileStore.setFile(file);
-				StoreData data = fileStore.restore();
+				Square1Data data = fileStore.restore();
 				// get position
 				position = new Position(data.getPositionString());
 				meshGroup.setContent(position);
@@ -369,7 +369,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 				colors = data.buildColors();
 				colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
 			}
-			preferencesStore.store(new StoreData(colors, position));
+			preferencesStore.store(new Square1Data(colors, position));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -389,7 +389,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			if (file != null) {
 				lastDir = file.getParentFile();
 				lastFile = file;
-				StoreData data = new StoreData(colors, position);
+				Square1Data data = new Square1Data(colors, position);
 				fileStore.setFile(file);
 				fileStore.store(data);
 			}
@@ -405,7 +405,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	@FXML
 	void doExit() {
 		try {
-			preferencesStore.store(new StoreData(colors, position));
+			preferencesStore.store(new Square1Data(colors, position));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -425,7 +425,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
 		}
 		try {
-			preferencesStore.store(new StoreData(colors, position));
+			preferencesStore.store(new Square1Data(colors, position));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -442,7 +442,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			position = result.get();
 			meshGroup.setContent(position);
 			try {
-				preferencesStore.store(new StoreData(colors, position));
+				preferencesStore.store(new Square1Data(colors, position));
 			} catch (Square1Exception e) {
 				alertException(e);
 			}

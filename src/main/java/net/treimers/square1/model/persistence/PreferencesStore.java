@@ -8,7 +8,7 @@ import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Side;
-import net.treimers.square1.model.StoreData;
+import net.treimers.square1.model.Square1Data;
 import net.treimers.square1.util.Utils;
 
 /**
@@ -30,7 +30,7 @@ public class PreferencesStore implements DataStore {
 	}
 
 	@Override
-	public void store(StoreData data) throws Square1Exception {
+	public void store(Square1Data data) throws Square1Exception {
 		String[] colors = data.getColorStrings();
 		Side[] allSides = Side.values();
 		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
@@ -42,7 +42,7 @@ public class PreferencesStore implements DataStore {
 	}
 
 	@Override
-	public StoreData restore() throws Square1Exception {
+	public Square1Data restore() throws Square1Exception {
 		Side[] allSides = Side.values();
 		String[] colors = new String[allSides.length];
 		Preferences userNode = Preferences.userNodeForPackage(Square1.class);
@@ -52,7 +52,7 @@ public class PreferencesStore implements DataStore {
 			colors[side.ordinal()] = userNode.get(COLOR + side.name().toLowerCase(), Utils.colorToString(defaultColor));
 		}
 		String positonString = userNode.get("position", Position.SOLVED_POSITION_STRING);
-		return new StoreData(colors, positonString);
+		return new Square1Data(colors, positonString);
 	}
 
 }

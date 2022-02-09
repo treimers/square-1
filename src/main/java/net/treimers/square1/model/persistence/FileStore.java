@@ -11,7 +11,7 @@ import org.hjson.Stringify;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.treimers.square1.exception.Square1Exception;
-import net.treimers.square1.model.StoreData;
+import net.treimers.square1.model.Square1Data;
 
 /**
  * Instances of this class are used to persist or restore Square-1 data to or from a file respectively.
@@ -39,7 +39,7 @@ public class FileStore implements DataStore {
 	}
 
 	@Override
-	public void store(StoreData data) throws Square1Exception {
+	public void store(Square1Data data) throws Square1Exception {
 		try {
 			String json = mapper.writeValueAsString(data);
 			String hjson = JsonValue.readHjson(json).toString(Stringify.HJSON);
@@ -50,11 +50,11 @@ public class FileStore implements DataStore {
 	}
 
 	@Override
-	public StoreData restore() throws Square1Exception {
+	public Square1Data restore() throws Square1Exception {
 		try {
 			String hjson = Files.readString(file.toPath());
 			String json = JsonValue.readHjson(hjson).toString();
-			return mapper.readValue(json, StoreData.class);
+			return mapper.readValue(json, Square1Data.class);
 		} catch (IOException e) {
 			throw new Square1Exception(e);
 		}
