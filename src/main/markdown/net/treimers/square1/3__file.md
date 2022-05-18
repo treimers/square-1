@@ -1,6 +1,6 @@
 # File Operations
 
-A Square-1 can be saved to a data file or reloaded from a data file.
+A Square-1 with colors and position can be saved to a data file or reloaded from a data file.
 
 Save will write the current coloring scheme and the current position to a text file.
 

@@ -58,6 +58,7 @@ import javafx.stage.Window;
 import net.treimers.square1.Version;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.MoveSequence;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Square1Data;
 import net.treimers.square1.model.persistence.FileStore;
@@ -111,8 +112,6 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Color.BLACK,
 	};
 	private static final String COLOR = null;
-	/** The label with the moves to solve a Square-1 position. */
-	@FXML private Label solution;
 	/** The sub scene showing the Square-1. */
 	@FXML private SubScene subScene;
 	/** The menu bar. */
@@ -131,6 +130,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private ColorDialog colorDialog;
 	/** The dialog used to enter a new position. */
 	private PositionDialog positionDialog;
+	/** The dialog used to enter a new solution. */
 	private SolveDialog solveDialog;
 	/** The load file chooser. */
 	private FileChooser loadFileChooser;
@@ -147,10 +147,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private Color[] colors;
 	/** The position that shall be solved. */
 	private Position position;
+	/** The solution String. */
+	private MoveSequence solution;
 	/** Map with all radio menu items used to bind to visibility of pieces. */
 	private Map<Character, CheckMenuItem> menuMap;
 	/** The controller for the position dialog. */
 	private PositionController positionDialogController;
+	/** The controller for the solution dialog. */
 	private SolveController solveDialogController;
 	/** Last directory of load and save dialogs. */
 	private File lastDir;
@@ -170,7 +173,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private double mousePosX;
 	/** Mouse y position (used for rotations of Square-1 mesh group with mouse.) */
 	private double mousePosY;
+	/** The file store. */
 	private FileStore fileStore;
+	/** The prefs store. */
 	private PreferencesStore preferencesStore;
 
 	/**
@@ -186,6 +191,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		position = data.buildPosition();
 		colors = data.buildColors();
 		colorChangeSupport = new PropertyChangeSupport(this);
+		solution = new MoveSequence("");
 	}
 
 	@Override
@@ -368,8 +374,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 				Color[] oldColors = colors;
 				colors = data.buildColors();
 				colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
+				solution = data.getSolution();
 			}
-			preferencesStore.store(new Square1Data(colors, position));
+			preferencesStore.store(new Square1Data(colors, position, solution));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -389,7 +396,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			if (file != null) {
 				lastDir = file.getParentFile();
 				lastFile = file;
-				Square1Data data = new Square1Data(colors, position);
+				Square1Data data = new Square1Data(colors, position, solution);
 				fileStore.setFile(file);
 				fileStore.store(data);
 			}
@@ -405,7 +412,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	@FXML
 	void doExit() {
 		try {
-			preferencesStore.store(new Square1Data(colors, position));
+			preferencesStore.store(new Square1Data(colors, position, solution));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -425,7 +432,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			colorChangeSupport.firePropertyChange(COLOR, oldColors, colors);
 		}
 		try {
-			preferencesStore.store(new Square1Data(colors, position));
+			preferencesStore.store(new Square1Data(colors, position, solution));
 		} catch (Square1Exception e) {
 			alertException(e);
 		}
@@ -440,9 +447,10 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
 			position = result.get();
+			solution = new MoveSequence("");
 			meshGroup.setContent(position);
 			try {
-				preferencesStore.store(new Square1Data(colors, position));
+				preferencesStore.store(new Square1Data(colors, position, solution));
 			} catch (Square1Exception e) {
 				alertException(e);
 			}

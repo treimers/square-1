@@ -12,6 +12,8 @@ public class Square1Data {
 	private String[] colorStrings;
 	/** The position String. */
 	private String positionString;
+	/** The solution String. */
+	private MoveSequence solution;
 
 	/**
 	 * Creates a new empty data object.
@@ -24,10 +26,12 @@ public class Square1Data {
 	 * 
 	 * @param colorStrings the color scheme.
 	 * @param positionString the position String.
+	 * @param solution the solution String.
 	 */
-	public Square1Data(String[] colorStrings, String positionString) {
+	public Square1Data(String[] colorStrings, String positionString, MoveSequence solution) {
 		this.colorStrings = colorStrings;
 		this.positionString = positionString;
+		this.solution = solution;
 	}
 
 	/**
@@ -35,13 +39,15 @@ public class Square1Data {
 	 * 
 	 * @param color the color scheme.
 	 * @param position the position.
+	 * @param solution the solution String.
 	 */
-	public Square1Data(Color[] color, Position position) {
+	public Square1Data(Color[] color, Position position, MoveSequence solution) {
 		colorStrings = new String[color.length];
 		for (int i = 0; i < color.length; i++) {
 			colorStrings[i] = Utils.colorToString(color[i]);
 		}
 		this.positionString = position.toString();
+		this.solution = solution;
 	}
 
 	/**
@@ -78,6 +84,24 @@ public class Square1Data {
 	 */
 	public void setPositionString(String positionString) {
 		this.positionString = positionString;
+	}
+
+	/**
+	 * Gets the solution.
+	 * 
+	 * @return the solution.
+	 */
+	public MoveSequence getSolution() {
+		return solution;
+	}
+
+	/**
+	 * Sets the solution.
+	 * 
+	 * @param solution the solution.
+	 */
+	public void setSolution(MoveSequence solution) {
+		this.solution = solution;
 	}
 
 	/**
