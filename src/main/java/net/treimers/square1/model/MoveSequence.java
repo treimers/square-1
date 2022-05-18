@@ -12,6 +12,13 @@ public class MoveSequence {
 	private List<Move> moves;
 
 	/**
+	 * Creates a new instance without any moves.
+	 */
+	public MoveSequence() {
+		moves = new ArrayList<>();
+	}
+
+	/**
 	 * Creates a new instance from a string representation.
 	 * 
 	 * @param moveString the string representation.

@@ -191,7 +191,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		position = data.buildPosition();
 		colors = data.buildColors();
 		colorChangeSupport = new PropertyChangeSupport(this);
-		solution = new MoveSequence("");
+		solution = new MoveSequence();
 	}
 
 	@Override
@@ -447,7 +447,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
 			position = result.get();
-			solution = new MoveSequence("");
+			solution = new MoveSequence();
 			meshGroup.setContent(position);
 			try {
 				preferencesStore.store(new Square1Data(colors, position, solution));

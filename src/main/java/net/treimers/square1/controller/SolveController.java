@@ -68,7 +68,7 @@ public class SolveController {
 			}
 		};
 		slider.valueProperty().addListener(changeListener);
-		sequence = new MoveSequence("");
+		sequence = new MoveSequence();
 		// Sub Scene
 		SmartGroup smartGroup = new SmartGroup();
 		meshGroup = new MeshGroup(colorBean);
@@ -94,7 +94,7 @@ public class SolveController {
 		positionList = Arrays.asList(position);
 		slider.setMax(0);
 		meshGroup.setContent(position);
-		sequence = new MoveSequence("");
+		sequence = new MoveSequence();
 		sequenceTextflow.getChildren().clear();
 	}
 
