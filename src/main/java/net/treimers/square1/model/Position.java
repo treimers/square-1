@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.view.piece.Layer;
@@ -201,7 +202,8 @@ public class Position {
 		int[] newBottom = new int[MAX_PIECES / 2];
 		for (int i = 0; i < newBottom.length; i++)
 			newBottom[i] = position.pieces[Math.floorMod(i - bottomRotation, MAX_PIECES / 2) + MAX_PIECES / 2];
-		if (newBottom[0] == newBottom[newBottom.length - 1] || newBottom[MAX_PIECES / 4] == newBottom[MAX_PIECES / 4 - 1])
+		if (newBottom[0] == newBottom[newBottom.length - 1]
+				|| newBottom[MAX_PIECES / 4] == newBottom[MAX_PIECES / 4 - 1])
 			throw new Square1Exception(String.format("Illegal move %s for position %s", move, position.toString()));
 		System.arraycopy(newBottom, 0, position.pieces, MAX_PIECES / 2, MAX_PIECES / 2);
 		if (move.isTwisted()) {
@@ -214,7 +216,7 @@ public class Position {
 				position.pieces[i] = position.pieces[i + MAX_PIECES / 4];
 				position.pieces[i + MAX_PIECES / 4] = help;
 			}
-			int twistIndex = (position.middleLayer == null || position.middleLayer == '-') ? 0 : 1; 
+			int twistIndex = (position.middleLayer == null || position.middleLayer == '-') ? 0 : 1;
 			position.middleLayer = "/-".charAt(twistIndex);
 		}
 		return position;
@@ -289,5 +291,33 @@ public class Position {
 				return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		Position other = (Position) obj;
+
+		if (this.length != other.length)
+			return false;
+
+		for (int i = 0; i < length; i++) {
+			if (this.pieces[i] != other.pieces[i])
+				return false;
+		}
+
+		return Objects.equals(this.middleLayer, other.middleLayer);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = Objects.hash(middleLayer, length);
+		for (int i = 0; i < length; i++) {
+			result = 31 * result + pieces[i];
+		}
+		return result;
 	}
 }

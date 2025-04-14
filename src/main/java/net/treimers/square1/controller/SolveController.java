@@ -176,6 +176,7 @@ public class SolveController {
 	private void selectSliderPosition(int sliderPosition) {
 		slider.setValue(sliderPosition);
 		position = positionList.get(sliderPosition);
+		positionLabel.setText(position.toString());
 		meshGroup.setContent(position);
 		/*
 		List<Move> moves = moveSequence.getMoves();

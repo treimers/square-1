@@ -10,11 +10,14 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,6 +58,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import net.treimers.square1.Version;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
@@ -63,6 +67,7 @@ import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Square1Data;
 import net.treimers.square1.model.persistence.FileStore;
 import net.treimers.square1.model.persistence.PreferencesStore;
+import net.treimers.square1.solver.Scrambler;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.dialog.SolveDialog;
@@ -97,19 +102,20 @@ https://www.youtube.com/watch?v=-pzu5rbHS18
  */
 
 /**
- * Instances of this class are used to control the flow of the Square-1 application.
+ * Instances of this class are used to control the flow of the Square-1
+ * application.
  */
 public class Square1Controller implements Initializable, ColorBean, PropertyChangeListener, MenuHandler {
 	/** The default colors of the Square-1 sides. */
 	private static final Color[] DEFAULT_COLORS = new Color[] {
-		Color.WHITE,
-		Color.YELLOW,
-		Color.ORANGE,
-		Color.DARKBLUE,
-		Color.RED,
-		Color.GREEN,
-		Color.GRAY,
-		Color.BLACK,
+			Color.WHITE,
+			Color.YELLOW,
+			Color.ORANGE,
+			Color.DARKBLUE,
+			Color.RED,
+			Color.GREEN,
+			Color.GRAY,
+			Color.BLACK,
 	};
 	private static final String COLOR = null;
 	/** The sub scene showing the Square-1. */
@@ -458,6 +464,31 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
+	 * Called when user requires scramble current position.
+	 * 
+	 * @throws Square1Exception
+	 * @throws InterruptedException
+	 */
+	@FXML
+	void doScramble() throws Square1Exception, InterruptedException {
+		Scrambler scrambler = new Scrambler();
+		List<Position> positions = scrambler.generateScramble(position);
+		Timeline timeline = new Timeline();
+		timeline.setCycleCount(1);
+		for (int i = 0; i < positions.size(); i++) {
+			Position movePosition = positions.get(i);
+			KeyFrame keyFrame = new KeyFrame(
+					Duration.millis(500 * (i + 1)),
+					event -> {
+						meshGroup.setContent(movePosition);
+					});
+			timeline.getKeyFrames().add(keyFrame);
+			position = movePosition;
+		}
+		timeline.play();
+	}
+
+	/**
 	 * Called when user requires solve position.
 	 */
 	@FXML
@@ -624,6 +655,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	/**
 	 * Creates a group with x-, y- and z-axis.
+	 * 
 	 * @return the group with x-, y- and z-axis.
 	 */
 	private Group buildAxes() {
@@ -766,7 +798,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	}
 
 	/**
-	 * Creates a new position dialog allowing the user to define a position to be solved.
+	 * Creates a new position dialog allowing the user to define a position to be
+	 * solved.
 	 * 
 	 * @param primaryStage the primary stage of the app.
 	 * @return a new position dialog.

@@ -44,6 +44,10 @@ public class MoveSequence {
 		}
 	}
 
+	public MoveSequence(List<Move> moves) {
+		this.moves = moves;
+	}
+
 	/**
 	 * Gets the move list in this sequence.
 	 * 
