@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.treimers</groupId>
 	<artifactId>square1fx</artifactId>
-	<version>0.5</version>
+	<version>1.0</version>
 	<name>Square-1</name>
 	<organization>
 		<name>Thorsten Reimers</name>
