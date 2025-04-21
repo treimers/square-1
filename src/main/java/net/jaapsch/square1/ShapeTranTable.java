@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import net.treimers.square1.exception.Square1Exception;
 
 /*
 This class represents a transition table for the shapes.
@@ -18,13 +21,19 @@ public class ShapeTranTable {
 	// the transition table data
 	private int tranTable[];
 
-	ShapeTranTable() throws IOException {
+	ShapeTranTable() throws Square1Exception {
+		try {
 		// At last we can calculate full transition table
 		tranTable = new int[Sq1Shape.list.length * 4];
 		// see if can be found on file
 		String fname = "sq1stt.dat";
+		InputStream resource = getClass().getResourceAsStream(fname);
 		File file = new File(fname);
-		if (!file.exists()) {
+		if (resource == null) {
+			if (file.exists())
+				resource = new FileInputStream(file);
+		}
+		if (resource == null) {
 			// no file. calculate table.
 			// for each move, shape
 			for (int i = 0; i < Sq1Shape.list.length; i++) {
@@ -41,12 +50,15 @@ public class ShapeTranTable {
 			oos.close();
 		} else {
 			// read from file
-			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(resource));
 			for (int i = 0; i < tranTable.length; i++) {
 				tranTable[i] = ois.readInt();
 			}
 			ois.close();
 		}
+	} catch (IOException e) {
+		throw new Square1Exception(e.getMessage(), e);
+	}
 	}
 
 	int getEntry(int shape, int move) {

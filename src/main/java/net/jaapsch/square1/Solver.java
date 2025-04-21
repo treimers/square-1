@@ -1,7 +1,5 @@
 package net.jaapsch.square1;
 
-import java.io.IOException;
-
 import net.treimers.square1.exception.Square1Exception;
 
 public class Solver {
@@ -13,28 +11,17 @@ public class Solver {
 	private PrunTable pr2;
 
 	public Solver() throws Square1Exception {
-		try {
-			// Use turn-based metric instead of twist-based
-			turnMetric = false;
-			// calculate transition tables
-			System.out.println("  5. Shape transition table");
-			st = new ShapeTranTable();
-			System.out.println("  4. Colouring 1 transition table");
-			scte = new ShpColTranTable(st, true);
-			System.out.println("  3. Colouring 2 transition table");
-			sctc = new ShpColTranTable(st, false);
-			// Get starting position
-			FullPosition q = new FullPosition();
-			// calculate pruning tables for two colourings
-			System.out.println("  2. Colouring 1 pruning table");
-			pr1 = new PrunTable(q, 0, st, scte, sctc, turnMetric);
-			System.out.println("  1. Colouring 2 pruning table");
-			pr2 = new PrunTable(q, 1, st, scte, sctc, turnMetric);
-			System.out.println("  0. Finished.");
-			System.out.print("Flags: " + (turnMetric ? "Turn" : "Twist") + " Metric");
-		} catch (IOException e) {
-			throw new Square1Exception(e.getMessage(), e);
-		}
+		// Use turn-based metric instead of twist-based
+		turnMetric = false;
+		// calculate transition tables
+		st = new ShapeTranTable();
+		scte = new ShpColTranTable(st, true);
+		sctc = new ShpColTranTable(st, false);
+		// Get starting position
+		FullPosition q = new FullPosition();
+		// calculate pruning tables for two colourings
+		pr1 = new PrunTable(q, 0, st, scte, sctc, turnMetric);
+		pr2 = new PrunTable(q, 1, st, scte, sctc, turnMetric);
 	}
 
 	public String solve(String position) {

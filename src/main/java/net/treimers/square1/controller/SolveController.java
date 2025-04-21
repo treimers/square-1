@@ -56,17 +56,8 @@ public class SolveController {
 	private MeshGroup meshGroup;
 	Solver solver;
 
-	public SolveController() {
-		new Thread() {
-			@Override
-			public void run() {
-				try {
-					solver = new Solver();
-				} catch (Square1Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}.run();;
+	public SolveController() throws Square1Exception {
+		solver = new Solver();
 	}
 
 	/**

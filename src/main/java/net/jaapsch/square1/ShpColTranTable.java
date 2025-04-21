@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import net.treimers.square1.exception.Square1Exception;
 
 /*
 This class represents a transition table for an edge/corner colouring.
@@ -16,42 +19,51 @@ public class ShpColTranTable {
 	// the transition table data
 	private byte table[];
 
-	ShpColTranTable(ShapeTranTable stt0, boolean edges) throws IOException {
-		ShapeColPos p = new ShapeColPos(stt0);
-		table = new byte[Sq1Shape.list.length * 210];
-		// see if can be found on file
-		String fname;
-		if (edges)
-			fname = "sq1scte.dat";
-		else
-			fname = "sq1sctc.dat";
-		File file = new File(fname);
-		if (!file.exists()) {
-			// no file. calculate table.
-			// Calculate transition table
-			// for each move, shape, colouring
-			for (int m = 0; m < 3; m++) {
-				for (int i = 0; i < Sq1Shape.list.length; i++) {
-					for (int j = 0; j < 70; j++) {
-						// get that shape/colouring
-						p.set(i, j, edges);
-						// apply move
-						p.domove(m);
-						// store result
-						setEntry(i, j, m, p.getColIdx());
-						// if (p.getColIdx() == 255) System.exit(0);
+	ShpColTranTable(ShapeTranTable stt0, boolean edges) throws Square1Exception {
+		try {
+			ShapeColPos p = new ShapeColPos(stt0);
+			table = new byte[Sq1Shape.list.length * 210];
+			// see if can be found on file
+			String fname;
+			if (edges)
+				fname = "sq1scte.dat";
+			else
+				fname = "sq1sctc.dat";
+			InputStream resource = getClass().getResourceAsStream(fname);
+			File file = new File(fname);
+			if (resource == null) {
+				if (file.exists())
+					resource = new FileInputStream(file);
+			}
+			if (resource == null) {
+				// no file. calculate table.
+				// Calculate transition table
+				// for each move, shape, colouring
+				for (int m = 0; m < 3; m++) {
+					for (int i = 0; i < Sq1Shape.list.length; i++) {
+						for (int j = 0; j < 70; j++) {
+							// get that shape/colouring
+							p.set(i, j, edges);
+							// apply move
+							p.domove(m);
+							// store result
+							setEntry(i, j, m, p.getColIdx());
+							// if (p.getColIdx() == 255) System.exit(0);
+						}
 					}
 				}
+				// save to file
+				BufferedOutputStream oos = new BufferedOutputStream(new FileOutputStream(file));
+				oos.write(table, 0, table.length);
+				oos.close();
+			} else {
+				// read from file
+				BufferedInputStream ois = new BufferedInputStream(resource);
+				ois.read(table, 0, table.length);
+				ois.close();
 			}
-			// save to file
-			BufferedOutputStream oos = new BufferedOutputStream(new FileOutputStream(file));
-			oos.write(table, 0, table.length);
-			oos.close();
-		} else {
-			// read from file
-			BufferedInputStream ois = new BufferedInputStream(new FileInputStream(file));
-			ois.read(table, 0, table.length);
-			ois.close();
+		} catch (IOException e) {
+			throw new Square1Exception(e.getMessage(), e);
 		}
 	}
 

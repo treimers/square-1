@@ -14,7 +14,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<org.openjfx.version>17.0.6</org.openjfx.version>
+		<org.openjfx.version>17.0.12</org.openjfx.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -104,6 +104,15 @@
 				<version>1.6.1</version>
 			</extension>
 		</extensions>
+		<!-- Maven resource plugin, used to copy resource to classpath -->
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

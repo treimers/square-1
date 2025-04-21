@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import net.treimers.square1.exception.Square1Exception;
 
 /*
 This class represents a pruning table used in the solution search.
@@ -21,102 +24,111 @@ public class PrunTable {
 
 	// Initialise with p0=solved position
 	PrunTable(FullPosition p0, int cl, ShapeTranTable stt,
-			ShpColTranTable scte, ShpColTranTable sctc, boolean turnMetric) throws IOException {
-		table = new byte[Sq1Shape.list.length * 4900];
-		// Calculate pruning table
-		String fname;
-		if (turnMetric)
-			if (cl == 0)
-				fname = "sq1p1u.dat";
+			ShpColTranTable scte, ShpColTranTable sctc, boolean turnMetric) throws Square1Exception {
+		try {
+			table = new byte[Sq1Shape.list.length * 4900];
+			// Calculate pruning table
+			String fname;
+			if (turnMetric)
+				if (cl == 0)
+					fname = "sq1p1u.dat";
+				else
+					fname = "sq1p2u.dat";
+			else if (cl == 0)
+				fname = "sq1p1w.dat";
 			else
-				fname = "sq1p2u.dat";
-		else if (cl == 0)
-			fname = "sq1p1w.dat";
-		else
-			fname = "sq1p2w.dat";
-		File file = new File(fname);
-		if (!file.exists()) {
-			// no file. calculate table.
-			// clear table
-			for (int i0 = 0; i0 < table.length; i0++) {
-				table[i0] = 0;
+				fname = "sq1p2w.dat";
+			InputStream resource = getClass().getResourceAsStream(fname);
+			File file = new File(fname);
+			if (resource == null) {
+				if (file.exists())
+					resource = new FileInputStream(file);
 			}
-			// set start position
-			int s0 = Sq1Shape.getShape(p0.getShape(), p0.getParityOdd());
-			int e0 = p0.getEdgeColouring(cl);
-			int c0 = p0.getCornerColouring(cl);
-			e0 = ChoiceTable.getChoice2Idx(e0);
-			c0 = ChoiceTable.getChoice2Idx(c0);
-			if (turnMetric) {
-				setEntry(s0, e0, c0, 0);
-			} else {
-				setAll(s0, e0, c0, 0, stt, scte, sctc);
-			}
-			int ln = 0; // current distance
-			int n; // number of new positions found
-			do {
-				n = 0;
-				if (turnMetric) {
-					// for any position at distance ln
-					for (int i0 = 0; i0 < Sq1Shape.list.length; i0++) {
-						for (int i1 = 0; i1 < 70; i1++) {
-							for (int i2 = 0; i2 < 70; i2++) {
-								if (getEntry(i0, i1, i2) == ln) {
-									// try each move type
-									for (int m = 0; m < 3; m++) {
-										int j0 = i0;
-										int j1 = i1;
-										int j2 = i2;
-										// repeatedly do move
-										do {
-											j2 = sctc.getEntry(j0, j2, m);
-											j1 = scte.getEntry(j0, j1, m);
-											j0 = stt.getEntry(j0, m);
-											// mark any unvisited positions as distance ln+1
-											if (getEntry(j0, j1, j2) == -1) {
-												setEntry(j0, j1, j2, ln + 1);
-												n++;
-											}
-											// repeat until position back to where we started
-										} while (j0 != i0 || j1 != i1 || j2 != i2);
-									}
-								}
-							}
-						}
-					}
-				} else {
-					// for any position at distance ln
-					for (int i0 = 0; i0 < Sq1Shape.list.length; i0++) {
-						for (int i1 = 0; i1 < 70; i1++) {
-							for (int i2 = 0; i2 < 70; i2++) {
-								if (getEntry(i0, i1, i2) == ln) {
-									// do twist
-									int j0 = stt.getEntry(i0, 2);
-									int j1 = scte.getEntry(i0, i1, 2);
-									int j2 = sctc.getEntry(i0, i2, 2);
-									// mark unvisited position as distance ln+1
-									if (getEntry(j0, j1, j2) == -1) {
-										n += setAll(j0, j1, j2, ln + 1, stt, scte, sctc);
-									}
-								}
-							}
-						}
-					}
+			if (resource == null) {
+				// no file. calculate table.
+				// clear table
+				for (int i0 = 0; i0 < table.length; i0++) {
+					table[i0] = 0;
 				}
-				// next distance
-				ln++;
-				System.out.println(" l=" + ln + "  n=" + n);
-				// loop until no new positions visited
-			} while (n != 0);
-			// save to file
-			BufferedOutputStream oos = new BufferedOutputStream(new FileOutputStream(file));
-			oos.write(table, 0, table.length);
-			oos.close();
-		} else {
-			// read from file
-			BufferedInputStream ois = new BufferedInputStream(new FileInputStream(file));
-			ois.read(table, 0, table.length);
-			ois.close();
+				// set start position
+				int s0 = Sq1Shape.getShape(p0.getShape(), p0.getParityOdd());
+				int e0 = p0.getEdgeColouring(cl);
+				int c0 = p0.getCornerColouring(cl);
+				e0 = ChoiceTable.getChoice2Idx(e0);
+				c0 = ChoiceTable.getChoice2Idx(c0);
+				if (turnMetric) {
+					setEntry(s0, e0, c0, 0);
+				} else {
+					setAll(s0, e0, c0, 0, stt, scte, sctc);
+				}
+				int ln = 0; // current distance
+				int n; // number of new positions found
+				do {
+					n = 0;
+					if (turnMetric) {
+						// for any position at distance ln
+						for (int i0 = 0; i0 < Sq1Shape.list.length; i0++) {
+							for (int i1 = 0; i1 < 70; i1++) {
+								for (int i2 = 0; i2 < 70; i2++) {
+									if (getEntry(i0, i1, i2) == ln) {
+										// try each move type
+										for (int m = 0; m < 3; m++) {
+											int j0 = i0;
+											int j1 = i1;
+											int j2 = i2;
+											// repeatedly do move
+											do {
+												j2 = sctc.getEntry(j0, j2, m);
+												j1 = scte.getEntry(j0, j1, m);
+												j0 = stt.getEntry(j0, m);
+												// mark any unvisited positions as distance ln+1
+												if (getEntry(j0, j1, j2) == -1) {
+													setEntry(j0, j1, j2, ln + 1);
+													n++;
+												}
+												// repeat until position back to where we started
+											} while (j0 != i0 || j1 != i1 || j2 != i2);
+										}
+									}
+								}
+							}
+						}
+					} else {
+						// for any position at distance ln
+						for (int i0 = 0; i0 < Sq1Shape.list.length; i0++) {
+							for (int i1 = 0; i1 < 70; i1++) {
+								for (int i2 = 0; i2 < 70; i2++) {
+									if (getEntry(i0, i1, i2) == ln) {
+										// do twist
+										int j0 = stt.getEntry(i0, 2);
+										int j1 = scte.getEntry(i0, i1, 2);
+										int j2 = sctc.getEntry(i0, i2, 2);
+										// mark unvisited position as distance ln+1
+										if (getEntry(j0, j1, j2) == -1) {
+											n += setAll(j0, j1, j2, ln + 1, stt, scte, sctc);
+										}
+									}
+								}
+							}
+						}
+					}
+					// next distance
+					ln++;
+					System.out.println(" l=" + ln + "  n=" + n);
+					// loop until no new positions visited
+				} while (n != 0);
+				// save to file
+				BufferedOutputStream oos = new BufferedOutputStream(new FileOutputStream(file));
+				oos.write(table, 0, table.length);
+				oos.close();
+			} else {
+				// read from file
+				BufferedInputStream ois = new BufferedInputStream(resource);
+				ois.read(table, 0, table.length);
+				ois.close();
+			}
+		} catch (IOException e) {
+			throw new Square1Exception(e.getMessage(), e);
 		}
 	}
 

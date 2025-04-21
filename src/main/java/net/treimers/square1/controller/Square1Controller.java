@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -774,7 +775,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.initStyle(StageStyle.UTILITY);
 		alert.initOwner(primaryStage);
 		// load content
-		URL resource = Square1Controller.class.getResource("/net/treimers/square1/keyboardshortcutpanel.fxml");
+		URL resource = getClass().getResource("/net/treimers/square1/keyboardshortcutpanel.fxml");
 		try {
 			FXMLLoader loader = new FXMLLoader(resource);
 			Parent root = loader.load();
