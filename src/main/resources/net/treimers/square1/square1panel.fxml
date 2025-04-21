@@ -35,24 +35,24 @@
 						</MenuItem>
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="Square-1">
+				<Menu mnemonicParsing="true" text="Square-1">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#doChangeColors" text="Colors...">
+						<MenuItem onAction="#doChangeColors" text="_Colors...">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#doChangePosition" text="Position...">
+						<MenuItem onAction="#doChangePosition" text="_Position...">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#doScramble" text="Scramble">
+						<MenuItem onAction="#doScramble" text="Scrambl_e">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+								<KeyCodeCombination alt="UP" code="E" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
 							</accelerator>
 						</MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#doSolvePosition" text="Solve">
+                  <MenuItem onAction="#doSolvePosition" text="Sol_ve">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="V" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                      </accelerator>

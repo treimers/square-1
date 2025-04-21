@@ -20,6 +20,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import net.jaapsch.Solver;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.MoveSequence;
@@ -32,13 +33,17 @@ import net.treimers.square1.view.misc.SmartGroup;
  */
 public class SolveController {
 	/** The sub scene showing the Square-1. */
-	@FXML private SubScene subScene;
+	@FXML
+	private SubScene subScene;
 	/** The Square-1 position in standard notation. */
-	@FXML private Label positionLabel;
+	@FXML
+	private Label positionLabel;
 	/** The move sequence in standard notation. */
-	@FXML private TextFlow sequenceTextflow;
+	@FXML
+	private TextFlow sequenceTextflow;
 	/** The slider to move through the sequence. */
-	@FXML private Slider slider;
+	@FXML
+	private Slider slider;
 	/** The original position. */
 	private Position originalPosition;
 	/** The current positon. */
@@ -49,6 +54,20 @@ public class SolveController {
 	private List<Position> positionList;
 	/** The meshgroup showing the Square-1. */
 	private MeshGroup meshGroup;
+	Solver solver;
+
+	public SolveController() {
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					solver = new Solver();
+				} catch (Square1Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.run();;
+	}
 
 	/**
 	 * Initializes this instance.
@@ -157,10 +176,21 @@ public class SolveController {
 
 	/**
 	 * Handle user click on solve button.
+	 * 
+	 * @throws Square1Exception
 	 */
 	@FXML
-	void handleSolve() {
-		// future implementation
+	void handleSolve() throws Square1Exception {
+		if (solver != null) {
+			String solution = solver.solve(originalPosition.toString());
+			MoveSequence seq = new MoveSequence(solution);
+			List<Position> list = originalPosition.move(seq);
+			this.sequence = seq;
+			positionList = list;
+			sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
+			slider.setMax(positionList.size() - 1.0);
+			selectSliderPosition(0);
+		}
 	}
 
 	/**
@@ -203,7 +233,7 @@ public class SolveController {
 			sequenceTextflow.getChildren().add(currentText);
 		if (afterMove.length() > 0)
 			sequenceTextflow.getChildren().add(afterText);
-			*/
+		 */
 	}
 
 	/**

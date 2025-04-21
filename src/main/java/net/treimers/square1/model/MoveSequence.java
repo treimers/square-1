@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import net.treimers.square1.exception.Square1Exception;
+
 /**
  * Instances of this class are used to model a sequence of moves.
  */
@@ -63,6 +65,29 @@ public class MoveSequence {
 		for (int i = 0; i < moves.size(); i++) {
 			sb.append(moves.get(i));
 		}
+		return sb.toString();
+	}
+
+	public static MoveSequence fromSolverString(String solverMoves) throws Square1Exception {
+		// Entferne Leerzeichen und Klammern: "(-3,0)/, (-1,-2)/" → "-3,0/-1,-2/"
+		StringBuilder sb = new StringBuilder();
+		for (String part : solverMoves.split(",")) {
+			String clean = part.replaceAll("[()\\s]", "");
+			sb.append(clean);
+		}
+		return new MoveSequence(sb.toString());
+	}
+
+	public static String toSolverString(MoveSequence sequence) {
+		StringBuilder sb = new StringBuilder();
+		for (Move move : sequence.getMoves()) {
+			sb.append("(").append(move.getTopRotation())
+					.append(",").append(move.getBottomRotation()).append(")");
+			sb.append(move.isTwisted() ? "/" : "-");
+			sb.append(", ");
+		}
+		if (sb.length() >= 2)
+			sb.setLength(sb.length() - 2); // letztes ", " entfernen
 		return sb.toString();
 	}
 }
