@@ -20,7 +20,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import net.jaapsch.Solver;
+import net.jaapsch.square1.Solver;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
 import net.treimers.square1.model.MoveSequence;

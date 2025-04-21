@@ -1,4 +1,4 @@
-package net.jaapsch;
+package net.jaapsch.square1;
 
 /*
 This static class provides functions to translate between an

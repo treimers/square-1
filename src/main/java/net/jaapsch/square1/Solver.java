@@ -1,6 +1,7 @@
-package net.jaapsch;
+package net.jaapsch.square1;
 
 import java.io.IOException;
+
 import net.treimers.square1.exception.Square1Exception;
 
 public class Solver {

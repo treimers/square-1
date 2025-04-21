@@ -1,4 +1,4 @@
-package net.jaapsch;
+package net.jaapsch.square1;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

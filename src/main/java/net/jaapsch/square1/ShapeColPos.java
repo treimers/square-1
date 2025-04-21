@@ -1,4 +1,4 @@
-package net.jaapsch;
+package net.jaapsch.square1;
 
 /*
 An instance of this class represents the position of a square-1 of which

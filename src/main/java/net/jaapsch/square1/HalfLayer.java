@@ -1,4 +1,4 @@
-package net.jaapsch;
+package net.jaapsch.square1;
 
 /*
 An object of this class represents the shape of a set of pieces filling half of one layer.
