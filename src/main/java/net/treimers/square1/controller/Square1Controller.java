@@ -700,7 +700,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		alert.setGraphic(ImageLoader.getLogoImageView());
 		alert.setTitle("About");
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
-		alert.setContentText("Copyright © " + Version.getAppVendor());
+		alert.setContentText("Authors:\n" + Version.getAppVendor() + "\nSee https://www.jaapsch.net and\nhttps://github.com/treimers/square-1");
 		alert.initOwner(primaryStage);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.centerOnScreen();

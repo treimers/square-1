@@ -34,10 +34,4 @@ public class Scrambler {
 		int bottom = random.nextInt(12) - 6; // Drehung von -6 bis +5
 		return new Move(top, bottom, true);
 	}
-
-	public static void main(String[] args) throws Square1Exception {
-		Scrambler scrambler = new Scrambler();
-		List<Position> result = scrambler.generateScramble(new Position());
-		System.out.println(result);
-	}
 }
