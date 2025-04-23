@@ -51,6 +51,8 @@ jobs:
           mvn clean package -DskipTests \
             -Djavacpp.platform.name=osx-x86_64 \
             -Dmaven.repo.local=build/x86_64/.m2
+      - name: Debug artifact path
+        run: ls -al build/x86_64/target/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
