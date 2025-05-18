@@ -19,8 +19,19 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: maven
       - name: Build with Maven
         run: mvn clean package -DskipTests
+      - name: Upload binaries to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: Linux
+          prerelease: false
+          files: |
+            target/deploy/linux/Square-1_*.deb
+            target/deploy/linux/Square-1_*.rpm
+            target/deploy/linux/Square-1-*-linux.zip
 
   build-windows:
     runs-on: windows-latest
@@ -31,8 +42,18 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: maven
       - name: Build with Maven
         run: mvn clean package -DskipTests
+      - name: Upload binaries to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: WindowsX64
+          prerelease: false
+          files: |
+            target/deploy/windows/Square-1_*.exe
+            target/deploy/windows/Square-1-*-windows.zip
 
   build-macos-x86_64:
     runs-on: macos-13
@@ -43,6 +64,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: maven
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.2.app
       - name: Build for x86_64
@@ -59,6 +81,16 @@ jobs:
         with:
           name: macos-build-x86_64
           path: target/deploy/osx-x86_64/*.zip
+      - name: Upload binaries to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: MacOSX-x86_64
+          prerelease: false
+          files: |
+            target/deploy/osx-x86_64/Square-1*.dmg
+            target/deploy/osx-x86_64/Square-1*-mac.zip
+            target/deploy/osx-x86_64/Square-1_*.pkg
 
   build-macos-arm64:
     runs-on: macos-13
@@ -69,6 +101,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: maven
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.2.app
       - name: Build for arm64
@@ -85,6 +118,16 @@ jobs:
         with:
           name: macos-build-arm64
           path: target/deploy/osx-arm64/*.zip
+      - name: Upload binaries to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: MacOSX-arm64
+          prerelease: false
+          files: |
+            target/deploy/osx-arm64/Square-1*.dmg
+            target/deploy/osx-arm64/Square-1*-mac.zip
+            target/deploy/osx-arm64/Square-1_*.pkg
 
   create-universal:
     runs-on: macos-13
@@ -114,3 +157,12 @@ jobs:
         with:
           name: macOS-universal-zip
           path: Square1-macOS-universal.zip
+          
+      - name: Upload universal build to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: MacOSX-Universal
+          prerelease: false
+          files: |
+            Square1-macOS-universal.zip
