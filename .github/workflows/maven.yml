@@ -50,14 +50,15 @@ jobs:
           mkdir -p build/x86_64
           mvn clean package -DskipTests \
             -Djavacpp.platform.name=osx-x86_64 \
-            -Dmaven.repo.local=build/x86_64/.m2
+            -Dmaven.repo.local=build/x86_64/.m2 \
+            -Dos.detected.name=osx-x86_64
       - name: Debug artifact path
-        run: ls -al build/x86_64/target/
+        run: ls -la target/deploy/osx-x86_64/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-x86_64
-          path: build/x86_64/target/*.jar
+          path: target/deploy/osx-x86_64/*.zip
 
   build-macos-arm64:
     runs-on: macos-13
@@ -75,12 +76,15 @@ jobs:
           mkdir -p build/arm64
           mvn clean package -DskipTests \
             -Djavacpp.platform.name=osx-arm64 \
-            -Dmaven.repo.local=build/arm64/.m2
+            -Dmaven.repo.local=build/arm64/.m2 \
+            -Dos.detected.name=osx-arm64
+      - name: Debug artifact path
+        run: ls -la target/deploy/osx-arm64/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-arm64
-          path: build/arm64/target/*.jar
+          path: target/deploy/osx-arm64/*.zip
 
   create-universal:
     runs-on: macos-13
@@ -100,13 +104,13 @@ jobs:
 
       - name: Package both into ZIP
         run: |
-          mkdir dist
-          cp build/x86_64/*.jar dist/Square1-x86_64.jar
-          cp build/arm64/*.jar dist/Square1-arm64.jar
-          zip -r Square1-macOS.zip dist
+          mkdir -p dist
+          unzip -o build/x86_64/*.zip -d dist/x86_64
+          unzip -o build/arm64/*.zip -d dist/arm64
+          zip -r Square1-macOS-universal.zip dist
 
       - name: Upload macOS ZIP
         uses: actions/upload-artifact@v4
         with:
           name: macOS-universal-zip
-          path: Square1-macOS.zip
+          path: Square1-macOS-universal.zip
