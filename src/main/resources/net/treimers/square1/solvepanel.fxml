@@ -19,7 +19,7 @@
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
-				<ColumnConstraints hgrow="SOMETIMES" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
 				<ColumnConstraints hgrow="NEVER" />
 			</columnConstraints>
 			<rowConstraints>
@@ -43,7 +43,7 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</GridPane.margin>
 				</Button>
-				<Slider fx:id="slider" blockIncrement="1.0" majorTickUnit="3.0" max="6.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+				<Slider fx:id="slider" blockIncrement="1.0" majorTickUnit="3.0" max="6.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<GridPane.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
 					</GridPane.margin>
