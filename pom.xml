@@ -150,7 +150,7 @@
 					<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
 					<copyDirectories>net/treimers/square1/images</copyDirectories>
 					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding>
+					<outputEncoding>ISO-8859-1</outputEncoding>
 					<pegdownExtensions>FENCED_CODE_BLOCKS</pegdownExtensions>
 				</configuration>
 			</plugin>
@@ -183,6 +183,7 @@
 							<organizationName>${project.organization.name}</organizationName>
 							<outputDirectory>${project.build.directory}/deploy/${os.detected.name}</outputDirectory>
 							<customizedJre>false</customizedJre>
+							<extractResources>false</extractResources>
 							<macConfig>
 								<backgroundImage>src/main/deploy/package/mac/Square1-background.png</backgroundImage>
 								<volumeIcon>src/main/deploy/package/mac/Square1-volume.icns</volumeIcon>
@@ -209,7 +210,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- https://stackoverflow.com/questions/51091539/maven-site-plugins-3-3-java-lang-classnotfoundexception-org-apache-maven-doxia -->
+			<!--
+			https://stackoverflow.com/questions/51091539/maven-site-plugins-3-3-java-lang-classnotfoundexception-org-apache-maven-doxia -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
