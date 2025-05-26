@@ -74,17 +74,6 @@ jobs:
             -Djavacpp.platform.name=osx-x86_64 \
             -Dmaven.repo.local=build/x86_64/.m2 \
             -Dos.detected.name=osx-x86_64
-      - name: Debug artifact path
-        run: ls -la target/deploy/osx-x86_64/
-      - name: List .dat files in target/classes
-        run: find target/classes -name "*.dat" -ls
-      - name: List .dat files in Maven JAR
-        run: jar tf target/square1fx.jar | grep .dat
-      - name: List .dat files in App-Bundle JAR (falls schon vorhanden)
-        run: |
-          if [ -f target/deploy/osx-x86_64/Square-1-1.0-runnable.jar ]; then
-            jar tf target/deploy/osx-x86_64/Square-1-1.0-runnable.jar | grep .dat
-          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
