@@ -50,6 +50,7 @@ jobs:
         run: mvn clean package -DskipTests
       - name: Extract version from pom.xml
         id: get_version
+        shell: bash
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Upload binaries to release
         uses: marvinpinto/action-automatic-releases@latest
