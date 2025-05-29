@@ -22,11 +22,14 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn clean package -DskipTests
+      - name: Extract version from pom.xml
+        id: get_version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Upload binaries to release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: Linux
+          automatic_release_tag: "Linux-v${{ env.VERSION }}"
           prerelease: false
           files: |
             target/deploy/linux/Square-1_*.deb
@@ -45,11 +48,14 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn clean package -DskipTests
+      - name: Extract version from pom.xml
+        id: get_version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Upload binaries to release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: WindowsX64
+          automatic_release_tag: "WindowsX64-v${{ env.VERSION }}"
           prerelease: false
           files: |
             target/deploy/windows/Square-1_*.exe
@@ -74,16 +80,19 @@ jobs:
             -Djavacpp.platform.name=osx-x86_64 \
             -Dmaven.repo.local=build/x86_64/.m2 \
             -Dos.detected.name=osx-x86_64
+      - name: Extract version from pom.xml
+        id: get_version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-x86_64
           path: target/deploy/osx-x86_64/*.zip
       - name: Upload binaries to release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: MacOSX-x86_64
+          automatic_release_tag: "MacOSX-x86_64-v${{ env.VERSION }}"
           prerelease: false
           files: |
             target/deploy/osx-x86_64/Square-1*.dmg
@@ -109,18 +118,19 @@ jobs:
             -Djavacpp.platform.name=osx-arm64 \
             -Dmaven.repo.local=build/arm64/.m2 \
             -Dos.detected.name=osx-arm64
-      - name: Debug artifact path
-        run: ls -la target/deploy/osx-arm64/
+      - name: Extract version from pom.xml
+        id: get_version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-arm64
           path: target/deploy/osx-arm64/*.zip
       - name: Upload binaries to release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: MacOSX-arm64
+          automatic_release_tag: "MacOSX-arm64-v${{ env.VERSION }}"
           prerelease: false
           files: |
             target/deploy/osx-arm64/Square-1*.dmg
