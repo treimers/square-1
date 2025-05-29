@@ -11,6 +11,16 @@ import java.io.InputStream;
 import net.treimers.square1.exception.Square1Exception;
 
 /*
+ * ----------------------------------------------------------------------------
+ * This program was written by Jaap Scherphuis, copyright May 2001.
+ * It may not be sold. It may be freely distributed provided that this
+ * documentation is provided in some form without changes to the text.
+ * 
+ * The program can be downloaded from Jaap's Puzzle Page:
+ * http://www.org2.com/jaap/puzzles
+*/
+
+/**
 This class represents a transition table for an edge/corner colouring.
 Given the indexnumber of a shape, an index number of a colouring, and a move number, it
   returns the new index number of the colouring after that move is applied.

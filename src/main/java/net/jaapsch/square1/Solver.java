@@ -2,6 +2,19 @@ package net.jaapsch.square1;
 
 import net.treimers.square1.exception.Square1Exception;
 
+/*
+ * ----------------------------------------------------------------------------
+ * This program was written by Jaap Scherphuis, copyright May 2001.
+ * It may not be sold. It may be freely distributed provided that this
+ * documentation is provided in some form without changes to the text.
+ * 
+ * The program can be downloaded from Jaap's Puzzle Page:
+ * http://www.org2.com/jaap/puzzles
+*/
+
+/**
+ * Instances of this class are used to run the solving algorithm.
+ */
 public class Solver {
 	private boolean turnMetric;
 	private ShapeTranTable st;
@@ -48,12 +61,3 @@ public class Solver {
 		return solution;
 	}
 }
-// A18H6FC3B27G5ED4/
-// /3,9/0,9/9,9/0,3/ [5|11]
-// A2B3C1D45E6F7G8H/
-// /3,0/1,0/0,9/5,0/6,0/3,0/1,0/0,3/11,0 [9|18]
-// A1D4B2C38H6F7B5E-
-// ??? (invalid: Doppeltes B
-// A1D4B2C36F7G5E8H-
-// 3,9/3,0/3,3/3,0/ [4|10]
-// A1B2C3D45E6F7GH8-

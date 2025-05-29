@@ -11,6 +11,16 @@ import java.io.InputStream;
 import net.treimers.square1.exception.Square1Exception;
 
 /*
+ * ----------------------------------------------------------------------------
+ * This program was written by Jaap Scherphuis, copyright May 2001.
+ * It may not be sold. It may be freely distributed provided that this
+ * documentation is provided in some form without changes to the text.
+ * 
+ * The program can be downloaded from Jaap's Puzzle Page:
+ * http://www.org2.com/jaap/puzzles
+*/
+
+/**
 This class represents a pruning table used in the solution search.
 Given index numbers for a shape, an edge colouring, and a corner colouring,
   it can return the number of moves to solve it.

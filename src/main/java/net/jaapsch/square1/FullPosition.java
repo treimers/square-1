@@ -1,6 +1,16 @@
 package net.jaapsch.square1;
 
 /*
+ * ----------------------------------------------------------------------------
+ * This program was written by Jaap Scherphuis, copyright May 2001.
+ * It may not be sold. It may be freely distributed provided that this
+ * documentation is provided in some form without changes to the text.
+ * 
+ * The program can be downloaded from Jaap's Puzzle Page:
+ * http://www.org2.com/jaap/puzzles
+*/
+
+/**
 An instance of this class represents full details of a square-1 position.
 */
 public class FullPosition {
