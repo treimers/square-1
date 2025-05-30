@@ -130,6 +130,15 @@ public class SolveController {
 					sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
 					slider.setMax(positionList.size() - 1.0);
 					selectSliderPosition(0);
+					// show ticks and labels
+					slider.setShowTickMarks(true);
+					slider.setShowTickLabels(true);
+					// every tick is major tick
+					slider.setMajorTickUnit(1);
+					// no minor ticks
+					slider.setMinorTickCount(0);
+					// snap to ticks
+					slider.setSnapToTicks(true);
 					success = true;
 				} catch (Square1Exception e) {
 					Alert alert = new Alert(AlertType.ERROR);
@@ -181,6 +190,15 @@ public class SolveController {
 			sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
 			slider.setMax(positionList.size() - 1.0);
 			selectSliderPosition(0);
+			// show ticks and labels
+			slider.setShowTickMarks(true);
+			slider.setShowTickLabels(true);
+			// every tick is major tick
+			slider.setMajorTickUnit(1);
+			// no minor ticks
+			slider.setMinorTickCount(0);
+			// snap to ticks
+			slider.setSnapToTicks(true);
 		}
 	}
 

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.treimers</groupId>
 	<artifactId>square1fx</artifactId>
-	<version>1.1</version>
+	<version>2.0</version>
 	<name>Square-1</name>
 	<organization>
 		<name>Jaap Scherphuis, Thorsten Reimers</name>
@@ -130,7 +130,22 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Maven markdown plugin: https://github.com/walokra/markdown-page-generator-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<!--
+			Maven markdown plugin: https://github.com/walokra/markdown-page-generator-plugin -->
 			<plugin>
 				<groupId>com.ruleoftech</groupId>
 				<artifactId>markdown-page-generator-plugin</artifactId>

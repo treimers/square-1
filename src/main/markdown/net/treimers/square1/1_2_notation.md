@@ -35,6 +35,7 @@ A Square-1 with a twisted middle layer is represented by this position string
 
 <img src="images/notation2.png" alt="Notation" width="338" height="347">
 
+<a name="moves"></a>
 ## Notation for Moves
 
 A move consists of three parts
