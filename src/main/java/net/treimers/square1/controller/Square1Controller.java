@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -501,11 +500,20 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
 			window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
 		});
-		solveDialogController.setPosition(position);
-		Optional<Position> result = solveDialog.showAndWait();
-		if (result.isPresent()) {
-			position = result.get();
-			meshGroup.setContent(position);
+		if (position.toString().length() != 17) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning");
+			alert.setHeaderText("Incomplete Position");
+			alert.setContentText(
+					"The current position is incomplete, solving is disabled until the position is completed!");
+			alert.showAndWait();
+		} else {
+			solveDialogController.setPosition(position);
+			Optional<Position> result = solveDialog.showAndWait();
+			if (result.isPresent()) {
+				position = result.get();
+				meshGroup.setContent(position);
+			}
 		}
 	}
 
