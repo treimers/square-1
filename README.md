@@ -58,7 +58,7 @@ There are 2 middle pieces used in a Square-1 cube. A middle piece has six sides:
 
 # Releases
 
-Releases can be found [here for download](https://github.com/treimers/square-1/releases/latest).
+Releases can be found [![here for download](https://img.shields.io/github/v/release/treimers/square-1?label=Download)](https://github.com/treimers/square-1/releases/latest)
 
 # Usage
 
