@@ -1,7 +1,4 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Build Native Application
+name: Build and Release Native Application
 
 on:
   push:
@@ -9,7 +6,6 @@ on:
       - master
 
 jobs:
-
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -25,13 +21,11 @@ jobs:
       - name: Extract version from pom.xml
         id: get_version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Upload binaries to release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "Linux-v${{ env.VERSION }}"
-          prerelease: false
-          files: |
+          name: linux
+          path: |
             target/deploy/linux/Square-1_*.deb
             target/deploy/linux/Square-1_*.rpm
             target/deploy/linux/Square-1-*-linux.zip
@@ -52,13 +46,11 @@ jobs:
         id: get_version
         shell: bash
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Upload binaries to release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "WindowsX64-v${{ env.VERSION }}"
-          prerelease: false
-          files: |
+          name: windows
+          path: |
             target/deploy/windows/Square-1_*.exe
             target/deploy/windows/Square-1-*-windows.zip
 
@@ -84,18 +76,11 @@ jobs:
       - name: Extract version from pom.xml
         id: get_version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Upload artifact
+      - name: Upload macOS x86_64 artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macos-build-x86_64
-          path: target/deploy/osx-x86_64/*.zip
-      - name: Upload binaries to release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "MacOSX-x86_64-v${{ env.VERSION }}"
-          prerelease: false
-          files: |
+          name: macos-x86_64
+          path: |
             target/deploy/osx-x86_64/Square-1*.dmg
             target/deploy/osx-x86_64/Square-1*-mac.zip
             target/deploy/osx-x86_64/Square-1_*.pkg
@@ -122,18 +107,58 @@ jobs:
       - name: Extract version from pom.xml
         id: get_version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Upload artifact
+      - name: Upload macOS arm64 artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macos-build-arm64
-          path: target/deploy/osx-arm64/*.zip
-      - name: Upload binaries to release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "MacOSX-arm64-v${{ env.VERSION }}"
-          prerelease: false
-          files: |
+          name: macos-arm64
+          path: |
             target/deploy/osx-arm64/Square-1*.dmg
             target/deploy/osx-arm64/Square-1*-mac.zip
             target/deploy/osx-arm64/Square-1_*.pkg
+
+  create-release:
+    needs: [build-linux, build-windows, build-macos-x86_64, build-macos-arm64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Lade alle Artefakte herunter
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: ./artifacts/linux
+
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows
+          path: ./artifacts/windows
+
+      - name: Download macOS x86_64 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-x86_64
+          path: ./artifacts/macos-x86_64
+
+      - name: Download macOS arm64 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-arm64
+          path: ./artifacts/macos-arm64
+
+      # Extrahiere die Version (z.B. 1.1)
+      - name: Extract version from pom.xml
+        id: get_version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      # Erstelle oder aktualisiere das Release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          name: "Release v${{ env.VERSION }}"
+          files: ./artifacts/**/*
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
