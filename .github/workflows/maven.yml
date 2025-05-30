@@ -122,7 +122,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Lade alle Artefakte herunter
       - name: Download Linux artifacts
         uses: actions/download-artifact@v4
         with:
@@ -147,22 +146,24 @@ jobs:
           name: macos-arm64
           path: ./artifacts/macos-arm64
 
-      # Extrahiere die Version (z.B. 1.1)
       - name: Extract version from pom.xml
         id: get_version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      # Tag erstellen, falls er noch nicht existiert
-      - name: Create tag if not exists
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Ensure tag exists locally
         run: |
-          if ! git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Tag v${{ env.VERSION }} already exists."
+          else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag "v${{ env.VERSION }}"
             git push origin "v${{ env.VERSION }}"
           fi
 
-      # Erstelle oder aktualisiere das Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
