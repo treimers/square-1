@@ -153,16 +153,12 @@ jobs:
       - name: Fetch tags
         run: git fetch --tags
 
-      - name: Ensure tag exists locally
+      - name: Create or update tag
         run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "Tag v${{ env.VERSION }} already exists."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag "v${{ env.VERSION }}"
-            git push origin "v${{ env.VERSION }}"
-          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f "v${{ env.VERSION }}"
+          git push -f origin "v${{ env.VERSION }}"
 
       - name: Rename artifacts for unique asset names
         run: |
@@ -187,6 +183,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          draft: false
+          prerelease: false
           tag_name: "v${{ env.VERSION }}"
           name: "Release v${{ env.VERSION }}"
           files: ./artifacts/release/*
