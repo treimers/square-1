@@ -152,6 +152,16 @@ jobs:
         id: get_version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
+      # Tag erstellen, falls er noch nicht existiert
+      - name: Create tag if not exists
+        run: |
+          if ! git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "v${{ env.VERSION }}"
+            git push origin "v${{ env.VERSION }}"
+          fi
+
       # Erstelle oder aktualisiere das Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -159,6 +169,5 @@ jobs:
           tag_name: "v${{ env.VERSION }}"
           name: "Release v${{ env.VERSION }}"
           files: ./artifacts/**/*
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
