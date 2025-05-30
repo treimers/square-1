@@ -164,11 +164,31 @@ jobs:
             git push origin "v${{ env.VERSION }}"
           fi
 
+      - name: Rename artifacts for unique asset names
+        run: |
+          mkdir -p ./artifacts/release
+          # Linux
+          for f in ./artifacts/linux/*; do
+            [ -e "$f" ] && cp "$f" "./artifacts/release/$(basename ${f%.*})-linux.${f##*.}"
+          done
+          # Windows
+          for f in ./artifacts/windows/*; do
+            [ -e "$f" ] && cp "$f" "./artifacts/release/$(basename ${f%.*})-windows.${f##*.}"
+          done
+          # macOS x86_64
+          for f in ./artifacts/macos-x86_64/*; do
+            [ -e "$f" ] && cp "$f" "./artifacts/release/$(basename ${f%.*})-macos-x86_64.${f##*.}"
+          done
+          # macOS arm64
+          for f in ./artifacts/macos-arm64/*; do
+            [ -e "$f" ] && cp "$f" "./artifacts/release/$(basename ${f%.*})-macos-arm64.${f##*.}"
+          done
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "v${{ env.VERSION }}"
           name: "Release v${{ env.VERSION }}"
-          files: ./artifacts/**/*
+          files: ./artifacts/release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
