@@ -18,6 +18,7 @@ import java.util.Set;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,6 +38,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.DialogEvent;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -47,10 +49,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -119,11 +123,14 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	};
 	private static final String COLOR = null;
 	/** The sub scene showing the Square-1. */
-	@FXML private SubScene subScene;
+	@FXML
+	private SubScene subScene;
 	/** The menu bar. */
-	@FXML private MenuBar menuBar;
+	@FXML
+	private MenuBar menuBar;
 	/** The menu with the piece visibility radio menu items. */
-	@FXML private Menu menuPieces;
+	@FXML
+	private Menu menuPieces;
 	/** The primary stage. */
 	private Stage primaryStage;
 	/** The help dialog. */
@@ -171,9 +178,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private Rotate rotateY;
 	/** The current z rotation of Square-1 mesh group. */
 	private Rotate rotateZ;
-	/** Old mouse x position (used for rotations of Square-1 mesh group with mouse.) */
+	/**
+	 * Old mouse x position (used for rotations of Square-1 mesh group with mouse.)
+	 */
 	private double mouseOldX;
-	/** Old mouse y position (used for rotations of Square-1 mesh group with mouse.) */
+	/**
+	 * Old mouse y position (used for rotations of Square-1 mesh group with mouse.)
+	 */
 	private double mouseOldY;
 	/** Mouse x position (used for rotations of Square-1 mesh group with mouse.) */
 	private double mousePosX;
@@ -183,6 +194,8 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private FileStore fileStore;
 	/** The prefs store. */
 	private PreferencesStore preferencesStore;
+	/** The host services used to open urls in browser. */
+	private HostServices hostServices;
 
 	/**
 	 * Creates a new instance.
@@ -704,11 +717,18 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * @return the new about dialog.
 	 */
 	private Alert createAboutDialog(Stage primaryStage) {
-		Alert alert = new Square1Alert(AlertType.INFORMATION, this);
-		alert.setGraphic(ImageLoader.getLogoImageView());
+		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
-		alert.setContentText("Authors:\n" + Version.getAppVendor() + "\nSee https://www.jaapsch.net and\nhttps://github.com/treimers/square-1");
+		Text authors = new Text("Authors:\n" + Version.getAppVendor() + "\nSee ");
+		Hyperlink link1 = new Hyperlink("https://www.jaapsch.net");
+		Hyperlink link2 = new Hyperlink("https://github.com/treimers/square-1");
+		link1.setOnAction(e -> hostServices.showDocument(link1.getText()));
+		link2.setOnAction(e -> hostServices.showDocument(link2.getText()));
+		VBox content = new VBox();
+		content.setSpacing(5);
+		content.getChildren().addAll(authors, link1, link2);
+		alert.getDialogPane().setContent(content);
 		alert.initOwner(primaryStage);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.centerOnScreen();
@@ -742,6 +762,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			// get view's controller and propagate stage to controller
 			HelpController controller = loader.getController();
 			controller.setMainController(this);
+			controller.setHostServices(hostServices);
 			// apply the scene to the dialog
 			alert.getDialogPane().setContent(root);
 		} catch (IOException e) {
@@ -895,5 +916,9 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		ObservableList<Menu> menus = menuBar.getMenus();
 		for (Menu menu : menus)
 			menu.setVisible(enable);
+	}
+
+	public void setHostServices(HostServices hostServices) {
+		this.hostServices = hostServices;
 	}
 }

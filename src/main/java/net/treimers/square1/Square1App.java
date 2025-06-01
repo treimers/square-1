@@ -30,6 +30,7 @@ public class Square1App extends Application {
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		Square1Controller controller = loader.getController();
+		controller.setHostServices(getHostServices());
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		// I got a NullPointerException, when calling this before primaryStage.setScene
