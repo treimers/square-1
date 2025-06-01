@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.events.EventTarget;
+
 import javafx.application.HostServices;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -105,14 +110,12 @@ public class HelpController implements Initializable {
         treeView.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> handleTreeEvent(newValue));
         loadWebView(root);
-
         // Add event handler for link clicks in the WebView DOM
         webView.getEngine().getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
                 injectLinkInterceptor();
             }
         });
-
         // Optional: For internal links, still listen to locationProperty
         webView.getEngine().locationProperty().addListener(e -> handleLinkEvent(e));
     }
@@ -134,14 +137,14 @@ public class HelpController implements Initializable {
      * External links are opened in the system browser.
      */
     private void injectLinkInterceptor() {
-        org.w3c.dom.Document doc = webView.getEngine().getDocument();
+        Document doc = webView.getEngine().getDocument();
         if (doc == null) return;
-        org.w3c.dom.NodeList nodeList = doc.getElementsByTagName("a");
+        NodeList nodeList = doc.getElementsByTagName("a");
         for (int i = 0; i < nodeList.getLength(); i++) {
-            org.w3c.dom.events.EventTarget link = (org.w3c.dom.events.EventTarget) nodeList.item(i);
+            EventTarget link = (EventTarget) nodeList.item(i);
             link.addEventListener("click", evt -> {
-                org.w3c.dom.events.EventTarget target = evt.getCurrentTarget();
-                org.w3c.dom.Element anchor = (org.w3c.dom.Element) target;
+                EventTarget target = evt.getCurrentTarget();
+                Element anchor = (Element) target;
                 String href = anchor.getAttribute("href");
                 if (href != null && (href.startsWith("http://") || href.startsWith("https://"))) {
                     javafx.application.Platform.runLater(() -> {
@@ -163,14 +166,13 @@ public class HelpController implements Initializable {
     private void handleLinkEvent(Observable o) {
         isAdjusting = true;
         try {
-            treeView.getSelectionModel().select(null);
+            treeView.getSelectionModel().clearSelection();
             if (!(o instanceof ReadOnlyStringProperty))
                 return;
             ReadOnlyStringProperty property = (ReadOnlyStringProperty) o;
             String value = property.getValue();
             if (value == null)
                 return;
-
             // Check if it's an internal link
             TreeItem<String> treeItem = linkTreeMap.get(value);
             if (treeItem != null) {

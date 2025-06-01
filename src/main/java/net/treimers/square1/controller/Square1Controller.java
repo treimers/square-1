@@ -33,6 +33,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -75,7 +76,6 @@ import net.treimers.square1.solver.Scrambler;
 import net.treimers.square1.view.dialog.ColorDialog;
 import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.dialog.SolveDialog;
-import net.treimers.square1.view.dialog.Square1Alert;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.MeshGroup;
 import net.treimers.square1.view.misc.SmartGroup;
@@ -134,7 +134,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	/** The primary stage. */
 	private Stage primaryStage;
 	/** The help dialog. */
-	private Alert helpDialog;
+	private Stage helpDialog;
 	/** The about dialog. */
 	private Alert aboutDialog;
 	/** The dialog for key short cuts. */
@@ -640,7 +640,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		// center help dialog on screen
 		Platform.runLater(() -> {
 			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-			Window window = helpDialog.getDialogPane().getScene().getWindow();
+			Window window = helpDialog.getScene().getWindow();
 			window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
 			window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
 		});
@@ -741,21 +741,19 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 * 
 	 * @param primaryStage the primary stage.
 	 * @return the new help dialog.
+	 * @throws Square1Exception in case of errors.
 	 */
-	private Alert createHelpDialog(Stage primaryStage) {
-		// create dialog
-		Alert alert = new Square1Alert(AlertType.INFORMATION, this);
-		alert.setTitle("Square-1 Help");
-		alert.setHeaderText("Square-1 user manual");
-		alert.getDialogPane().setMinWidth(1200);
-		alert.getDialogPane().setMinHeight(800);
-		alert.initOwner(primaryStage);
+	private Stage createHelpDialog(Stage primaryStage) throws Square1Exception {
 		try {
+			// create dialog
+			Stage helpStage = new Stage();
+			helpStage.setTitle("Square-1 Help");
+			helpStage.initOwner(primaryStage);
+			helpStage.initModality(Modality.WINDOW_MODAL);
+			helpStage.setResizable(true);
 			// load and set the stage icon
 			Image image = ImageLoader.getLogoImage();
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(image);
-			stage.centerOnScreen();
+			helpStage.getIcons().add(image);
 			// load the view
 			URL resource = getClass().getResource("/net/treimers/square1/helppanel.fxml");
 			FXMLLoader loader = new FXMLLoader(resource);
@@ -764,12 +762,23 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 			HelpController controller = loader.getController();
 			controller.setMainController(this);
 			controller.setHostServices(hostServices);
-			// apply the scene to the dialog
-			alert.getDialogPane().setContent(root);
+			// apply the to the dialog
+			Scene scene = new Scene(root, 1200, 800);
+			helpStage.setScene(scene);
+			// maximize window
+			helpStage.setMaximized(true);
+			// register escape key for closing
+			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+				if (event.getCode() == KeyCode.ESCAPE) {
+					helpStage.close();
+					event.consume();
+				}
+			});
+			return helpStage;
 		} catch (IOException e) {
 			alertException(e);
+			throw new Square1Exception(e.getMessage(), e);
 		}
-		return alert;
 	}
 
 	/**
