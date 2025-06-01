@@ -720,9 +720,10 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText(Version.getAppTitle() + "\nVersion " + Version.getAppVersion());
-		Text authors = new Text("Authors:\n" + Version.getAppVendor() + "\nSee ");
+		Text authors = new Text("Authors:\n" + Version.getAppVendor() + "\n\nSee");
 		Hyperlink link1 = new Hyperlink("https://www.jaapsch.net");
 		Hyperlink link2 = new Hyperlink("https://github.com/treimers/square-1");
+		alert.getDialogPane().setMinWidth(400);
 		link1.setOnAction(e -> hostServices.showDocument(link1.getText()));
 		link2.setOnAction(e -> hostServices.showDocument(link2.getText()));
 		VBox content = new VBox();
