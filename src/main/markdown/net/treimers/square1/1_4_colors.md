@@ -14,4 +14,8 @@ After clicking the Ok button the Square-1 will be re-colored using your selectio
 
 <img src="images/color3.png" alt="Square 1" width="404" height="431">
 
+Very interesting is the option to color your Square-1 with transparent colors. This allows you to take a look into the Square-1.
+
+<img src="images/transparent.png" alt="Square 1" width="404" height="431">
+
 A "Reset to Defaults" button is also available allowing you to revert the coloring scheme to that of a original Square-1.

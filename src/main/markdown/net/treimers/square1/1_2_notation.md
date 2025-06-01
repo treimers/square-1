@@ -19,7 +19,7 @@ The pieces in the top layer are now counted starting from the position left to t
 
 The pieces in the bottom layer are counted starting from the position right to the gap. Next pieces are arranged clockwise (from bottom view). The bottom layer of a solved Square-1 consist of pieces 5E6F7G8H.
 
-The starting piece positions at top and bottom layer are illustrated in the next picture:
+The starting piece positions at top and bottom layer and arrangement of the pieces in the two layers is illustrated in the next picture.
 
 <img src="images/notation.png" alt="Notation" width="469" height="831">
 
@@ -44,6 +44,10 @@ A move consists of three parts
 - a bottom layer turn and
 - a twist move.
 
+A move of the top layer is a right turn while the move of the bottom layer turns it in the opposite direction if you look to the front of the Square-1.
+
+<img src="images/move.png" alt="Move" width="469" height="831">
+
 Consider the following sequence for a move
 
 - (3,4)/
@@ -58,7 +62,7 @@ is equivalent to
 
 - (-3,-1)/
 
-The move direction is the same we already saw in the position notation. See the red arrows in the position image above.
+The move direction is the same we already saw in the position notation. See the red arrows in the image above.
 
 If no twist turn is required we use a '-' instead of '/' like in
 
