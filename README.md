@@ -20,18 +20,19 @@ The Square-1 is built from different pieces:
 
 This application allows viewing and editing Square-1 positions as well as solving a mixed Square-1. 
 
-You can use the mouse to rotate the Square-1 cube and see all sides. Keyboard keys can be used to control different rotations as well.
+You can use the mouse to rotate the Square-1 cube and see all sides and you can enable the three coordinate axis. Keyboard keys can be used to control different rotations as well.
 
-Via the position dialog you can enter the position of your mixed Square-1.
+<img src="images/rotate.png" alt="Square 1 Rotate" width="285" height="296">
+
+
+Via the position dialog you can enter the pieces and the position of your mixed Square-1.
 
 <img src="images/position.png" alt="Square 1 Position Dialog" width="537" height="342">
 
 
-A solve dialog is provided that helpy you to solve a mixed Square-1 and get step by step instruction which moves must be applied to bring the Square-1 into the solved state.
+A solve dialog is provided that helps you to solve a mixed Square-1 and get step by step instruction to bring your Square-1 back into the solved state.
 
-<img src="images/solved.png" alt="Square 1 Position Dialog" width="445" height="345">
-
-
+<img src="images/solved.png" alt="Square 1 Solve Dialog" width="445" height="345">
 
 User help can be opened by menu or by hot key explaining all aspects when using of this application.
 
