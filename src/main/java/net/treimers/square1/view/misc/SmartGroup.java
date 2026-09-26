@@ -50,4 +50,12 @@ public class SmartGroup extends Group {
 		this.getTransforms().clear();
 		this.getTransforms().addAll(t);
 	}
+
+	/**
+	 * Removes every rotation applied through {@link #rotateByX(int)}, {@link #rotateByY(int)} or {@link #rotateByZ(int)}.
+	 */
+	public void resetRotation() {
+		t = new Rotate();
+		this.getTransforms().clear();
+	}
 }

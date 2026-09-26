@@ -32,6 +32,8 @@ import net.treimers.square1.view.misc.SmartGroup;
  * Instance of this class are used as controller for Square-1 solve dialog.
  */
 public class SolveController {
+	/** Step for one click on a rotation button, in degrees. */
+	private static final int ROTATION_STEP = 10;
 	/** The sub scene showing the Square-1. */
 	@FXML
 	private SubScene subScene;
@@ -54,6 +56,8 @@ public class SolveController {
 	private List<Position> positionList;
 	/** The meshgroup showing the Square-1. */
 	private MeshGroup meshGroup;
+	/** View rotation of the Square-1 in this dialog. */
+	private SmartGroup smartGroup;
 	Solver solver;
 
 	public SolveController() throws Square1Exception {
@@ -80,7 +84,7 @@ public class SolveController {
 		slider.valueProperty().addListener(changeListener);
 		sequence = new MoveSequence();
 		// Sub Scene
-		SmartGroup smartGroup = new SmartGroup();
+		smartGroup = new SmartGroup();
 		meshGroup = new MeshGroup(colorBean);
 		smartGroup.getChildren().addAll(meshGroup, new AmbientLight(Color.WHITE));
 		subScene.setRoot(smartGroup);
@@ -100,6 +104,7 @@ public class SolveController {
 	 */
 	public void setPosition(Position position) {
 		this.originalPosition = position;
+		smartGroup.resetRotation();
 		positionLabel.setText(position.toString());
 		positionList = Arrays.asList(position);
 		slider.setMax(0);
@@ -150,6 +155,70 @@ public class SolveController {
 			} else
 				success = true;
 		} while (!success);
+	}
+
+	/**
+	 * Turns the view 10° clockwise around the x-axis.
+	 */
+	@FXML
+	void doXClock() {
+		smartGroup.rotateByX(ROTATION_STEP);
+	}
+
+	/**
+	 * Turns the view 10° anticlockwise around the x-axis.
+	 */
+	@FXML
+	void doXAntiClock() {
+		smartGroup.rotateByX(-ROTATION_STEP);
+	}
+
+	/**
+	 * Turns the view 10° clockwise around the y-axis.
+	 */
+	@FXML
+	void doYClock() {
+		smartGroup.rotateByY(ROTATION_STEP);
+	}
+
+	/**
+	 * Turns the view 10° anticlockwise around the y-axis.
+	 */
+	@FXML
+	void doYAntiClock() {
+		smartGroup.rotateByY(-ROTATION_STEP);
+	}
+
+	/**
+	 * Turns the view 10° clockwise around the z-axis.
+	 */
+	@FXML
+	void doZClock() {
+		smartGroup.rotateByZ(ROTATION_STEP);
+	}
+
+	/**
+	 * Turns the view 10° anticlockwise around the z-axis.
+	 */
+	@FXML
+	void doZAntiClock() {
+		smartGroup.rotateByZ(-ROTATION_STEP);
+	}
+
+	/**
+	 * Plays a 360° turn of the Square-1 around the y-axis.
+	 */
+	@FXML
+	void doRotate() {
+		meshGroup.animate();
+	}
+
+	/**
+	 * Restores the view orientation used when the dialog was opened.
+	 */
+	@FXML
+	void doReset() {
+		smartGroup.resetRotation();
 	}
 
 	/**
