@@ -2,6 +2,7 @@ package net.treimers.square1.solver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import net.treimers.square1.exception.Square1Exception;
@@ -10,7 +11,15 @@ import net.treimers.square1.model.Position;
 
 public class Scrambler {
 	private static final int MAX_SCRAMBLE_LENGTH = 6;
-	private static final Random random = new Random();
+	private final Random random;
+
+	public Scrambler() {
+		this(new Random());
+	}
+
+	public Scrambler(Random random) {
+		this.random = Objects.requireNonNull(random);
+	}
 
 	public List<Position> generateScramble(Position position) {
 		List<Position> positions = new ArrayList<>();

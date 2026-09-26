@@ -176,29 +176,39 @@ public class SolveController {
 
 	/**
 	 * Handle user click on solve button.
-	 * 
-	 * @throws Square1Exception
 	 */
 	@FXML
-	void handleSolve() throws Square1Exception {
-		if (solver != null) {
-			String solution = solver.solve(originalPosition.toString());
-			MoveSequence seq = new MoveSequence(solution);
-			List<Position> list = originalPosition.move(seq);
-			this.sequence = seq;
-			positionList = list;
-			sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
-			slider.setMax(positionList.size() - 1.0);
-			selectSliderPosition(0);
-			// show ticks and labels
-			slider.setShowTickMarks(true);
-			slider.setShowTickLabels(true);
-			// every tick is major tick
-			slider.setMajorTickUnit(1);
-			// no minor ticks
-			slider.setMinorTickCount(0);
-			// snap to ticks
-			slider.setSnapToTicks(true);
+	void handleSolve() {
+		String solution = null;
+		try {
+			if (solver != null) {
+				solution = solver.solve(originalPosition.toString());
+				MoveSequence seq = new MoveSequence(solution);
+				List<Position> list = originalPosition.move(seq);
+				this.sequence = seq;
+				positionList = list;
+				sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
+				slider.setMax(positionList.size() - 1.0);
+				selectSliderPosition(0);
+				// show ticks and labels
+				slider.setShowTickMarks(true);
+				slider.setShowTickLabels(true);
+				// every tick is major tick
+				slider.setMajorTickUnit(1);
+				// no minor ticks
+				slider.setMinorTickCount(0);
+				// snap to ticks
+				slider.setSnapToTicks(true);
+			}
+		} catch (Square1Exception e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			if (solution == null)
+				alert.setHeaderText("Error");
+			else
+				alert.setHeaderText("Error with solution: " + solution);
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
 		}
 	}
 
