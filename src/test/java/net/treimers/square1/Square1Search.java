@@ -10,7 +10,6 @@ import java.util.Map;
 public class Square1Search {
     private static final int TOTAL_UNITS = 12; // 360° / 30°
     private static final char CORNER = 'C';    // 60° = 2 units
-    private static final char EDGE = 'E';      // 30° = 1 unit
 
     public static void main(String[] args) {
         String targetTop = "CCCCCC";
@@ -145,18 +144,6 @@ public class Square1Search {
         // User convention: bottom counted clockwise from bottom.
         // Internal order is clockwise from top, so mirror the order.
         return reverseKeepingFirst(s);
-    }
-
-    private static String rotateStringLeft(String s, int shift) {
-        if (s.isEmpty()) {
-            return s;
-        }
-        int n = s.length();
-        int k = ((shift % n) + n) % n;
-        if (k == 0) {
-            return s;
-        }
-        return s.substring(k) + s.substring(0, k);
     }
 
     private static String reverseKeepingFirst(String s) {
