@@ -37,14 +37,17 @@ public class Solver {
 		pr2 = new PrunTable(q, 1, st, scte, sctc, turnMetric);
 	}
 
-	public String solve(String position) {
+	public String solve(String position) throws Square1Exception {
 		// Get position to solve from the input
 		FullPosition p = new FullPosition();
 		String err = p.parseInput(position);
-		if (err != null) {
-			System.err.println(err);
-			System.exit(1);
-		}
+		if (err != null)
+			throw new Square1Exception(err);
+		// Shape tables omit orientations where a corner blocks the slice.
+		// Turn to a listed orientation first and keep that turn in the solution.
+		int[] align = p.alignToSolvableShape();
+		if (align == null)
+			throw new Square1Exception("No sliceable orientation for position " + position);
 		// now we have a position p to solve
 		// show position
 		System.out.print("Position to solve: ");
@@ -56,6 +59,8 @@ public class Solver {
 		long start = System.currentTimeMillis();
 		String solution = s.solve();
 		long end = System.currentTimeMillis();
+		if (align[0] != 0 || align[1] != 0)
+			solution = align[0] + "," + align[1] + "-" + solution;
 		System.out.println("Time: " + (end - start) + " ms");
 		System.out.println("Solution=" + solution);
 		return solution;

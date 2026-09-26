@@ -72,6 +72,16 @@ public class ScrambleSolveTest {
 	}
 
 	@Test
+	public void solveWhenCornerBlocksSlice() throws Square1Exception {
+		// Bottom corner G lies across the slice, so the shape tables have no entry
+		// for this orientation. The solver must turn to a sliceable orientation first.
+		Position position = new Position("A5E681DFC327G4BH-");
+		Position result = applySolution(position);
+
+		assertEquals(new Position(), result);
+	}
+
+	@Test
 	public void scrambleThenSolveKnownPath() throws Square1Exception {
 		// Deterministic multi-scramble via seed 0, then solve back to solved
 		Scrambler scrambler = new Scrambler(new Random(0L));

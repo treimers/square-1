@@ -134,6 +134,29 @@ public class FullPosition {
 		return (pos[0] != pos[11] && pos[5] != pos[6] && pos[12] != pos[23] && pos[17] != pos[18]);
 	}
 
+	/**
+	 * Turns the layers until the shape is one the solver tables contain.
+	 * Those tables only list orientations in which no corner blocks the slice.
+	 * The turns are applied to this position.
+	 *
+	 * @return clockwise top and bottom turns that were applied, or null if no such orientation exists.
+	 */
+	int[] alignToSolvableShape() {
+		int top = 0;
+		int bottom = 0;
+		for (int t = 0; t < 12; t++) {
+			for (int b = 0; b < 12; b++) {
+				if (Sq1Shape.getShape(getShape(), getParityOdd()) >= 0)
+					return new int[] { top, bottom };
+				doBot(1);
+				bottom = (bottom + 1) % 12;
+			}
+			doTop(1);
+			top = (top + 1) % 12;
+		}
+		return null;
+	}
+
 	// Get a 24-bitpattern that encodes the current shape (bit set for edge, clear
 	// for corner)
 	int getShape() {

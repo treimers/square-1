@@ -35,13 +35,16 @@ public class Sq1Shape {
 		}
 	}
 
+	/**
+	 * @return the shape index, or -1 when this orientation is not in the table.
+	 *         The table only contains orientations whose slice is not blocked by a corner.
+	 */
 	static int getShape(int s, boolean p) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i].pieces == s && list[i].parityOdd == p)
 				return i;
 		}
-		// treimers
-		return 255;
+		return -1;
 	}
 
 	static Sq1Shape getShape(int idx) {
