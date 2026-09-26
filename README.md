@@ -42,6 +42,29 @@ Enjoy ...
 
 Releases can be found [![here for download](https://img.shields.io/github/v/release/treimers/square-1?label=Download)](https://github.com/treimers/square-1/releases/latest)
 
+> [!WARNING]
+> The application is not signed with an Apple or Microsoft developer certificate. macOS and Windows can refuse to start a copy downloaded from GitHub. Have a look to the next section what must be done if you are facing this situation.
+
+## macOS
+
+Open the downloaded disk image (`.dmg`) and copy `Square-1.app` into the Applications folder. On an Apple Silicon Mac use the `macos-arm64` build. On an Intel Mac use the `macos-x86_64` build.
+
+If macOS reports that `Square-1.app` cannot be opened, Control-click the application in Finder and choose **Open**. In the following dialog, click **Open** again.
+
+If that dialog does not offer **Open**, open **System Settings**, go to **Privacy & Security**, and allow Square-1 with **Open Anyway**.
+
+You can also clear the download attributes in Terminal:
+
+```
+xattr -cr /Applications/Square-1.app/
+```
+
+## Windows
+
+In Explorer, right-click the downloaded installer (`.exe`) and choose **Properties**. On the **General** tab, the **Security** section at the bottom says that the file came from another computer and access may have been blocked. Select **Unblock**, then **Apply**.
+
+If Windows SmartScreen shows **Windows protected your PC**, choose **More info** and then **Run anyway**.
+
 # Further Information
 
 If you would like to learn more about Square-1 puzzle and how to solve it take a look to these links
