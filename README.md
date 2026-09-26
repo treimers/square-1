@@ -43,7 +43,7 @@ Enjoy ...
 Releases can be found [![here for download](https://img.shields.io/github/v/release/treimers/square-1?label=Download)](https://github.com/treimers/square-1/releases/latest)
 
 > [!WARNING]
-> The application is not signed with an Apple or Microsoft developer certificate. macOS and Windows can refuse to start a copy downloaded from GitHub. Have a look to the next section what must be done if you are facing this situation.
+> The application is not signed with an Apple or Microsoft developer certificate. macOS and Windows can refuse to start a copy downloaded from GitHub. Have a look to the next sections what must be done if you are facing this situation.
 
 ## macOS
 
@@ -75,3 +75,4 @@ If you would like to learn more about Square-1 puzzle and how to solve it take a
 * Jaap has created a description of solving algorithms [here](https://www.jaapsch.net/puzzles/compcube.htm)
 * [Jaap's solver](https://github.com/mikavilpas/squanmate/tree/master/resources/public/jaap-square1-solver) as standalone program (also available on his puzzle page)
 * Details of the [implementation with JavaFX](implementation.md)
+* [Developer documentation](developer.md) of the application structure
