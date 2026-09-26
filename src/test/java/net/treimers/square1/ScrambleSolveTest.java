@@ -77,7 +77,10 @@ public class ScrambleSolveTest {
 		// for this orientation. The solver must turn to a sliceable orientation first.
 		Position position = new Position("A5E681DFC327G4BH-");
 		Position result = applySolution(position);
-
+		assertEquals(new Position(), result);
+		// Next example
+		position = new Position("B25EDC36847GFAH1/");
+		result = applySolution(position);
 		assertEquals(new Position(), result);
 	}
 
