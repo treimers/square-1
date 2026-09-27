@@ -21,21 +21,47 @@ public class Scrambler {
 		this.random = Objects.requireNonNull(random);
 	}
 
+	/**
+	 * Builds a scramble as the positions after each random move.
+	 *
+	 * @param position the position to scramble.
+	 * @return the position after every applied move.
+	 */
 	public List<Position> generateScramble(Position position) {
 		List<Position> positions = new ArrayList<>();
-		int tries = 0;
 		Position next = position;
-		while (positions.size() < MAX_SCRAMBLE_LENGTH && tries < MAX_SCRAMBLE_LENGTH * 10) {
-			Move move = generateRandomMove();
+		for (Move move : generateMoves(position)) {
 			try {
 				next = next.move(move);
 				positions.add(next);
+			} catch (Square1Exception e) {
+				// The move was legal when it was chosen.
+			}
+		}
+		return positions;
+	}
+
+	/**
+	 * Builds the random moves of a scramble. Illegal moves are skipped.
+	 *
+	 * @param position the position to scramble.
+	 * @return the moves that were applied, in order.
+	 */
+	public List<Move> generateMoves(Position position) {
+		List<Move> moves = new ArrayList<>();
+		int tries = 0;
+		Position next = position;
+		while (moves.size() < MAX_SCRAMBLE_LENGTH && tries < MAX_SCRAMBLE_LENGTH * 10) {
+			Move move = generateRandomMove();
+			try {
+				next = next.move(move);
+				moves.add(move);
 			} catch (Square1Exception e) {
 				// Illegal move, einfach überspringen
 			}
 			tries++;
 		}
-		return positions;
+		return moves;
 	}
 
 	private Move generateRandomMove() {

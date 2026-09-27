@@ -56,6 +56,9 @@ public class MoveAnimatorTest {
 
 	@BeforeClass
 	public static void startJavaFx() throws InterruptedException {
+		// A previous test may have closed its last window. Keep the toolkit alive so
+		// timelines still finish.
+		Platform.setImplicitExit(false);
 		CountDownLatch latch = new CountDownLatch(1);
 		try {
 			Platform.startup(() -> latch.countDown());

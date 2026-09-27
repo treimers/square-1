@@ -16,8 +16,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.PauseTransition;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -67,6 +66,7 @@ import javafx.util.Duration;
 import net.treimers.square1.Version;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Move;
 import net.treimers.square1.model.MoveSequence;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.model.Square1Data;
@@ -78,6 +78,7 @@ import net.treimers.square1.view.dialog.PositionDialog;
 import net.treimers.square1.view.dialog.SolveDialog;
 import net.treimers.square1.view.misc.ImageLoader;
 import net.treimers.square1.view.misc.MeshGroup;
+import net.treimers.square1.view.misc.MoveAnimator;
 import net.treimers.square1.view.misc.SmartGroup;
 import net.treimers.square1.view.piece.AbstractPiece;
 
@@ -196,6 +197,12 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	private PreferencesStore preferencesStore;
 	/** The host services used to open urls in browser. */
 	private HostServices hostServices;
+	/** Plays scramble moves the same way the solve dialog plays a solution. */
+	private final MoveAnimator scrambleAnimator = new MoveAnimator();
+	/** Pause between steps when the position is too incomplete to animate. */
+	private PauseTransition scramblePause;
+	/** Invalidates a scramble that was replaced or stopped. */
+	private int scrambleRun;
 
 	/**
 	 * Creates a new instance.
@@ -375,6 +382,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doLoad() {
+		stopScramble();
 		try {
 			if (lastFile != null && lastDir != null) {
 				loadFileChooser.setInitialDirectory(lastDir);
@@ -406,6 +414,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doSave() {
+		stopScramble();
 		try {
 			if (lastFile != null && lastDir != null) {
 				saveFileChooser.setInitialDirectory(lastDir);
@@ -430,6 +439,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doExit() {
+		stopScramble();
 		try {
 			preferencesStore.store(new Square1Data(colors, position, solution));
 		} catch (Square1Exception e) {
@@ -462,6 +472,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doChangePosition() {
+		stopScramble();
 		positionDialogController.setPosition(position);
 		Optional<Position> result = positionDialog.showAndWait();
 		if (result.isPresent()) {
@@ -478,27 +489,13 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 
 	/**
 	 * Called when user requires scramble current position.
-	 * 
-	 * @throws Square1Exception
-	 * @throws InterruptedException
+	 * Plays each scramble move with the same turn and slice animation as the solver.
 	 */
 	@FXML
-	void doScramble() throws Square1Exception, InterruptedException {
-		Scrambler scrambler = new Scrambler();
-		List<Position> positions = scrambler.generateScramble(position);
-		Timeline timeline = new Timeline();
-		timeline.setCycleCount(1);
-		for (int i = 0; i < positions.size(); i++) {
-			Position movePosition = positions.get(i);
-			KeyFrame keyFrame = new KeyFrame(
-					Duration.millis(500 * (i + 1)),
-					event -> {
-						meshGroup.setContent(movePosition);
-					});
-			timeline.getKeyFrames().add(keyFrame);
-			position = movePosition;
-		}
-		timeline.play();
+	void doScramble() {
+		stopScramble();
+		int run = scrambleRun;
+		playScramble(run, new Scrambler().generateMoves(position), 0);
 	}
 
 	/**
@@ -506,6 +503,7 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doSolvePosition() {
+		stopScramble();
 		// center solve dialog on screen
 		Platform.runLater(() -> {
 			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
@@ -595,7 +593,62 @@ public class Square1Controller implements Initializable, ColorBean, PropertyChan
 	 */
 	@FXML
 	void doRotate() {
+		stopScramble();
 		meshGroup.animate();
+	}
+
+	/**
+	 * Stops a scramble that is still playing and shows the last finished position.
+	 */
+	private void stopScramble() {
+		scrambleRun++;
+		if (scramblePause != null) {
+			scramblePause.stop();
+			scramblePause = null;
+		}
+		if (scrambleAnimator.isRunning()) {
+			scrambleAnimator.cancel();
+			meshGroup.setContent(position);
+		}
+	}
+
+	/**
+	 * Plays the scramble moves from {@code index} onward, one move at a time.
+	 *
+	 * @param run the scramble this playback belongs to.
+	 * @param moves the scramble moves.
+	 * @param index the next move to play.
+	 */
+	private void playScramble(int run, List<Move> moves, int index) {
+		if (run != scrambleRun)
+			return;
+		if (index >= moves.size())
+			return;
+		Move move = moves.get(index);
+		Position before = position;
+		Position after;
+		try {
+			after = before.move(move);
+		} catch (Square1Exception e) {
+			playScramble(run, moves, index + 1);
+			return;
+		}
+		if (before.toString().length() != 17) {
+			position = after;
+			solution = new MoveSequence();
+			meshGroup.setContent(after);
+			scramblePause = new PauseTransition(Duration.millis(500));
+			scramblePause.setOnFinished(event -> playScramble(run, moves, index + 1));
+			scramblePause.play();
+			return;
+		}
+		scrambleAnimator.play(meshGroup, move, true, before, after, () -> {
+			if (run != scrambleRun)
+				return;
+			position = after;
+			solution = new MoveSequence();
+			playScramble(run, moves, index + 1);
+		});
 	}
 
 	/**

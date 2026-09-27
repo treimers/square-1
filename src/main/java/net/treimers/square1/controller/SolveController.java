@@ -236,9 +236,7 @@ public class SolveController {
 	 */
 	@FXML
 	void handleLeft() {
-		int sliderPos = (int) Math.round(slider.getValue());
-		if (sliderPos > 0)
-			slider.setValue(sliderPos - 1);
+		step(-1);
 	}
 
 	/**
@@ -246,9 +244,41 @@ public class SolveController {
 	 */
 	@FXML
 	void handleRight() {
-		int sliderPos = (int) Math.round(slider.getValue());
-		if (sliderPos < slider.getMax())
-			slider.setValue(sliderPos + 1);
+		step(1);
+	}
+
+	/**
+	 * Plays one move from the position on screen.
+	 * The buttons do not follow the slider thumb: a thumb that already sits on the last step, or a
+	 * drag that never finished, must not swallow the next click.
+	 *
+	 * @param direction -1 for the previous step, +1 for the next step.
+	 */
+	private void step(int direction) {
+		if (positionList.size() < 2)
+			return;
+		suppressSlider = true;
+		if (slider.isValueChanging())
+			slider.setValueChanging(false);
+		if (animator.isRunning()) {
+			animator.cancel();
+			meshGroup.setContent(positionList.get(displayedStep));
+		}
+		animatingTarget = -1;
+		int target = displayedStep + direction;
+		if (target < 0 || target >= positionList.size()) {
+			suppressSlider = false;
+			return;
+		}
+		if (positionList.get(displayedStep).toString().length() != 17) {
+			suppressSlider = false;
+			showStep(target);
+			return;
+		}
+		slider.setValue(target);
+		suppressSlider = false;
+		animatingTarget = target;
+		playToward(target);
 	}
 
 	/**
@@ -373,9 +403,11 @@ public class SolveController {
 		List<Move> moves = sequence.getMoves();
 		for (int i = 0; i < moves.size(); i++) {
 			Text text = new Text(moves.get(i).toString());
-			text.setFill(i == activeMove ? Color.DARKGREEN : Color.BLACK);
-			if (i == activeMove)
-				text.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
+			if (i == activeMove) {
+				text.setFill(Color.DARKGREEN);
+				text.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize() + 4));
+			} else
+				text.setFill(Color.BLACK);
 			sequenceTextflow.getChildren().add(text);
 		}
 	}

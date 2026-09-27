@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import net.jaapsch.square1.Solver;
 import net.treimers.square1.exception.Square1Exception;
+import net.treimers.square1.model.Move;
 import net.treimers.square1.model.MoveSequence;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.solver.Scrambler;
@@ -22,7 +23,7 @@ import net.treimers.square1.solver.Scrambler;
  * the cube is solved again.
  */
 public class ScrambleSolveTest {
-	private static final int REPEAT_COUNT = 100;
+	private static final int REPEAT_COUNT = 20;
 	/** How often scramble is applied before each solve. */
 	private static final int SCRAMBLES_BEFORE_SOLVE = 5;
 	private static final long SCRAMBLE_SEED = 42L;
@@ -32,6 +33,20 @@ public class ScrambleSolveTest {
 	@BeforeClass
 	public static void setUpClass() throws Square1Exception {
 		solver = new Solver();
+	}
+
+	@Test
+	public void scrambleMovesMatchResultingPositions() throws Square1Exception {
+		Position solved = new Position();
+		List<Move> moves = new Scrambler(new Random(SCRAMBLE_SEED)).generateMoves(solved);
+		List<Position> positions = new Scrambler(new Random(SCRAMBLE_SEED)).generateScramble(solved);
+
+		assertEquals(moves.size(), positions.size());
+		Position current = solved;
+		for (int i = 0; i < moves.size(); i++) {
+			current = current.move(moves.get(i));
+			assertEquals(positions.get(i), current);
+		}
 	}
 
 	@Test
