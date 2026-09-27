@@ -80,7 +80,8 @@ public class MeshGroup extends Group implements PieceHolder {
 		// This will lead to a java.util.ConcurrentModificationException.
 		// I found this https://www.baeldung.com/java-concurrentmodificationexception
 		// although I am not very happy using lambdas :(
-		children.removeIf(AbstractPiece.class::isInstance);
+		// Move layers hold the pieces while a turn is playing; drop them with the pieces.
+		children.removeIf(node -> node instanceof AbstractPiece || MoveAnimator.isMoveLayer(node));
 		Map<Layer, Character[]> layerMap = position.getPieces();
 		Character[] topPieces = layerMap.get(Layer.TOP);
 		addOuterLayer(topPieces, false);
@@ -161,6 +162,15 @@ public class MeshGroup extends Group implements PieceHolder {
 	@Override
 	public String toString() {
 		return position.toString();
+	}
+
+	/**
+	 * Gets the pieces currently shown, keyed by piece name.
+	 * 
+	 * @return the pieces currently shown.
+	 */
+	Map<Character, AbstractPiece> pieces() {
+		return pieceMap;
 	}
 
 	// interface PieceHolder

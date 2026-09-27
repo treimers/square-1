@@ -18,14 +18,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import net.jaapsch.square1.Solver;
 import net.treimers.square1.exception.Square1Exception;
 import net.treimers.square1.model.ColorBean;
+import net.treimers.square1.model.Move;
 import net.treimers.square1.model.MoveSequence;
 import net.treimers.square1.model.Position;
 import net.treimers.square1.view.misc.MeshGroup;
+import net.treimers.square1.view.misc.MoveAnimator;
 import net.treimers.square1.view.misc.SmartGroup;
 
 /**
@@ -58,6 +62,14 @@ public class SolveController {
 	private MeshGroup meshGroup;
 	/** View rotation of the Square-1 in this dialog. */
 	private SmartGroup smartGroup;
+	/** Plays the move between two slider steps. */
+	private final MoveAnimator animator = new MoveAnimator();
+	/** Slider step currently shown. The move animation has finished for this step. */
+	private int displayedStep;
+	/** Ignores slider events while the code itself moves the slider. */
+	private boolean suppressSlider;
+	/** Step the running animation is heading for, or -1 when none is running. */
+	private int animatingTarget = -1;
 	Solver solver;
 
 	public SolveController() throws Square1Exception {
@@ -77,11 +89,17 @@ public class SolveController {
 		ChangeListener<Number> changeListener = new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				int intValue = newValue.intValue();
-				selectSliderPosition(intValue);
+				onSliderSettled();
 			}
 		};
 		slider.valueProperty().addListener(changeListener);
+		slider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (!newValue)
+					onSliderSettled();
+			}
+		});
 		sequence = new MoveSequence();
 		// Sub Scene
 		smartGroup = new SmartGroup();
@@ -104,13 +122,11 @@ public class SolveController {
 	 */
 	public void setPosition(Position position) {
 		this.originalPosition = position;
+		this.position = position;
 		smartGroup.resetRotation();
-		positionLabel.setText(position.toString());
 		positionList = Arrays.asList(position);
-		slider.setMax(0);
-		meshGroup.setContent(position);
 		sequence = new MoveSequence();
-		sequenceTextflow.getChildren().clear();
+		showStep(0);
 	}
 
 	/**
@@ -132,18 +148,8 @@ public class SolveController {
 					List<Position> list = originalPosition.move(seq);
 					this.sequence = seq;
 					positionList = list;
-					sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
-					slider.setMax(positionList.size() - 1.0);
-					selectSliderPosition(0);
-					// show ticks and labels
-					slider.setShowTickMarks(true);
-					slider.setShowTickLabels(true);
-					// every tick is major tick
-					slider.setMajorTickUnit(1);
-					// no minor ticks
-					slider.setMinorTickCount(0);
-					// snap to ticks
-					slider.setSnapToTicks(true);
+					prepareSlider();
+					showStep(0);
 					success = true;
 				} catch (Square1Exception e) {
 					Alert alert = new Alert(AlertType.ERROR);
@@ -210,6 +216,10 @@ public class SolveController {
 	 */
 	@FXML
 	void doRotate() {
+		if (animator.isRunning()) {
+			animator.cancel();
+			meshGroup.setContent(positionList.get(displayedStep));
+		}
 		meshGroup.animate();
 	}
 
@@ -226,10 +236,9 @@ public class SolveController {
 	 */
 	@FXML
 	void handleLeft() {
-		Double doubleValue = slider.getValue();
-		int sliderPos = doubleValue.intValue();
+		int sliderPos = (int) Math.round(slider.getValue());
 		if (sliderPos > 0)
-			selectSliderPosition(sliderPos - 1);
+			slider.setValue(sliderPos - 1);
 	}
 
 	/**
@@ -237,10 +246,9 @@ public class SolveController {
 	 */
 	@FXML
 	void handleRight() {
-		Double doubleValue = slider.getValue();
-		int sliderPos = doubleValue.intValue();
+		int sliderPos = (int) Math.round(slider.getValue());
 		if (sliderPos < slider.getMax())
-			selectSliderPosition(sliderPos + 1);
+			slider.setValue(sliderPos + 1);
 	}
 
 	/**
@@ -256,18 +264,8 @@ public class SolveController {
 				List<Position> list = originalPosition.move(seq);
 				this.sequence = seq;
 				positionList = list;
-				sequenceTextflow.getChildren().setAll(new Text(seq.toString()));
-				slider.setMax(positionList.size() - 1.0);
-				selectSliderPosition(0);
-				// show ticks and labels
-				slider.setShowTickMarks(true);
-				slider.setShowTickLabels(true);
-				// every tick is major tick
-				slider.setMajorTickUnit(1);
-				// no minor ticks
-				slider.setMinorTickCount(0);
-				// snap to ticks
-				slider.setSnapToTicks(true);
+				prepareSlider();
+				showStep(0);
 			}
 		} catch (Square1Exception e) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -282,46 +280,104 @@ public class SolveController {
 	}
 
 	/**
-	 * Selects the slider position.
-	 * 
-	 * 1. adjusts the slider
-	 * 2. selects the new position from position list
-	 * 3. displays the new position in the sub scene
-	 * 4. high lights the current move
-	 * 
-	 * @param sliderPosition the new slider position.
+	 * Shows ticks for one step per move and snaps the thumb to those steps.
 	 */
-	private void selectSliderPosition(int sliderPosition) {
-		slider.setValue(sliderPosition);
-		position = positionList.get(sliderPosition);
+	private void prepareSlider() {
+		slider.setMax(positionList.size() - 1.0);
+		slider.setShowTickMarks(true);
+		slider.setShowTickLabels(true);
+		slider.setMajorTickUnit(1);
+		slider.setMinorTickCount(0);
+		slider.setSnapToTicks(true);
+	}
+
+	/**
+	 * Shows a step at once, without playing the moves in between.
+	 * 
+	 * @param step the step to show.
+	 */
+	private void showStep(int step) {
+		animator.cancel();
+		animatingTarget = -1;
+		displayedStep = step;
+		position = positionList.get(step);
 		positionLabel.setText(position.toString());
 		meshGroup.setContent(position);
-		/*
-		List<Move> moves = moveSequence.getMoves();
-		int i = 0;
-		String beforeMove = "";
-		String currentMove = "";
-		String afterMove = "";
-		for (; i < sliderPosition - 1; i++)
-			beforeMove += moves.get(i);
-		if (sliderPosition > 0)
-			currentMove = moves.get(sliderPosition - 1).toString();
-		for (; i < moves.size(); i++)
-			afterMove += moves.get(i);
-		Text beforeText = new Text(beforeMove);
-		beforeText.setFill(Color.BLACK);
-		Text currentText = new Text(currentMove);
-		currentText.setFill(Color.DARKGREEN);
-		Text afterText = new Text(afterMove);
-		afterText.setFill(Color.BLACK);
+		showSequence(step - 1);
+		suppressSlider = true;
+		slider.setValue(step);
+		suppressSlider = false;
+	}
+
+	/**
+	 * Starts the move animation when the user lets the slider go, or when the arrows move it.
+	 */
+	private void onSliderSettled() {
+		if (suppressSlider || slider.isValueChanging() || positionList.size() < 2)
+			return;
+		int target = (int) Math.round(slider.getValue());
+		if (target < 0)
+			target = 0;
+		if (target > positionList.size() - 1)
+			target = positionList.size() - 1;
+		if (animator.isRunning() && target == animatingTarget)
+			return;
+		if (target == displayedStep && !animator.isRunning())
+			return;
+		if (animator.isRunning()) {
+			animator.cancel();
+			position = positionList.get(displayedStep);
+			meshGroup.setContent(position);
+		}
+		if (positionList.get(displayedStep).toString().length() != 17) {
+			showStep(target);
+			return;
+		}
+		animatingTarget = target;
+		playToward(target);
+	}
+
+	/**
+	 * Plays the moves from the step on screen to {@code target}, one move at a time.
+	 * 
+	 * @param target the step to reach.
+	 */
+	private void playToward(int target) {
+		if (target == displayedStep) {
+			animatingTarget = -1;
+			return;
+		}
+		int next = displayedStep + Integer.signum(target - displayedStep);
+		boolean forward = next > displayedStep;
+		int moveIndex = Math.min(displayedStep, next);
+		Move move = sequence.getMoves().get(moveIndex);
+		Position before = positionList.get(moveIndex);
+		Position after = positionList.get(moveIndex + 1);
+		showSequence(moveIndex);
+		animator.play(meshGroup, move, forward, before, after, () -> {
+			displayedStep = next;
+			position = positionList.get(next);
+			positionLabel.setText(position.toString());
+			showSequence(next - 1);
+			playToward(target);
+		});
+	}
+
+	/**
+	 * Shows the move sequence and marks the move that is playing, or the move that led to this step.
+	 * 
+	 * @param activeMove the move to mark, or -1 if none.
+	 */
+	private void showSequence(int activeMove) {
 		sequenceTextflow.getChildren().clear();
-		if (beforeMove.length() > 0)
-			sequenceTextflow.getChildren().add(beforeText);
-		if (currentMove.length() > 0)
-			sequenceTextflow.getChildren().add(currentText);
-		if (afterMove.length() > 0)
-			sequenceTextflow.getChildren().add(afterText);
-		 */
+		List<Move> moves = sequence.getMoves();
+		for (int i = 0; i < moves.size(); i++) {
+			Text text = new Text(moves.get(i).toString());
+			text.setFill(i == activeMove ? Color.DARKGREEN : Color.BLACK);
+			if (i == activeMove)
+				text.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
+			sequenceTextflow.getChildren().add(text);
+		}
 	}
 
 	/**
@@ -330,6 +386,16 @@ public class SolveController {
 	 * @return the current position under the slider.
 	 */
 	public Position getPosition() {
+		if (animator.isRunning()) {
+			animator.cancel();
+			animatingTarget = -1;
+			position = positionList.get(displayedStep);
+			meshGroup.setContent(position);
+			showSequence(displayedStep - 1);
+			suppressSlider = true;
+			slider.setValue(displayedStep);
+			suppressSlider = false;
+		}
 		return position;
 	}
 
